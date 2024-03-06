@@ -1,4 +1,0 @@
-- [Lecture 1](/Courses_in_SUSTech/最优化基础/lecture_1.md)
-- [Lecture 2](/Courses_in_SUSTech/最优化基础/lecture_2.md)
-- [Lecture 3](/Courses_in_SUSTech/最优化基础/lecture_3.md)
-- [Back to Courses](/Courses_in_SUSTech/README.md)
