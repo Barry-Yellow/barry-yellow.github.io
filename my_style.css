@@ -1,0 +1,172 @@
+/* 黑白模式（哀悼） */
+/* 来源：https://blog.csdn.net/u014505277/article/details/128155459 */
+/* html {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); 
+    filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+} */
+
+/* LM Roman 10 */
+@font-face {
+  font-family: 'LM Roman 10';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./latex_fonts/lmroman10-regular.otf');
+}
+
+@font-face {
+  font-family: 'LM Roman 10';
+  font-style: italic;
+  font-weight: normal;
+  src: url('./latex_fonts/lmroman10-italic.otf');
+}
+
+@font-face {
+  font-family: 'LM Roman 10';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./latex_fonts/lmroman10-bold.otf');
+}
+
+@font-face {
+  font-family: 'LM Roman 10';
+  font-style: italic;
+  font-weight: bold;
+  src: url('./latex_fonts/lmroman10-bolditalic.otf');
+}
+
+/* LM Mono 10 */
+@font-face {
+  font-family: 'LM Mono 10';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./latex_fonts/lmmono10-regular.otf');
+}
+
+@font-face {
+  font-family: 'LM Mono 10';
+  font-style: italic ;
+  font-weight: normal;
+  src: url('./latex_fonts/lmmono10-italic.otf');
+}
+
+/* 思源宋体 */ 
+@font-face {
+  font-family: 'Source Han Serif SC';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./latex_fonts/SourceHanSerifSC-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Source Han Serif SC';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./latex_fonts/SourceHanSerifSC-Bold.otf');
+}
+
+@font-face {
+  font-family: 'SimSum-ExtB';
+  src: url("./latex_fonts/simsun.ttc");
+}
+
+/* rem 的根据 */
+:root {
+  font-size: 22px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+p,
+li,
+a {
+  font-family: 'LM Roman 10', 'Times New Roman', 'Arial', 'Source Han Serif SC', 'SimSum-ExtB';
+}
+
+/* 代码的字体需要用!important强行修改 */
+code {
+  font-family: 'LM Mono 10', 'LM Roman 10', 'Times New Roman', 'Arial', 'Source Han Serif SC', 'SimSum-ExtB' !important;
+}
+
+/* 标题的 font-size 本身就是以 rem 的形式写的，所以只修改这两个。 */
+p,
+li {
+  font-size: 1rem !important;
+}
+
+/* 默认一级列表中的文字会加上一层 p，而 p 会有 margin-block-end，
+导致一级列表与二级列表之间距离过大。 */
+.markdown-section li p {
+  margin-block-end: 0;
+}
+
+/* sidebar 里是用无序列表写的，字体应与正文中的列表区分开。 */
+.sidebar ul li a {
+  font-size: 0.8rem;
+}
+
+.katex {
+  font-size: 1.1em;
+}
+
+/* summary 里的字体 */
+details summary {
+  font-family: 'LM Roman 10', 'Times New Roman', 'Arial', 'Source Han Serif SC', 'SimSum-ExtB';
+  font-size: 1rem;
+}
+
+/* 让表格居中显示 */
+.centertable {
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'LM Roman 10', 'Times New Roman', 'Arial', 'Source Han Serif SC', 'SimSum-ExtB';
+}
+
+/* 高亮 */
+mark {
+  background-color: #f8aba6;
+}
+
+/* 加粗 */
+.markdown-section strong {
+  /* SUSTech color */
+  /* color: #e3620c; */
+  color: #7f3b3b;
+}
+
+/* 斜体 */
+.markdown-section em {
+  color: #0b7f86;
+}
+
+/* flexible-alert */
+.alert.flat.note {
+  background-color: #b0d9df !important;
+  border-color: #b0d9df !important;
+}
+
+.alert.flat.tip {
+  background-color: #cbddc8 !important;
+  border-color: #cbddc8 !important;
+}
+
+.alert.flat.warning {
+  background-color: #ffbdaa !important;
+  border-color: #ffbdaa !important;
+}
+
+.alert.flat.attention {
+  background-color: #ffbdaa !important;
+  border-color: #ffbdaa !important;
+}
