@@ -6,22 +6,6 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
-.head.image {
-    max-width: 500px;
-    /* 设置父元素的最大宽度为800像素，你可以根据需要调整这个值 */
-    /* margin: 0 auto; */
-    /* 让父元素在页面中水平居中 */
-}
-
-.head.image img {
-    max-width: 100%;
-    /* 图片最大宽度为其父元素的100% */
-    height: auto;
-    /* 让浏览器根据比例自动调整高度 */
-    display: block;
-    /* 将图片转换为块级元素 */
-}
-
 html,
 body,
 div,
@@ -2172,18 +2156,18 @@ input[type="radio"]:focus+label:before {
     box-shadow: none;
     border-radius: 0;
     margin: 0 0 3em 0;
-    width: 13em;
+    width: 500px;
 }
 
 .image.phone img {
     border-radius: 0;
     display: block;
-    position: relative;
-    width: 100%;
+    /* position: relative; */
+    max-width: 100%;
+    height: auto;
 }
 
-
-/* .image.phone .inner,
+.image.phone .inner,
 .image.phone:before,
 .image.phone:after {
     display: block;
@@ -2217,7 +2201,7 @@ input[type="radio"]:focus+label:before {
     height: 2em;
     border-radius: 100%;
     border: solid 2px rgba(255, 255, 255, 0.25);
-} */
+}
 
 .image.phone:before,
 .image.phone:after {
