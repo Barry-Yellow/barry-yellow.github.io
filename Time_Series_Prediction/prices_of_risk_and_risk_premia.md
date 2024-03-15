@@ -13,7 +13,7 @@
 ## 设定
 
 假设长度为 $T$ 的时间窗口内有 $K$ 个因子 $\bm{f} = (\bm{f}_{\! 1},\ \bm{f}_{\! 2},\ \cdots,\ \bm{f}_{\! T})^{\top}$，其中 $\bm{f}_{\! t} = (f_{1t},\ f_{2t},\ \cdots,\ f_{Kt})^{\top},\ t=1,\ 2,\ \cdots,\ T$。同时，考虑 $N$ 个 test assets（超额收益率）$\bm{R}^{e} = (\bm{R}_1^{e},\ \bm{R}_2^{e},\ \cdots,\ \bm{R}_{T}^{e})^{\top}$，其中 $\bm{R}_t^{e} = (R_{1t}^{e},\ R_{2t}^{e},\ \cdots,\ R_{Nt}^{e})^{\top}$。
-
+ 
 ### SDF
 
 我们通常用因子来构造线性形式的 SDF $m_t$ 来满足 test assets 的定价条件：
