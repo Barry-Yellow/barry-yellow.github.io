@@ -53,7 +53,7 @@
 
 SFM的输入门和输入调制的计算公式于传统的LSTM的计算公式相同，作用也都是提取出当前有用的信息来进行更新：
 
-![img](https://img-blog.csdnimg.cn/20190919164949397.png#pic_center)
+![img](image/20190919164949397.png#pic_center)
 
 通过输入门和输入调制提取到当前有用的状态信息之后，再利用离散时间傅里叶变换将其转换到频域上。最后，再与遗忘门过滤后得到的状态-频率信息相加，就得到了当前时间步的状态-频率矩阵。
 
@@ -65,7 +65,7 @@ SFM的输入门和输入调制的计算公式于传统的LSTM的计算公式相�
 
 LSTM隐藏层状态的更新过程如下：
 
-![img](https://img-blog.csdnimg.cn/2019091916481430.png#pic_center)
+![img](image/2019091916481430.png#pic_center)
 
 由于LSTM的状态向量 $C_t$ 只包含时域信息，所以隐藏层状态的更新就是对状态向量$C_t$进行非线性变换之后，再通过输出门$o_t$输入到新的隐藏层状态中。
 
@@ -77,21 +77,21 @@ LSTM隐藏层状态的更新过程如下：
 
 欧拉公式：
 
-<img src="https://img-blog.csdnimg.cn/20190919165930475.png#pic_center" alt="img" style="zoom: 50%;" />
+![](image/20190919165930475.png#pic_center")
 
 状态-频率矩阵的实部更新公式和虚部更新公式：
 
-<img src="https://img-blog.csdnimg.cn/20190919164347432.png#pic_center" alt="img" style="zoom: 67%;" />
+<img src="image/20190919164347432.png#pic_center" alt="img" style="zoom: 67%;" />
 
 将状态-频率矩阵拆分成实部和虚部两部分之后，就可以利用以下公式计算振幅：
 
-<img src="https://img-blog.csdnimg.cn/20190919165731895.png#pic_center" alt="img" style="zoom: 67%;" />
+<img src="image/20190919165731895.png#pic_center" alt="img" style="zoom: 67%;" />
 
 然后，利用振幅信息来构造状态向量$C_t$
 
 有了状态向量$C_t$之后，SFM隐藏状态和LSTM隐藏状态的更新过程基本一样：
 
-<img src="https://img-blog.csdnimg.cn/20190919165829633.png#pic_center" alt="img" style="zoom:67%;" />
+<img src="image/20190919165829633.png#pic_center" alt="img" style="zoom:67%;" />
 
 因为在构造状态向量 $C_t$ 的时候应该做了非线性变换，因此第二个等式与LSTM的略有不同。
 
@@ -99,7 +99,7 @@ LSTM隐藏层状态的更新过程如下：
 
 由于我们往往在事先无法确定那个频率上的分量更重要，这时我们可以通过允许模型以自适应的方式来确定这些频率。具体来说，我们可以把这些频率分量 $w$ 定义为输入、输出的函数来确定合适的频率。
 
-<img src="https://img-blog.csdnimg.cn/20190919172100879.png#pic_center" alt="img" style="zoom: 33%;" />
+<img src="image/20190919172100879.png#pic_center" alt="img" style="zoom: 33%;" />
 
 同时意味着，随时具体某个任务外界环境的变化，比如出现某个特定金融事件，使得市场发生较平常更激烈动荡时，我们希望SFM的高频对应着更高的频率，来适应市场的变化。
 
