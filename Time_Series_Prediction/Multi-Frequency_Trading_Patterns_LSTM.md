@@ -18,7 +18,7 @@
 
 # 3 模型
 
-<img src="Time_Series_Prediction\image\lstm_model.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3NDY2MTU5,size_16,color_FFFFFF,t_70#pic_center" alt="img" style="zoom:80%;" />
+![](Time_Series_Prediction\image\lstm_model.png)
 
 简单来说，本文的思想就是对LSTM的结构进行改进，使其除了能够建模时域上的特征模式以外，还能同时建模频域上的特征模式。为了使得网络能够建模频域信息，作者主要对LSTM的网络结构做了三个改变：
 
