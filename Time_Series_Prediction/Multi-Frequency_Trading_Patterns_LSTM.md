@@ -102,7 +102,36 @@ LSTM隐藏层状态的更新过程如下：
 
 这种自适应的调节分析频率的能力，有利于我们对那些非平稳（non-stationary）的序列数据进行建模、分析。
 
-# 5. 未来工作
+
+# 5.目前结果
+
+最近工作：将模型跑出来和论文中差不多的结果，但是我shift之后，好像比原来要好。。。。我就检查了代码，看看是不是搞错了。我看了好久，貌似也没错，，，，，，，，，，还不知道原因我得好好看看。
+
+step_1 :mse:5.72
+
+![](image/屏幕截图%202024-03-14%20005133.png)
+
+step_3 MSE: 16.7
+
+![sfm_epoch20_step1](image/sfm_epoch20_step1.png)
+
+step_5 MSE:28.9![sfm_epoch10_step5](image/sfm_epoch10_step5.png)
+
+shift 1 MSE: 5.5…….
+
+![img](image/sfm_epoch20_step5_.jpeg)
+
+shift 3 MSE: 16.64…….
+
+![sfm_epoch20_step3](image/sfm_epoch20_step3.png)
+
+shift 5 MSE: 27.64…….
+
+![sfm_epoch20_step5](image/sfm_epoch20_step5.png)
+
+
+
+# 7. 未来工作
 
 1. 想办法将市场因子等信息加入进来，以提升预测效果
 2. 将傅里叶变换的层改为小波变换等，看看有没有提升。
