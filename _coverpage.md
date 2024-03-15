@@ -1,8 +1,8 @@
 # Barry's Notes
 
-![logo](九尾.png)
+![logo](ai.jpg)
 
 Any fool can know. The point is to understand. &mdash;Albert Einstein
 
-[Github](https://github.com/LeetaH666/Notes)
-[Start Learning](test.md)
+[Github](https://github.com/Barry-Yellow/barry-yellow.github.io)
+[Start Learning](index1.html)
