@@ -1,4 +1,4 @@
-- [LSTM + Frequency](Time Series Prediction/Multi-Frequency Trading Patterns LSTM.md)
+- [LSTM + Frequency](Time_Series_Prediction/Multi-Frequency_Trading_Patterns_LSTM.md)
 - [风险价格与风险溢价](asset_pricing/prices_of_risk_and_risk_premia.md)
 - [SDF、β 表达式与均值方差前沿之间的联系](asset_pricing/relations_between_different_frameworks.md)
 - [HJ 边界与 HJ 距离](asset_pricing/hj_bound_and_hj_distance.md)
