@@ -1,4 +1,4 @@
-# Asset Pricing
+# Time Series Prediction
 
 These are some notes for Time Series Prediction.
 
