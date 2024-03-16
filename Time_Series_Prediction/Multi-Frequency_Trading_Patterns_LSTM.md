@@ -134,12 +134,11 @@ shift 5 MSE: 27.64…….
 
 
 # 6. 在读论文
-**Forecasting Wavelet Transformed Time Series withAttentive Neural Networks**
+**Forecasting Wavelet Transformed Time Series withAttentive Neural Networks** ICDM
 >本文提出利用小波变换明确地揭示单变量时间序列的频域信息，以提高预测精度。基于转换后的数据，我们利用不同的神经网络同时捕获局部时频特征和全局长期趋势。我们进一步利用注意机制，有效地融合了局部特征和全局特征。
 
-**WISE: Wavelet based Interpretable Stock Embedding for Risk-Averse Portfolio Management**
+**WISE: Wavelet based Interpretable Stock Embedding for Risk-Averse Portfolio Management** 
 - 马科维茨的投资组合理论是风险厌恶投资组合选择（RPS）问题的基石，其核心在于最小化风险，即基于投资组合风险矩阵计算的值。而股票之间的相关性不能被直接观察到，这使得RPS方法较难准确构建一个能够抵抗风险的投资组合。因此，迫切需要开发一种新的RPS方法，该方法具有准确的风险矩阵估计方法，可以估计近期的风险矩阵。
-
 
 - 小波方法可以将复杂的时间序列数据分解为不同频率下的多个时间序列来解释，这可以很好地描述短期和长期信息上的时间序列模式。因此，小波分析常用于分析两个时间序列的相关性。
 
@@ -148,5 +147,14 @@ shift 5 MSE: 27.64…….
 
 # 7. 未来工作
 
-1. 想办法将市场因子等信息加入进来，以提升预测效果
+1. 想办法将市场因子等信息加入进来，以提升预测效果。
+多变量的lstm我也在看别人是怎么做的，看看能不能加上attention试试
+
 2. 将傅里叶变换的层改为小波变换等，看看有没有提升。
+
+目前问题主要是，没有头绪，不知道怎么改。
+小波变换之后的数据不知道如何利用比较好，原先的数据就是间隔取了10个频率的数据，作为cell的通道。
+我是不是也取几个时间尺度的小波基，就直接作为cell？
+
+3. 使用股票收益率数据
+我这里需要使用收益率数据，然后，就可以利用之前的论文构建风险矩阵，然后构建投资组合
