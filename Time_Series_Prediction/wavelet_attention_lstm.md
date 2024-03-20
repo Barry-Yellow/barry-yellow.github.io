@@ -1,4 +1,5 @@
 # Wavelet + Attention + LSTM
+"Forecasting Wavelet Transformed Time Series with Attentive Neural Networks"
 >本文将时间序列信号分解为其**时频表示**—小波时间频率图，明确地揭示单变量时间序列的频域信息，以提高预测精度。
 >基于转换后的数据，利用不同的神经网络同时捕获**局部时频**特征和**全局长期趋势**。
 >进一步利用**注意机制**，有效地融合了局部特征和全局特征。实时序列的实验结果表明，该方法比各种基线方法具有更好的性能。
