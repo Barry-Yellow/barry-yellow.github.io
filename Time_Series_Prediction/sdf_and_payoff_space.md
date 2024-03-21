@@ -7,7 +7,7 @@
 Contingent claims 的中文学名并不直观，我们这里用它的直观含义来称呼它 &mdash; <strong>状态资产，即 contingent claims 是在未来某一个状态下有 1 块钱回报而在其他状态下回报为 0 的资产。</strong>
 
 假设未来的状态空间 $\mathcal{S}$ 中有 $S$ 个状态（$S < \infty$）。一个在状态 $s$ 下有 1 块钱回报的状态资产价格为 $pc(s),\ s \in \mathcal{S}$。那么一个回报为 $x$ 的资产价格可以表示为
-
+f
 $$
 \begin{equation}
     p(x) = \sum\limits_{s \in \mathcal{S}} pc(s) x(s) \label{1}
