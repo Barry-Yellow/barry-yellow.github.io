@@ -1,5 +1,6 @@
 - [LSTM + Frequency](Time_Series_Prediction/Multi-Frequency_Trading_Patterns_LSTM.md)
 - [小波变换 + 注意力机制](Time_Series_Prediction/wavelet_attention_lstm.md)
 - [多变量LSTM+注意力机制](Time_Series_Prediction/multi-input_attention.md)
+- [多变量LSTM + 注意力 + Frequency思考](Time_Series_Prediction/thinking_new_model.md)
 - [HJ 边界与 HJ 距离](asset_pricing/hj_bound_and_hj_distance.md)
 - [Back to Homepage](README.md)
