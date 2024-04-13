@@ -20,7 +20,6 @@ ViT已成功应用于图像识别任务。在文本模型中，既有类似于�
 ## 模型整体架构
 ![swin_att](image/spectformer_model.png)
 **SpectFormer架构包括线性patch嵌入层，后面是位置嵌入层，然后是spectformer块，然后是分类头MLP。**
-[!NOTE|label:注意]
 
 ### patch嵌入层+位置嵌入层
 ![swin_att](image/patch_embedding.png)
@@ -45,35 +44,6 @@ ViT已成功应用于图像识别任务。在文本模型中，既有类似于�
 - 全局平均池化（GAP）：对最后一层SpectFormer块输出的所有patch嵌入进行全局平均池化，得到一个全局特征向量，代表整张图像的抽象表示。
 - 多层感知机（MLP）：将全局特征向量输入一个全连接层（MLP），将特征维度进一步压缩，并映射到与分类标签数相匹配的维度（如ImageNet的1000类）。
 - softmax激活：对全连接层输出应用softmax函数，得到每个类别的概率得分。
-
-## 模型核心模块架构
-频率的作用机制
-频率分析与图像特征捕获：
-
-Fourier变换：SpectFormer利用傅立叶变换（Fast Fourier Transform, FFT）将图像从物理空间转换到频域（spectral space），这一过程能够提取图像的不同频率成分，从而揭示图像中的局部频率信息，如线条、边缘等。傅立叶变换有助于对图像进行基于频率的分析，这与视觉皮层中发现的对特定频率敏感的简单细胞（Hubel和Weisel的研究成果）相呼应。
-频谱门控网络（Spectral Gating Network）：
-
-加权门控：在频域，SpectFormer应用加权门控技术，通过学习得到的权重参数来确定每个频率组件的重要性。这种机制允许模型动态调整对不同频率成分的关注程度，以便更准确地捕捉图像的关键结构。
-频谱层（Spectral Block）：
-
-逆傅立叶变换（Inverse Fast Fourier Transform, IFFT）：经过频域处理后，模型使用**逆傅立叶变换（IFFT）**将图像信息从频域重新转换回物理空间。这样，经过频率分析后的特征得以保留，并被进一步用于后续的特征混合与建模。
-层归一化与MLP：在IFFT之后，频谱层还包括**层归一化（Layer Normalization）和多层感知器（Multi-Layer Perceptron, MLP）模块，用于实现通道间的特征混合（channel mixing）。而令牌混合（token mixing）则通过频谱门控技术（spectral gating technique）**完成。
-模型架构概述
-整体框架：
-
-输入处理：首先，图像被划分为一系列patches，然后通过线性投影层生成patch嵌入。接着，应用标准的位置编码层（positional encoding layer）为这些patch添加位置信息。
-核心组件：
-
-SpectFormer块（SpectFormer Block）：模型的核心是包含频谱层和注意力层的SpectFormer块。这些块可以根据一个可调节的参数α控制频谱层和注意力层的数量，使得模型能在全局属性和局部特征的捕捉上取得平衡。SpectFormer块可以按照阶段式架构组织，不同阶段包含不同数量的SpectFormer块，以适应图像特征提取的不同深度需求。
-频谱层与注意力层的组合方式：
-
-最佳配置：研究发现，将频谱层置于前部，随后接续多头注意力层的配置最为有益。这意味着SpectFormer在初始阶段优先利用频谱层捕获图像的局部频率特征，而在深层则利用注意力机制处理长距离依赖关系和全局语义特征。
-输出与分类：
-
-Transformer块：Transformer块由一系列频谱层和注意力层组成，它们共同处理patch嵌入和位置编码后的数据。
-分类头：经过Transformer块处理后的特征序列，通过一个全连接层（MLP-dim to 1000 projection）转化为类别概率分布，完成图像分类任务。
-综上所述，SpectFormer模型通过引入频谱层，利用傅立叶变换进行频率分析，有效地捕获图像的局部频率特征。频谱层与注意力层的结合使得模型能够在不同层次上兼顾局部细节与全局上下文，从而在图像识别任务中展现出优于现有方法的性能。整个模型架构包括输入预处理、SpectFormer块堆叠以及最后的分类头，形成了一种针对视觉任务优化的Transformer模型。
-现几何上的理解。</strong>定义不同状态资产的价格组成的向量为
 ## 实验结果
 - 实验1：ImageNet-1K图像识别任务
 结果：SpectFormer在ImageNet-1K数据集上显示出优秀的图像识别性能，相比GFNet-H和LiT，Top-1精度提高了2%。其中，SpectFormer-S（小型版本）达到84.25%的Top-1精度，为当前小规模模型的SOTA；SpectFormer-L（基线版本）达到85.7%的Top-1精度，成为同类规模Transformer模型的SOTA。
