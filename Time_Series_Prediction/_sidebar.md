@@ -3,5 +3,4 @@
 - [多变量LSTM+注意力机制](Time_Series_Prediction/multi-input_attention.md)
 - [多变量LSTM + 注意力 + Frequency思考](Time_Series_Prediction/thinking_new_model.md)
 - [小波变换 + 构建投资组合](Time_Series_Prediction/WISE_wavelet_portfolio.md)
-- [SpectFormer 注意力机制+频率](Time_Series_Prediction/SpectFormer_freq_att.md)
 - [Back to Homepage](README.md)
