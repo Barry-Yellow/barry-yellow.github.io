@@ -3,14 +3,14 @@
 ## Characteristics as Exposures &mdash; Barra
 
 在 Barra（Menchero 等，2011）中，特征被称作公司的 descriptor，通过将个股收益率截面回归到 descriptor 上可以得到风格因子的估计（假设每个风格只有一个 descriptor）：
-
+  
 $$
 \begin{equation}
     \bm{r} = \bm{Z} \bm{f} + \bm{\epsilon} \quad \implies \quad \bm{\widehat{f}} = \left(\bm{Z}^{\top}\bm{Z} \right)^{-1} \bm{Z}^{\top} \bm{r} \label{1}
 \end{equation}
 $$
 
-其中 $\bm{r}$ 为截面上 $N$ 个股票的收益率向量，$\bm{Z}$ 是 $N \times K$ 的 descriptor（特征）矩阵，也是风格因子的暴露，$\bm{f}$ 是 $K \times 1$ 的风格因子，$\bm{\epsilon}$ 是误差向量。
+其中 $\bm{r}$为截面上 $N$ 个股票的收益率向量，$\bm{Z}$ 是 $N \times K$ 的 descriptor（特征）矩阵，也是风格因子的暴露，$\bm{f}$ 是 $K \times 1$ 的风格因子，$\bm{\epsilon}$ 是误差向量。
 
 *Principal Portfolios*（Kelly 等，2023，以下简称 KMP）认为不应该只有自己公司的特征影响自己的收益率，其他公司的特征也应该影响自己的收益率。从 $\eqref{1}$ 式可以看出，Barra 风格因子其实做到了这一点，只是模型本身比较简单。
 
