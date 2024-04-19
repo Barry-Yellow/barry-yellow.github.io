@@ -1,5 +1,5 @@
-# Asset Pricing
+# Frequency Transformer
 
-These are some notes for asset pricing.
+These are some notes for frequency + transformer.
 
 [](_sidebar.md ':include')
