@@ -9,7 +9,6 @@
 
 - **GFNet**证明**傅里叶变换层可以取代多头注意层**。实际上就是在上一个Fnet的基础上，把各频率那里加了一个逐元素乘法的权重，这个权重是学的。发在了NeurIPS 2021上和T-PAMI上
 @import "GFNet.py" {.line-numbers}
-
 ![wfly](image/GFNet.png)
 
 
