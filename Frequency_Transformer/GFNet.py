@@ -12,3 +12,4 @@ class GlobalFilter(nn.Module):
         x = x * weight
         x = torch.fft.irfft2(x, s=(H, W), dim=(1, 2), norm='ortho')
         return x
+    
