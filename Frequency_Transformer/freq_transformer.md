@@ -9,7 +9,8 @@
 
 - **GFNet**证明**傅里叶变换层可以取代多头注意层**。实际上就是在上一个Fnet的基础上，把各频率那里加了一个逐元素乘法的权重，这个权重是学的。发在了NeurIPS 2021上和T-PAMI上
 @import "GFNet.py" {.line-numbers}
-![Wfly](image/GFNet.png)
+
+![wfly](image/GFNet.png)
 
 
 - **SpectFormer**的贡献在上周汇报过了。实际上就是它发现，需要将频谱层和attention层合一起，先用频谱层再用self-attention层堆叠。[spectformer](Frequency_Transformer/SpectFormer_freq_att.md)
