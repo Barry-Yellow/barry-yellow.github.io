@@ -3,7 +3,23 @@
 
 傅里叶域在提取基于频率的图像信息分析中起着重要作用，在频率域中，图像的一些特征（如边缘、纹理等）可能更加明显或者更易于处理。下面分别在一条线上面，介绍三种模型：Fnet，GFNet，SpectFormer。
 
-- **Fnet**的开创性研究支持了这一点，把transformer架构里attention层全部换成傅里叶层，即：将 嵌入维度x输入维度 的2-D矩阵进行二维傅里叶分解，取实部得到y。最后的结果证明，一个无attention的transformer结构，对于图像处理的结果依然很好，但是复杂度大大降低。发在NAACL 2021上
+- **Fnet**的开创性研究支持了这一点，把transformer架构里attention层全部换成傅里叶层，即：将 嵌入维度x输入维度 的2-D矩阵进行二维傅里叶分解，取实部得到y。最后的结果证明，一个无attention的transformer结构，对于图像处理的结果依然很好，但是复杂度大大降低。发在NAACL 2021上 
+```python
+import torch
+import torch.nn as nn
+import torch.fft
+class GlobalFilter(nn.Module):
+    def __init__(self, dim, h=14, w=8):
+        super().__init__()
+        self.complex_weight = nn.Parameter(torch.randn(h, w, dim, 2, dtype=torch.float32) * 0.02)
+    def forward(self, x):
+        B, H, W, C = x.shape
+        x = torch.fft.rfft2(x, dim=(1, 2), norm='ortho')
+        weight = torch.view_as_complex(self.complex_weight)
+        x = x * weight
+        x = torch.fft.irfft2(x, s=(H, W), dim=(1, 2), norm='ortho')
+        return x
+```
 ![fly](image/Fnet.png)
 
 
