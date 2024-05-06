@@ -1,2 +1,3 @@
 - [自相关系数、自谱密度 与 互协方差、共谱密度](Frequency/Cross_cov.md)
+- [时序数据平稳方法](Frequency/EMD_X11_diff.md)
 - [Back to Homepage](README.md)
