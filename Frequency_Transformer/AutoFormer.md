@@ -45,7 +45,7 @@ $\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau) = \mathcal{F}^{-1}(\mathcal{S}_{\mat
 
 我们通过如上操作便可以得到 $\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau)$，而 $\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau)$ 正是我们需要的间隔为 $\tau$ 的序列相似度。对于输入 $\mathbf{X} \in \mathbb{R}^{L \times d}$，假设其有周期性，周期为 $\tau$，那么间隔为 $\tau$ 的子序列将极为相似，也即 $\mathbf{X}_{\tau:L-1}$ 与 $\mathbf{X}_{0:L-\tau-1}$  
 
-$\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau) = \lim_{L \to \infty} \frac{1}{L} \sum_{t=\tau}^{L-1} \mathbf{X}_t \mathbf{X}_{t-\tau}$  (6)
+$\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau) = \lim_{L \to \infty} \frac{1}{L} \sum_{t=\tau}^{L-1} \mathbf{X}_t \mathbf{X}_{t-\tau}$ (6)
 
 当使用FFT高效求解出$\tau$从1到$L-1$的所有$\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau)$后，然后本文将只取出最大的$k$个$\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau)$，并且对取出的$k$个$\mathcal{R}_{\mathcal{X}\mathcal{X}}(\tau)$执行softmax操作转换为概率，最后将$k$个概率与对应的进行Roll操作之后的$V$相乘后相加得到最后的结果，如下所示：
 
