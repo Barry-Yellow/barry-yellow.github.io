@@ -2,3 +2,4 @@
 - [Time Series Prediction](/Time_Series_Prediction/README.md)
 - [Frequency](/Frequency/README.md)
 - [Frequency Transformer](/Frequency_Transformer/README.md)
+- [Mamba](/Mamba/README.md)

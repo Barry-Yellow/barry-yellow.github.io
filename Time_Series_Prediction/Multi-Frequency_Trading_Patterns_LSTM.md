@@ -91,7 +91,10 @@ LSTM隐藏层状态的更新过程如下：
 有了状态向量$C_t$之后，SFM隐藏状态和LSTM隐藏状态的更新过程基本一样：
 ![](image/20190919165829633.png)
 因为在构造状态向量 $C_t$ 的时候应该做了非线性变换，因此第二个等式与LSTM的略有不同。
+$S_t = (f_t \circ f_{t-1} \circ \cdots \circ f_1) \circ S_0 + (g_t \circ i_t) + \sum_{t'=2}^{t} f_t \circ \cdots \circ f_{t'} \circ g_{t'-1} \circ i_{t'-1}$
 
+下面就是这个S长期记忆的数据来源。
+$\left\{ (f_t \circ f_{t-1} \circ \cdots \circ f_1) \circ S_0 \right\} \cup \{g_t \circ i_t\} \cup \{f_t \circ \cdots \circ f_{t'} \circ g_{t'-1} \circ i_{t'-1} | t' = 2, \cdots, t\}$
 # 4. 自适应SFM
 
 由于我们往往在事先无法确定那个频率上的分量更重要，这时我们可以通过允许模型以自适应的方式来确定这些频率。具体来说，我们可以把这些频率分量 $w$ 定义为输入、输出的函数来确定合适的频率。
