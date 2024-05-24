@@ -1,5 +1,5 @@
-# Frequency Transformer
+# Mamba
 
-These are some notes for frequency + transformer.
+These are some notes for Mamba.
 
 [](_sidebar.md ':include')
