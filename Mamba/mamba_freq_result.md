@@ -8,7 +8,7 @@
 
 上述是基础的SSM模块的伪代码. 
 
-主要工作是：
+主要工作是 ：
 - 将Mamba应用到金融数据里面来。
 
 - 改动Mamba的SSM模块，把它变为频率分解的模块
@@ -22,7 +22,6 @@
 - hidden_size
 - freq_size
 - conv_size
-
 
 (embedding,hidden_size,conv_size,freq_size)
 |(3,4,4,10)|(4,8,8,10)|(3,8,4,10)|(2,16,2,20)|
