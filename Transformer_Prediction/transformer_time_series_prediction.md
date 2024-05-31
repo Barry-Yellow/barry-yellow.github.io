@@ -22,7 +22,7 @@ $$
 
 *Principal Portfolios*（Kelly 等，2023，以下简称 KMP）认为不应该只有自己公司的特征影响自己的收益率，其他公司的特征也应该影响自己的收益率。从 $\eqref{1}$ 式可以看出，Barra 风格因子其实做到了这一点，只是模型本身比较简单。
 
-Barra 会对 descriptor 做标准化的操作，通过减去均值再除以标准差，使它们的均值为 0，方差为 1。对于某些高共线性的 descriptor，比如 size（log 市值）和 non-linear size（size 的三次方），Barra 还会做正交化处理，比如将 non-linear size 回归到 size 上，取残差作为正交 descriptor。
+Barra 会对 descriptor 做标准化的操作，通过减去均值再除以标准差，使它们的均值为 0，方差为 1。对于某些高共线性的 descriptor，比如 size（log 市值）和 non-linear size（size 的三次方），Barra 还会做正交化处理，比如将 non-linear size 回归到 size 上，取残差作为正交 descriptor 。
 
 > [!NOTE|label:注意]
 > 在第 4 版的 Barra 中，均值的计算用的是 value-weighted，因为想让 well-diversified 的 value-weighted portfolio 在风格因子上暴露为 0；而标准差的计算则是 equal-weighted（即通常的标准差），这是为了防止大公司暴露过大。这里我们暂时忽略这个细节。
