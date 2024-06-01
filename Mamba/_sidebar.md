@@ -1,3 +1,4 @@
 - [Mamba 基础](Mamba/mamba_theory.md)
 - [Mamba + 频率分解实验](Mamba/mamba_freq_result.md)
+- [Mamba 改进](Mamba/mamba_improve.md)
 - [Back to Homepage](README.md)

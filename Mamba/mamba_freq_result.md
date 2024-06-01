@@ -1,5 +1,5 @@
 > [!NOTE|label:标注]
-> 使用SFM里面的频率分解思想，来改进mamba模型. 核心思想就是使用频率分解的隐藏状态替代原本的隐藏状态。
+> 
 
 # Mamba + 的核心架构
 ![ssm_strc](image/s4_s6.png)
