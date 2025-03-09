@@ -1,5 +1,5 @@
 # Barry's Notes
-![logo](ai.jpg)
+![logo](image.png)
 
 It is the time you have spent on your rose that makes it so important.:rose:
 
