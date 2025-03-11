@@ -5,4 +5,5 @@
 - [Transformer Prediction](/Transformer_Prediction/README.md)
 - [Mamba](/Mamba/README.md)
 - [SafeRL](/SafeRL/README.md)
+- [MARL](/MARL/README.md)
 
