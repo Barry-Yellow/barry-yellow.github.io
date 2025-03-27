@@ -57,9 +57,9 @@ RL智能体依据奖励信号做出决策，这可能导致忽视安全约束的
 
 一些安全RL工作通过求解原始 - 对偶优化问题，期望满足CMDP约束，如公式\(\max _{\theta} \min _{\lambda \geq 0} \mathcal{L}\left(\pi_{\theta}, \lambda\right)=\mathcal{J}\left(\pi_{\theta}\right)-\sum_{i} \lambda_{i}\left(\mathcal{J}_{C_{i}}\left(\pi_{\theta}\right)-d\right)\) 。这些方法通过用拉格朗日乘数加权的约束惩罚之和来增强奖励，从而应用于状态安全设置。从数学角度，增强后的奖励被定义为\(\mathcal{R}\left(s_{t}, a_{t}, s_{t+1}\right)-\sum_{i} \lambda_{i}\left(C_{i}\left(s_{t}, a_{t}, s_{t+1}\right)-w_{i}\right)\)。然而在实际应用中，公式中的优化操作难度较大，因为在每一步RL更新时都需要进行优化。
 
-状态安全自动约束（SSAC）通过使用面向安全的能量函数来限制基于拉格朗日的策略更新。直观来讲，SSAC将面向安全的能量函数转换作为策略更新的新约束目标，这使得它能够在执行危险动作之前识别出这些动作，进而在收敛后获得一个零约束违反的策略。需要注意的是，SSAC与标准的拉格朗日安全RL方法有所不同，因为SSAC使用一个额外的神经网络\(\lambda_{\zeta}(s)\)来近似状态相关的拉格朗日乘数。从数学角度，SSAC解决的问题为\(\max _{\theta} \min _{\zeta} \mathcal{L}\left(\pi_{\theta}, \lambda_{\zeta}\right)=\mathcal{J}\left(\pi_{\theta}\right)-\sum_{i} \sum_{s \sim \pi_{\theta}} \lambda_{\zeta}(s)\left(V_{C_{i}}^{\pi}(s)-d\right)\)，其中\(V_{C_{i}}^{\pi}(s) = \mathbb{E}_{\pi}\left[\sum_{k = 0}^{\infty} \gamma^{k} C_{i}\left(s_{t + k}\right) | s_{t}=s\right]\) 。
+**状态安全自动约束（SSAC）**通过使用面向安全的能量函数来限制基于拉格朗日的策略更新。直观来讲，SSAC将面向安全的能量函数转换作为策略更新的新约束目标，这使得它能够在执行危险动作之前识别出这些动作，进而在收敛后获得一个零约束违反的策略。需要注意的是，SSAC与标准的拉格朗日安全RL方法有所不同，因为SSAC使用一个额外的神经网络\(\lambda_{\zeta}(s)\)来近似状态相关的拉格朗日乘数。从数学角度，SSAC解决的问题为\(\max _{\theta} \min _{\zeta} \mathcal{L}\left(\pi_{\theta}, \lambda_{\zeta}\right)=\mathcal{J}\left(\pi_{\theta}\right)-\sum_{i} \sum_{s \sim \pi_{\theta}} \lambda_{\zeta}(s)\left(V_{C_{i}}^{\pi}(s)-d\right)\)，其中\(V_{C_{i}}^{\pi}(s) = \mathbb{E}_{\pi}\left[\sum_{k = 0}^{\infty} \gamma^{k} C_{i}\left(s_{t + k}\right) | s_{t}=s\right]\) 。
 
-FACSIS通过制定一个损失函数来优化安全证书参数，该函数通过最小化能量增加的发生来实现，从而减轻了SSAC对完美的面向安全的能量函数的依赖。当前标准的安全RL算法，如CPO和拉格朗日方法，即使将成本阈值设置为零，也难以实现零违反性能。He等人指出，实现零违反的主要瓶颈之一在于缺乏正确表征公式4中成本函数的方法。为解决这一问题，他们提出了AutoCost方法，通过在由简单神经网络参数化的成本函数空间中进行进化搜索，自动寻找合适的成本函数。实验结果表明，进化得到的成本函数使智能体在收敛后既能保持高性能，又能完全不违反安全约束。
+**FACSIS**通过制定一个损失函数来优化安全证书参数，该函数通过最小化能量增加的发生来实现，从而减轻了SSAC对完美的面向安全的能量函数的依赖。当前标准的安全RL算法，如CPO和拉格朗日方法，即使将成本阈值设置为零，也难以实现零违反性能。He等人指出，实现零违反的主要瓶颈之一在于缺乏正确表征公式4中成本函数的方法。为解决这一问题，他们提出了**AutoCost方法**，*通过在由简单神经网络参数化的成本函数空间中进行进化搜索，自动寻找合适的成本函数。*实验结果表明，进化得到的成本函数使智能体在收敛后既能保持高性能，又能完全不违反安全约束。
 
 ## 4. 训练中状态安全的方法
 ### 4.1 分层智能体
