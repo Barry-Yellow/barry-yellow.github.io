@@ -11,7 +11,7 @@
 - 方法：基于预训练模型（如BERT、GPT），通过学习上下文关系来生成单词向量。
 - 优点：捕捉单词间的语义关系，适用于文本分类、情感分析等任务。
 
-#### EMLO
+#### EMLO Embedding from language models
 使用RNN的LM去对token进行嵌入。双向RNN，然后拼接起来。
 RNN是可以有深层RNN的，EMLO将每一层的embedding都加权求和，成为一个新的embedding。
 
@@ -21,6 +21,10 @@ RNN是可以有深层RNN的，EMLO将每一层的embedding都加权求和，成�
 ##### ELMo 采用了典型的两阶段过程：
 - 第一个阶段是利用语言模型进行预训练；用上下文预测当前单词，优化方向就是最大化当前词的联合似然函数。这样就可以提取单词、句法、语义特征。通过输出计算词概率的时候，是用相似度计算的，隐藏状态与输出词的点积 占 与所有词的点积的softmax。
 $p(t_k | t_{1:k-1}) = \frac{\exp(w_{t_k}^T \overrightarrow{h}_k^{(L)})}{\sum_{v \in V} \exp(w_v^T \overrightarrow{h}_k^{(L)})}$
+
+Feature-based Pre-Training：
+因为 ELMo 给下游提供的是每个单词的特征形式，所以这一类预训练的方法被称为 “Feature-based Pre-Training”。
+![alt text](image-12.png)
 
 
 - 第二个阶段是在做下游任务时，从预训练网络中提取对应单词的网络各层的 Word Embedding 作为新特征补充到下游任务中。

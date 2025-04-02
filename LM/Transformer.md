@@ -1,4 +1,4 @@
-
+## Transformer相关问题详解
 [Transformer详解 知冷](https://blog.csdn.net/weixin_42475060/article/details/121101749?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522e6f97dbae3f600faee72ab22eb55b572%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=e6f97dbae3f600faee72ab22eb55b572&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-121101749-null-null.142^v102^pc_search_result_base3&utm_term=transformer&spm=1018.2226.3001.4187)
 
 [Transformer详解 空杯](https://blog.csdn.net/benzhujie1245com/article/details/117173090?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522e6f97dbae3f600faee72ab22eb55b572%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=e6f97dbae3f600faee72ab22eb55b572&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-117173090-null-null.142^v102^pc_search_result_base3&utm_term=transformer&spm=1018.2226.3001.4187)
@@ -31,6 +31,7 @@ PE_{(pos,2i+1)} = \cos\left(\frac{pos}{10000^{2i/d}}\right)$$
 ![alt text](image-8.png)
 这样表示，相对位置为$\theta$的时候，通过一个旋转矩阵在角度空间可以表示出来。
 ![alt text](image-9.png)
+![alt text](image-11.png)
 
 #### 掩码注意力
 - 防止学信息泄漏：
