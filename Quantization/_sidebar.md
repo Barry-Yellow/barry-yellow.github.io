@@ -6,4 +6,4 @@
 - [QuaRot](Quantization/QuaRot.md)
 - [Lexico](Quantization/Lexico.md)
 - [calibQuant](Quantization/calibQuant.md)
-- [Back to Homepage](README.md)
+- [Back to Homepage](README.md) 
