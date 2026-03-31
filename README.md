@@ -1,139 +1,59 @@
-# Welcome to Barry's Notes! 🎓
+# Welcome to my page! <!-- {docsify-ignore} -->
+:tada::tada::tada:
 
-> 这里是我的个人技术笔记库，记录了我在机器学习、深度学习、强化学习和量化金融等领域的学习心得。
+Here are some notes mainly for myself to review. I would be glad if you can learn something in my notes :grin:
+# 📚 学习笔记导航
 
----
-
-## 📖 关于本站
-
-这是一个基于 [Docsify](https://docsify.js.org/) 构建的技术笔记网站，主要用于：
-
-- 📚 整理和归档学习过程中的知识点
-- 🔍 快速检索和复习技术内容
-- 💡 分享学习心得和思考过程
-- 🚀 持续更新和完善知识体系
+欢迎来到我的技术笔记库！这里整理了我学习过程中的笔记和思考。
 
 ---
 
-## 🎯 主要内容
+## 🎯 机器学习与深度学习
 
-### 机器学习与深度学习
-- **时间序列预测** - LSTM、小波变换、注意力机制
-- **频域分析** - 频域Transformer、SpectFormer、AutoFormer
-- **大模型架构** - Mamba、BERT、Transformer、多模态学习
+### 📊 时间序列与预测
+- [时间序列预测 (Time Series Prediction)](/Time_Series_Prediction/README.md) - LSTM、小波变换、注意力机制在时间序列预测中的应用
+- [Transformer预测 (Transformer Prediction)](/Transformer_Prediction/README.md) - Transformer在时间序列预测中的经典模型
 
-### 强化学习
-- **安全强化学习 (SafeRL)** - 安全约束、风险控制
-- **多智能体系统 (MAS)** - 拓扑优化、协作机制
+### 🔊 频域分析
+- [频域分析基础](/Frequency/README.md) - 自相关系数、自谱密度、互协方差、共谱密度等频域知识
+- [频域Transformer (Frequency Transformer)](/Frequency_Transformer/README.md) - SpectFormer、AutoFormer、FEDformer等频域+Transformer模型
 
-### 量化金融
-- **资产定价** - SDF、风险溢价、HJ边界
-
-### 模型优化
-- **模型量化** - VidKV、KIVI、旋转量化
+### 🤖 大模型架构
+- [Mamba架构](/Mamba/README.md) - Mamba模型理论基础、频率分解实验、改进方法
+- [语言模型 (Language Model, LM)](/LM/README.md) - BERT、Transformer、NLP基础、MoE等
+- [深度多模态学习](/DMT/README.md) - CLIP、BLIP、BLIP2、Diffusion等多模态模型
 
 ---
 
-## 🚀 快速开始
+## 🎮 强化学习
 
-### 在线访问
-直接访问 [GitHub Pages](https://barry-yellow.github.io) 即可浏览所有笔记。
+### 🛡️ 安全强化学习
+- [安全强化学习 (Safe Reinforcement Learning, SafeRL)](/SafeRL/README.md) - SafeRL综述、安全约束、风险控制
 
-### 本地运行
-```bash
-# 克隆仓库
-git clone https://github.com/Barry-Yellow/barry-yellow.github.io.git
-
-# 进入目录
-cd barry-yellow.github.io
-
-# 使用Python启动本地服务器
-python -m http.server 3000
-
-# 或使用Node.js
-npx docsify-cli serve
-```
-
-然后在浏览器中打开 `http://localhost:3000`
+### 👥 多智能体系统
+- [多智能体强化学习](/MARL/README.md) - MARL综述、多智能体协作与竞争
+- [多智能体系统](/MAS/README.md) - 拓扑优化、提示词优化、失败分析、记忆机制
 
 ---
 
-## 📂 项目结构
+## 💰 量化金融
 
-```
-barry-yellow.github.io/
-├── DMT/                    # 深度多模态学习 (Deep Multimodal Learning)
-├── Frequency/              # 频域分析基础
-├── Frequency_Transformer/  # 频域Transformer模型
-├── LM/                     # 语言模型 (Language Model)
-├── Mamba/                  # Mamba架构
-├── MARL/                   # 多智能体强化学习
-├── MAS/                    # 多智能体系统 (Multi-Agent System)
-├── Quantization/           # 模型量化
-├── SafeRL/                 # 安全强化学习
-├── Time_Series_Prediction/ # 时间序列预测
-├── Transformer_Prediction/ # Transformer预测
-├── asset_pricing/          # 资产定价
-├── index.html              # 网站入口
-├── _sidebar.md             # 侧边栏导航
-└── README.md               # 本文件
-```
+### 📈 资产定价
+- [资产定价 (Asset Pricing)](/asset_pricing/README.md) - SDF、风险溢价、HJ边界、均值方差前沿
 
 ---
 
-## ✨ 特性
+## ⚡ 模型优化
 
-- 🎨 **明暗主题切换** - 支持亮色和暗色主题
-- 🔍 **全文搜索** - 快速检索笔记内容
-- 📱 **响应式设计** - 支持桌面和移动设备
-- 🌐 **数学公式渲染** - 使用KaTeX渲染LaTeX公式
-- 📊 **代码高亮** - 支持多种编程语言语法高亮
-- 🎯 **目录导航** - 自动生成文档目录
+### 🔧 模型量化
+- [模型量化](/Quantization/README.md) - VidKV、KIVI、QuaRot、旋转量化等量化技术
 
 ---
 
-## 🛠️ 技术栈
+## 📝 说明
 
-- [Docsify](https://docsify.js.org/) - 文档网站生成器
-- [KaTeX](https://katex.org/) - 数学公式渲染
-- [GitHub Pages](https://pages.github.com/) - 静态网站托管
-- [GitHub Actions](https://github.com/features/actions) - 自动部署
-
----
-
-## 📝 更新日志
-
-### 最近更新
-- ✅ 修复了所有文件夹的README标题错误
-- ✅ 完善了侧边栏导航，添加了所有缺失的文件链接
-- ✅ 优化了文件结构，删除了重复文件
-- ✅ 改进了索引页面，补全了所有缩写说明
-
----
-
-## 🤝 贡献
-
-这些笔记主要是我个人的学习记录，但如果您发现任何错误或有改进建议，欢迎：
-
-1. 在 [GitHub](https://github.com/Barry-Yellow) 上提出 Issue
-2. 提交 Pull Request
-3. 发送邮件与我交流
-
----
-
-## 📄 许可证
-
-本项目采用 [MIT License](LICENSE.txt) 许可证。
-
----
-
-## 📮 联系方式
-
-- GitHub: [@Barry-Yellow](https://github.com/Barry-Yellow)
-- 网站: [barry-yellow.github.io](https://barry-yellow.github.io)
-
----
-
-> ⭐ 如果这些笔记对您有帮助，欢迎 Star 支持！
+- 每个主题都包含详细的理论推导、模型架构和实验结果
+- 笔记持续更新中，欢迎交流讨论
+- 如有问题或建议，欢迎在[GitHub](https://github.com/Barry-Yellow)上联系我
 
 [](_sidebar.md ':include')
