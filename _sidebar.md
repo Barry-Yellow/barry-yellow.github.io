@@ -9,5 +9,6 @@
 - [DMT](/DMT/README.md)
 - [LM](/LM/README.md)
 - [Quantization](/Quantization/README.md)
+- [MAS](/MAS/README.md)
 
 

@@ -1,5 +1,5 @@
-# Time Series Prediction
+# Quantization
 
-These are some notes for Time Series Prediction in Transformer.
+These are some notes for model quantization.
 
 [](_sidebar.md ':include')

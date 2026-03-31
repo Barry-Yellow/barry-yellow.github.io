@@ -1,4 +1,4 @@
-- [Vidkv](Quantization/Vidkv.md)
+- [VidKV](Quantization/VidKV.md)
 - [量化知识](Quantization/Rotation_Quantization.md)
 - [量化知识](Quantization/QuantIntro.md)
 - [QuantCode](Quantization/QuantCode.md)

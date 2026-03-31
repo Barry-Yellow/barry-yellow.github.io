@@ -1,4 +1,4 @@
-# Mamba
+# LM (Language Model)
 
 These are some notes for NLP.
 

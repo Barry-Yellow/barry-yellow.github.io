@@ -1,3 +1,5 @@
 - [SafeRL survey IJCAI 2024](SafeRL/survey2024.md)
 - [SafeRL survey IJCAI 2023](SafeRL/survey2023.md)
 - [SafeRL schedule](SafeRL/schedule.md)
+- [Safe Critic](SafeRL/safeCritic.md)
+- [More 2024](SafeRL/more2024.md)

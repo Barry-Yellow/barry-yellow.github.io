@@ -1,2 +1,3 @@
 - [时间序列预测当前经典模型](Transformer_Prediction/transformer_time_series_prediction.md)
+- [特征的不同视角与数据预处理](Transformer_Prediction/different_views_of_charac_and_data_preprocessing.md)
 - [Back to Homepage](README.md)

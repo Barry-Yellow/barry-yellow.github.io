@@ -3,4 +3,6 @@
 - [多变量LSTM+注意力机制](Time_Series_Prediction/multi-input_attention.md)
 - [多变量LSTM + 注意力 + Frequency思考](Time_Series_Prediction/thinking_new_model.md)
 - [小波变换 + 构建投资组合](Time_Series_Prediction/WISE_wavelet_portfolio.md)
+- [SDF与回报空间](Time_Series_Prediction/sdf_and_payoff_space.md)
+- [特征的不同视角与数据预处理](Time_Series_Prediction/different_views_of_charac_and_data_preprocessing.md)
 - [Back to Homepage](README.md)

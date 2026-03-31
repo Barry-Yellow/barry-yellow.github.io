@@ -3,6 +3,7 @@
 - [大模型基础](LM/LMIntro.md)
 - [强化学习基础知识](LM/RL_base.md)
 - [Transformer](LM/Transformer.md)
+- [MoE (Mixture of Experts)](LM/MoE.md)
 
 
 
