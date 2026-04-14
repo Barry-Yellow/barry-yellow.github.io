@@ -8,6 +8,7 @@
   - [多智能体为何失败](MAS/FailAndWhy/WhyFail.md)
   - [失败归因方法](MAS/FailAndWhy/WhoAndWhen.md)
   - [AgentFixer](MAS/FailAndWhy/AgentFixer.md)
+  - [Claude 的失效处理机制](MAS/FailAndWhy/ClaudeMechanism.md)
 - [记忆机制](MAS/Memory/README.md)
   - [记忆机制概述](MAS/Memory/MemoryIntro.md)
 - [Back to Homepage](README.md)

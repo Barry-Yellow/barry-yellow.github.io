@@ -1,4 +1,5 @@
 - [多智能体系统为何失败](MAS/FailAndWhy/WhyFail.md)
 - [失败归因：谁在何时引发了错误](MAS/FailAndWhy/WhoAndWhen.md)
 - [AgentFixer：从失败检测到修复建议](MAS/FailAndWhy/AgentFixer.md)
+- [Claude 的失效处理机制](MAS/FailAndWhy/ClaudeMechanism.md)
 - [Back to MAS](MAS/README.md)

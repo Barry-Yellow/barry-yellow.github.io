@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 架构深度解析 - 可视化交互图谱</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #1e293b;
+    --bg-card-hover: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+    --accent-cyan: #06b6d4;
+    --border-color: #334155;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s ease;
+  }
+  .card:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
+  }
+  .nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-link:hover, .nav-link.active {
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+  }
+  .section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .section-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .mermaid {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  .mermaid svg {
+    max-width: 100%;
+  }
+  .flow-step {
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 24px;
+  }
+  .flow-step::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 32px;
+    bottom: -24px;
+    width: 2px;
+    background: var(--border-color);
+  }
+  .flow-step:last-child::before { display: none; }
+  .flow-step .step-dot {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-blue);
+    background: var(--bg-primary);
+  }
+  .file-tree {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+  .file-tree .dir { color: var(--accent-blue); font-weight: 600; }
+  .file-tree .file { color: var(--text-secondary); }
+  .file-tree .comment { color: var(--text-muted); font-style: italic; }
+  .tab-btn {
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+  .tab-btn.active {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: white;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+  th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td { font-size: 14px; }
+  tr:hover td { background: rgba(59, 130, 246, 0.05); }
+  .hero-bg {
+    background: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  }
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 17px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-rose));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .glow-border:hover::after { opacity: 0.5; }
+  .stat-card {
+    text-align: center;
+    padding: 24px;
+  }
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+  .layer-card {
+    padding: 20px 24px;
+    border-left: 4px solid;
+    border-radius: 0 12px 12px 0;
+    background: var(--bg-card);
+    margin-bottom: 12px;
+  }
+  .scroll-top-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    z-index: 100;
+    transition: transform 0.2s;
+  }
+  .scroll-top-btn:hover { transform: scale(1.1); }
+  .toc-item {
+    padding: 6px 12px;
+    border-left: 2px solid transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toc-item:hover, .toc-item.active {
+    color: var(--text-primary);
+    border-left-color: var(--accent-blue);
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#0f172a]/80 border-b border-[#334155]">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">CC</div>
+      <span class="font-bold text-lg">Claude Code</span>
+      <span class="badge bg-blue-500/20 text-blue-400">架构解析</span>
+    </div>
+    <div class="hidden md:flex items-center gap-1">
+      <a href="#overview" class="nav-link">总览</a>
+      <a href="#architecture" class="nav-link">架构</a>
+      <a href="#directory" class="nav-link">目录</a>
+      <a href="#modules" class="nav-link">模块</a>
+      <a href="#prompt" class="nav-link">Prompt</a>
+      <a href="#mainloop" class="nav-link">主循环</a>
+      <a href="#tools" class="nav-link">工具</a>
+      <a href="#context" class="nav-link">上下文</a>
+      <a href="#agent" class="nav-link">Agent</a>
+      <a href="#mcp" class="nav-link">MCP</a>
+      <a href="#sequence" class="nav-link">时序图</a>
+      <a href="#dataflow" class="nav-link">数据流</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="overview" class="hero-bg pt-28 pb-20 px-6">
+  <div class="max-w-5xl mx-auto text-center">
+    <div class="inline-block mb-6">
+      <span class="badge bg-emerald-500/20 text-emerald-400">TypeScript · React · Ink</span>
+    </div>
+    <h1 class="text-5xl md:text-6xl font-extrabold mb-6">
+      <span class="gradient-text">Claude Code</span><br>
+      <span class="text-3xl md:text-4xl text-slate-300">架构深度解析</span>
+    </h1>
+    <p class="text-xl text-slate-400 max-w-3xl mx-auto mb-12">
+      面向工程任务的<span class="text-blue-400 font-semibold">多智能体可扩展执行内核</span>——终端TUI运行，LLM推理驱动工具执行，支持子Agent分治、Team协作、MCP/Skill扩展
+    </p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+      <div class="stat-card card">
+        <div class="stat-number text-blue-400">8</div>
+        <div class="stat-label">架构层级</div>
+      </div>
+      <div class="stat-card card">
+        <div class="stat-number text-purple-400">30+</div>
+        <div class="stat-label">内置工具</div>
+      </div>
+      <div class="stat-card card">
+        <div class="stat-number text-emerald-400">6</div>
+        <div class="stat-label">Prompt叠加层</div>
+      </div>
+      <div class="stat-card card">
+        <div class="stat-number text-amber-400">50+</div>
+        <div class="stat-label">Slash命令</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Overview Section -->
+<section class="py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text" id="architecture">全局架构鸟瞰</h2>
+    <p class="section-subtitle">Claude Code 的本质不是一个聊天应用，而是一个面向工程任务的多智能体可扩展执行内核</p>
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <div class="card">
+        <h3 class="text-lg font-bold text-blue-400 mb-4">🏗️ 设计哲学</h3>
+        <ul class="space-y-3 text-sm text-slate-300">
+          <li class="flex gap-2"><span class="text-blue-400">①</span> 统一Runtime，分层角色——主Agent/子Agent/teammate共享同一个query循环</li>
+          <li class="flex gap-2"><span class="text-purple-400">②</span> 上下文工程 > 功能堆砌——缓存命中率、压缩策略、分流落盘是一等公民</li>
+          <li class="flex gap-2"><span class="text-emerald-400">③</span> 工具调用事务化——每次调用经过schema→验证→hook→权限→执行→遥测</li>
+          <li class="flex gap-2"><span class="text-amber-400">④</span> 文件系统是状态底座——transcript/memory/plan/team全部文件化持久化</li>
+          <li class="flex gap-2"><span class="text-rose-400">⑤</span> 多Agent有治理结构——leader-worker权限同步、显式消息、共享任务板</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="text-lg font-bold text-purple-400 mb-4">⚡ 两种会话引擎</h3>
+        <table>
+          <thead><tr><th>引擎</th><th>入口</th><th>场景</th></tr></thead>
+          <tbody>
+            <tr><td class="text-blue-400 font-semibold">交互式引擎</td><td class="mono text-xs">main.tsx → Ink TUI</td><td>用户在终端交互</td></tr>
+            <tr><td class="text-purple-400 font-semibold">SDK引擎</td><td class="mono text-xs">QueryEngine.ts</td><td>程序化调用、headless模式</td></tr>
+          </tbody>
+        </table>
+        <p class="text-xs text-slate-500 mt-4">两种引擎最终都调用同一个 <code class="mono text-blue-400">query()</code> 函数——这就是"统一Runtime"的体现</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture Topology Diagram -->
+<section class="py-16 px-6 bg-[#0c1222]">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">架构拓扑图</h2>
+    <p class="section-subtitle">8层架构的层级与包含关系</p>
+    <div class="card">
+      <div class="mermaid">
+graph TB
+    subgraph Entry["🔑 入口层 Entry"]
+        CLI["cli.tsx<br/>CLI参数解析与快速分流"]
+        MAIN["main.tsx<br/>交互式引擎初始化"]
+        QE["QueryEngine.ts<br/>SDK/Headless引擎"]
+        INIT["init.ts<br/>全局初始化"]
+    end
+
+    subgraph Interaction["🖥️ 交互层 Interaction"]
+        REPL["REPL.tsx<br/>主交互界面"]
+        PROMPT_INPUT["PromptInput<br/>输入组件"]
+        MSG_LIST["VirtualMessageList<br/>消息列表"]
+        COMMANDS["commands/<br/>50+ Slash命令"]
+    end
+
+    subgraph QueryLoop["🔄 主循环层 Query Loop"]
+        QUERY["query.ts<br/>核心推理主循环"]
+        PUI["processUserInput<br/>用户输入处理"]
+        STREAM["StreamingToolExecutor<br/>流式工具预执行"]
+    end
+
+    subgraph PromptCtx["📝 Prompt/上下文层 Context"]
+        PROMPTS["prompts.ts<br/>六层叠加Prompt"]
+        SYSPROMPT["systemPrompt.ts<br/>Prompt优先级决议"]
+        ATTACH["attachments.ts<br/>动态附件注入"]
+        MEMORY["memdir/<br/>记忆文件系统"]
+    end
+
+    subgraph ToolExec["🔧 工具执行层 Tool"]
+        TOOL_PROTO["Tool.ts<br/>工具协议定义"]
+        TOOL_REG["tools.ts<br/>工具注册表"]
+        BASH["BashTool"]
+        FILE_R["FileReadTool"]
+        FILE_E["FileEditTool"]
+        AGENT_T["AgentTool"]
+        MCP_T["MCPTool"]
+        MORE["...30+工具"]
+    end
+
+    subgraph AgentTeam["🤖 Agent/Team层"]
+        AGENT_TOOL["AgentTool/<br/>子Agent调度"]
+        TASKS["tasks/<br/>异步任务实现"]
+        SWARM["swarm/<br/>多智能体协作"]
+        MSG_SEND["SendMessageTool<br/>跨Agent消息"]
+    end
+
+    subgraph Integration["🔌 集成能力层 Integration"]
+        MCP_SVC["services/mcp/<br/>MCP协议实现"]
+        LSP_SVC["services/lsp/<br/>LSP服务"]
+        SKILL["SkillTool<br/>Skill调用"]
+        PLUGIN["plugins/<br/>插件管理"]
+    end
+
+    subgraph Persist["💾 持久化层 Persistence"]
+        STATE["state/<br/>AppState全局状态"]
+        BOOT["bootstrap/state.ts<br/>启动时状态"]
+        SESSION["sessionStorage<br/>会话存储"]
+        MEM_DIR["memdir/<br/>记忆持久化"]
+    end
+
+    Entry --> Interaction
+    Interaction --> QueryLoop
+    QueryLoop --> PromptCtx
+    QueryLoop --> ToolExec
+    ToolExec --> AgentTeam
+    ToolExec --> Integration
+    AgentTeam --> Integration
+    PromptCtx --> Persist
+    ToolExec --> Persist
+    AgentTeam --> Persist
+
+    style Entry fill:#1e3a5f,stroke:#3b82f6,stroke-width:2px
+    style Interaction fill:#1e3a5f,stroke:#8b5cf6,stroke-width:2px
+    style QueryLoop fill:#1e3a5f,stroke:#10b981,stroke-width:2px
+    style PromptCtx fill:#1e3a5f,stroke:#f59e0b,stroke-width:2px
+    style ToolExec fill:#1e3a5f,stroke:#f43f5e,stroke-width:2px
+    style AgentTeam fill:#1e3a5f,stroke:#06b6d4,stroke-width:2px
+    style Integration fill:#1e3a5f,stroke:#a855f7,stroke-width:2px
+    style Persist fill:#1e3a5f,stroke:#64748b,stroke-width:2px
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Directory Tree Section -->
+<section class="py-16 px-6" id="directory">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">核心目录结构</h2>
+    <p class="section-subtitle">每个核心文件/文件夹的职责一览</p>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card">
+        <h3 class="text-blue-400 font-bold mb-4">📁 入口与核心</h3>
+        <div class="file-tree">
+          <span class="dir">entrypoints/</span><br>
+          &nbsp;&nbsp;<span class="file">cli.tsx</span> <span class="comment">→ CLI参数解析与快速分流</span><br>
+          &nbsp;&nbsp;<span class="file">init.ts</span> <span class="comment">→ 全局初始化</span><br>
+          <span class="file">main.tsx</span> <span class="comment">→ 交互式引擎入口</span><br>
+          <span class="file">QueryEngine.ts</span> <span class="comment">→ SDK/Headless引擎</span><br>
+          <span class="file">query.ts</span> <span class="comment">→ ★ 核心推理主循环</span><br>
+          <span class="file">Tool.ts</span> <span class="comment">→ ★ 工具协议定义</span><br>
+          <span class="file">Task.ts</span> <span class="comment">→ 任务协议定义</span><br>
+          <span class="file">tools.ts</span> <span class="comment">→ 工具注册表</span><br>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-purple-400 font-bold mb-4">📁 常量与状态</h3>
+        <div class="file-tree">
+          <span class="dir">constants/</span><br>
+          &nbsp;&nbsp;<span class="file">prompts.ts</span> <span class="comment">→ ★ 系统Prompt构建</span><br>
+          &nbsp;&nbsp;<span class="file">apiLimits.ts</span> <span class="comment">→ API限流常量</span><br>
+          &nbsp;&nbsp;<span class="file">toolLimits.ts</span> <span class="comment">→ 工具调用限制</span><br>
+          <span class="dir">state/</span><br>
+          &nbsp;&nbsp;<span class="file">AppStateStore.ts</span> <span class="comment">→ ★ 全局状态类型</span><br>
+          &nbsp;&nbsp;<span class="file">AppState.tsx</span> <span class="comment">→ React Context</span><br>
+          &nbsp;&nbsp;<span class="file">store.ts</span> <span class="comment">→ 不可变Store</span><br>
+          <span class="dir">bootstrap/</span><br>
+          &nbsp;&nbsp;<span class="file">state.ts</span> <span class="comment">→ 启动时全局单例</span><br>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-emerald-400 font-bold mb-4">📁 工具实现</h3>
+        <div class="file-tree">
+          <span class="dir">tools/</span> <span class="comment">→ 30+工具实现</span><br>
+          &nbsp;&nbsp;<span class="dir">AgentTool/</span> <span class="comment">→ 子Agent调度</span><br>
+          &nbsp;&nbsp;<span class="dir">BashTool/</span> <span class="comment">→ Shell命令执行</span><br>
+          &nbsp;&nbsp;<span class="dir">FileReadTool/</span> <span class="comment">→ 文件读取</span><br>
+          &nbsp;&nbsp;<span class="dir">FileEditTool/</span> <span class="comment">→ 文件编辑</span><br>
+          &nbsp;&nbsp;<span class="dir">MCPTool/</span> <span class="comment">→ MCP工具桥接</span><br>
+          &nbsp;&nbsp;<span class="dir">SendMessageTool/</span> <span class="comment">→ 跨Agent消息</span><br>
+          &nbsp;&nbsp;<span class="dir">SkillTool/</span> <span class="comment">→ Skill调用</span><br>
+          &nbsp;&nbsp;<span class="dir">TodoWriteTool/</span> <span class="comment">→ Todo管理</span><br>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-amber-400 font-bold mb-4">📁 服务层</h3>
+        <div class="file-tree">
+          <span class="dir">services/</span><br>
+          &nbsp;&nbsp;<span class="dir">api/</span> <span class="comment">→ API通信</span><br>
+          &nbsp;&nbsp;<span class="dir">compact/</span> <span class="comment">→ ★ 上下文压缩</span><br>
+          &nbsp;&nbsp;<span class="dir">mcp/</span> <span class="comment">→ ★ MCP协议实现</span><br>
+          &nbsp;&nbsp;<span class="dir">lsp/</span> <span class="comment">→ LSP服务</span><br>
+          &nbsp;&nbsp;<span class="dir">SessionMemory/</span> <span class="comment">→ 会话记忆</span><br>
+          &nbsp;&nbsp;<span class="dir">analytics/</span> <span class="comment">→ 遥测分析</span><br>
+          &nbsp;&nbsp;<span class="dir">tools/</span> <span class="comment">→ 工具执行管线</span><br>
+          &nbsp;&nbsp;<span class="dir">oauth/</span> <span class="comment">→ OAuth认证</span><br>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-rose-400 font-bold mb-4">📁 任务与协作</h3>
+        <div class="file-tree">
+          <span class="dir">tasks/</span><br>
+          &nbsp;&nbsp;<span class="dir">LocalAgentTask/</span> <span class="comment">→ 本地Agent任务</span><br>
+          &nbsp;&nbsp;<span class="dir">RemoteAgentTask/</span> <span class="comment">→ 远程Agent任务</span><br>
+          &nbsp;&nbsp;<span class="dir">InProcessTeammateTask/</span> <span class="comment">→ 进程内Teammate</span><br>
+          &nbsp;&nbsp;<span class="dir">DreamTask/</span> <span class="comment">→ 后台整理任务</span><br>
+          <span class="dir">utils/swarm/</span><br>
+          &nbsp;&nbsp;<span class="dir">backends/</span> <span class="comment">→ Tmux/InProcess/iTerm</span><br>
+          &nbsp;&nbsp;<span class="file">permissionSync.ts</span> <span class="comment">→ 权限同步</span><br>
+          &nbsp;&nbsp;<span class="file">teamHelpers.ts</span> <span class="comment">→ Team辅助</span><br>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-cyan-400 font-bold mb-4">📁 UI与交互</h3>
+        <div class="file-tree">
+          <span class="dir">components/</span> <span class="comment">→ TUI组件</span><br>
+          &nbsp;&nbsp;<span class="file">App.tsx</span> <span class="comment">→ 根组件</span><br>
+          &nbsp;&nbsp;<span class="dir">PromptInput/</span> <span class="comment">→ 输入组件</span><br>
+          &nbsp;&nbsp;<span class="dir">design-system/</span> <span class="comment">→ 设计系统</span><br>
+          <span class="dir">screens/</span><br>
+          &nbsp;&nbsp;<span class="file">REPL.tsx</span> <span class="comment">→ ★ 主交互界面</span><br>
+          <span class="dir">hooks/</span> <span class="comment">→ 40+ React Hooks</span><br>
+          <span class="dir">ink/</span> <span class="comment">→ 自定义Ink渲染引擎</span><br>
+          <span class="dir">memdir/</span> <span class="comment">→ 记忆文件系统</span><br>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Core Modules Section -->
+<section class="py-16 px-6 bg-[#0c1222]" id="modules">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">核心模块解析</h2>
+    <p class="section-subtitle">8大核心模块的内部运作与关键类/函数</p>
+
+    <div class="space-y-8">
+      <!-- Module 1: Entry -->
+      <div class="card">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="badge bg-blue-500/20 text-blue-400">模块1</span>
+          <h3 class="text-xl font-bold">入口与引导</h3>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-sm font-semibold text-blue-400 mb-2">启动流程</h4>
+            <div class="flow-step"><div class="step-dot" style="border-color:#3b82f6"></div>
+              <p class="text-sm text-slate-300"><code class="mono text-blue-400">cli.tsx</code> 快速分流：--version直接退出、--dump-system-prompt输出Prompt、daemon worker守护进程</p>
+            </div>
+            <div class="flow-step"><div class="step-dot" style="border-color:#8b5cf6"></div>
+              <p class="text-sm text-slate-300"><code class="mono text-purple-400">main.tsx</code> 完整初始化：加载settings → 认证 → 遥测 → MCP → 插件 → LSP → Policy → AppState → TUI渲染</p>
+            </div>
+            <div class="flow-step"><div class="step-dot" style="border-color:#10b981"></div>
+              <p class="text-sm text-slate-300"><code class="mono text-emerald-400">init.ts</code> 全局初始化：遥测、认证、MCP连接、Skills加载、LSP初始化</p>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-amber-400 mb-2">关键设计</h4>
+            <ul class="space-y-2 text-sm text-slate-300">
+              <li>• <strong>延迟导入</strong>：昂贵模块（MCP client、Ink渲染器）都是动态 <code class="mono">import()</code></li>
+              <li>• <strong>快速路径</strong>：--version零模块加载</li>
+              <li>• <strong>死代码消除</strong>：<code class="mono">bun:bundle</code> 的 <code class="mono">feature()</code> 门控</li>
+              <li>• <strong>并行预取</strong>：MDM读取、Keychain预取与模块评估并行</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 2: Query Loop -->
+      <div class="card" id="mainloop">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="badge bg-emerald-500/20 text-emerald-400">模块2</span>
+          <h3 class="text-xl font-bold">推理主循环</h3>
+          <span class="badge bg-rose-500/20 text-rose-400">★ 核心</span>
+        </div>
+        <p class="text-sm text-slate-400 mb-4"><code class="mono text-emerald-400">query.ts</code> (~1730行) 是整个系统的心脏，实现为 <code class="mono">async function*</code>（递归生成器模式）</p>
+        <div class="mermaid">
+graph LR
+    A[用户输入] --> B[processUserInput]
+    B --> C[上下文准备]
+    C --> D[消息标准化]
+    D --> E[构建API请求]
+    E --> F[调用模型 streaming]
+    F --> G{输出类型?}
+    G -->|text| H[渲染到TUI]
+    G -->|tool_use| I[工具执行管线]
+    I --> J[结果塞回消息流]
+    J --> F
+    G -->|无tool_use| K[结束循环]
+    H --> K
+
+    style A fill:#1e3a5f,stroke:#3b82f6
+    style F fill:#1e3a5f,stroke:#f43f5e
+    style I fill:#1e3a5f,stroke:#f59e0b
+    style K fill:#1e3a5f,stroke:#10b981
+        </div>
+        <div class="grid md:grid-cols-3 gap-4 mt-6">
+          <div class="p-4 rounded-lg bg-[#0f172a] border border-[#334155]">
+            <h5 class="text-xs font-semibold text-blue-400 mb-2">递归生成器</h5>
+            <p class="text-xs text-slate-400">query() 是 async function*，SDK消费者可流式获取中间结果</p>
+          </div>
+          <div class="p-4 rounded-lg bg-[#0f172a] border border-[#334155]">
+            <h5 class="text-xs font-semibold text-purple-400 mb-2">流式工具预执行</h5>
+            <p class="text-xs text-slate-400">StreamingToolExecutor在模型还在输出时就启动读型工具</p>
+          </div>
+          <div class="p-4 rounded-lg bg-[#0f172a] border border-[#334155]">
+            <h5 class="text-xs font-semibold text-emerald-400 mb-2">压缩边界释放</h5>
+            <p class="text-xs text-slate-400">压缩后边界前消息可被GC回收，避免长会话内存增长</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 3-8: Remaining modules in tabs -->
+      <div class="card" data-tab-group="modules">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="badge bg-purple-500/20 text-purple-400">模块3-8</span>
+          <h3 class="text-xl font-bold">更多核心模块</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button class="tab-btn active" data-tab="tab-prompt" onclick="switchTab('modules','tab-prompt')">Prompt工程</button>
+          <button class="tab-btn" data-tab="tab-tool" onclick="switchTab('modules','tab-tool')">工具系统</button>
+          <button class="tab-btn" data-tab="tab-context" onclick="switchTab('modules','tab-context')">上下文工程</button>
+          <button class="tab-btn" data-tab="tab-agent" onclick="switchTab('modules','tab-agent')">Agent/Team</button>
+          <button class="tab-btn" data-tab="tab-mcp" onclick="switchTab('modules','tab-mcp')">MCP/Skill</button>
+          <button class="tab-btn" data-tab="tab-state" onclick="switchTab('modules','tab-state')">状态持久化</button>
+        </div>
+
+        <div id="tab-prompt" class="tab-content active" >
+          <h4 class="text-lg font-bold text-amber-400 mb-4" id="prompt">六层叠加Prompt体系</h4>
+          <div class="space-y-3">
+            <div class="layer-card" style="border-left-color:#f43f5e">
+              <div class="flex items-center gap-2"><span class="badge bg-rose-500/20 text-rose-400">第6层</span><span class="font-semibold">特殊阶段专用Prompt</span></div>
+              <p class="text-xs text-slate-400 mt-1">压缩prompt / 记忆提取prompt / Agent摘要prompt</p>
+            </div>
+            <div class="layer-card" style="border-left-color:#f59e0b">
+              <div class="flex items-center gap-2"><span class="badge bg-amber-500/20 text-amber-400">第5层</span><span class="font-semibold">动态附件注入</span></div>
+              <p class="text-xs text-slate-400 mt-1">plan / tasks / IDE选择 / memory / hook上下文</p>
+            </div>
+            <div class="layer-card" style="border-left-color:#8b5cf6">
+              <div class="flex items-center gap-2"><span class="badge bg-purple-500/20 text-purple-400">第4层</span><span class="font-semibold">Agent专属Prompt</span></div>
+              <p class="text-xs text-slate-400 mt-1">每个Agent的角色边界、作风、能力范围</p>
+            </div>
+            <div class="layer-card" style="border-left-color:#3b82f6">
+              <div class="flex items-center gap-2"><span class="badge bg-blue-500/20 text-blue-400">第3层</span><span class="font-semibold">工具本地Prompt</span></div>
+              <p class="text-xs text-slate-400 mt-1">每个工具目录下的 prompt.ts，就近维护</p>
+            </div>
+            <div class="layer-card" style="border-left-color:#10b981">
+              <div class="flex items-center gap-2"><span class="badge bg-emerald-500/20 text-emerald-400">第2层</span><span class="font-semibold">系统Prompt优先级决议</span></div>
+              <p class="text-xs text-slate-400 mt-1">override > coordinator > agent > custom > default</p>
+            </div>
+            <div class="layer-card" style="border-left-color:#64748b">
+              <div class="flex items-center gap-2"><span class="badge bg-slate-500/20 text-slate-400">第1层</span><span class="font-semibold">全局系统Prompt</span></div>
+              <p class="text-xs text-slate-400 mt-1">身份 / 执行原则 / 风险规则 / 输出风格 / MCP指令</p>
+            </div>
+          </div>
+          <div class="mt-6 p-4 rounded-lg bg-[#0f172a] border border-[#334155]">
+            <h5 class="text-sm font-semibold text-cyan-400 mb-2">缓存边界切割</h5>
+            <p class="text-xs text-slate-400">SYSTEM_PROMPT_DYNAMIC_BOUNDARY 把prompt切成两段：静态段跨请求共享prompt cache节省token和延迟，动态段每次重新生成（git status、日期等）</p>
+          </div>
+        </div>
+
+        <div id="tab-tool" class="tab-content" >
+          <h4 class="text-lg font-bold text-rose-400 mb-4" id="tools">工具系统</h4>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3">工具协议 (Tool.ts)</h5>
+          <div class="p-4 rounded-lg bg-[#0f172a] border border-[#334155] mb-4 mono text-xs text-slate-300">
+            type Tool&lt;T&gt; = {<br>
+            &nbsp;&nbsp;name: string &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 工具名<br>
+            &nbsp;&nbsp;inputSchema &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Zod → JSON Schema<br>
+            &nbsp;&nbsp;validateInput?(input) &nbsp;&nbsp;&nbsp;// 输入校验<br>
+            &nbsp;&nbsp;prompt?: string &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 工具本地Prompt<br>
+            &nbsp;&nbsp;execute(input, ctx) &nbsp;&nbsp;&nbsp;&nbsp;// 执行逻辑<br>
+            &nbsp;&nbsp;renderToolUse?(input) &nbsp;&nbsp;&nbsp;// TUI渲染<br>
+            }
+          </div>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3">工具执行管线</h5>
+          <div class="mermaid">
+graph LR
+    A[模型输出 ToolUseBlock] --> B[findToolByName]
+    B --> C[Schema校验]
+    C --> D[权限检查]
+    D --> E[PreToolUse Hooks]
+    E --> F[tool.execute]
+    F --> G[PostToolUse Hooks]
+    G --> H[遥测记录]
+    H --> I[结果塞回消息流]
+
+    style A fill:#1e3a5f,stroke:#3b82f6
+    style F fill:#1e3a5f,stroke:#f43f5e
+    style I fill:#1e3a5f,stroke:#10b981
+          </div>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3 mt-4">核心工具一览</h5>
+          <table>
+            <thead><tr><th>工具</th><th>职责</th><th>特殊设计</th></tr></thead>
+            <tbody>
+              <tr><td class="text-blue-400 mono text-xs">BashTool</td><td>Shell命令执行</td><td>安全校验、沙箱、破坏性命令警告</td></tr>
+              <tr><td class="text-blue-400 mono text-xs">FileReadTool</td><td>文件读取</td><td>图片处理、行号范围、缓存</td></tr>
+              <tr><td class="text-blue-400 mono text-xs">FileEditTool</td><td>文件编辑</td><td>Search/Replace模式</td></tr>
+              <tr><td class="text-blue-400 mono text-xs">AgentTool</td><td>子Agent调度</td><td>fork/worktree/内置Agent</td></tr>
+              <tr><td class="text-blue-400 mono text-xs">MCPTool</td><td>MCP工具桥接</td><td>动态Schema转换</td></tr>
+              <tr><td class="text-blue-400 mono text-xs">SendMessageTool</td><td>跨Agent消息</td><td>Team协作核心</td></tr>
+              <tr><td class="text-blue-400 mono text-xs">LSPTool</td><td>LSP集成</td><td>定义跳转、引用、诊断</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="tab-context" class="tab-content" >
+          <h4 class="text-lg font-bold text-amber-400 mb-4" id="context">上下文工程</h4>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3">压缩策略层级</h5>
+          <table>
+            <thead><tr><th>策略</th><th>触发条件</th><th>实现文件</th></tr></thead>
+            <tbody>
+              <tr><td class="text-amber-400">微压缩</td><td>单轮内token接近上限</td><td class="mono text-xs">microCompact.ts</td></tr>
+              <tr><td class="text-amber-400">自动压缩</td><td>上下文使用率超阈值</td><td class="mono text-xs">autoCompact.ts</td></tr>
+              <tr><td class="text-amber-400">手动压缩</td><td>用户 /compact 命令</td><td class="mono text-xs">compact.ts</td></tr>
+              <tr><td class="text-amber-400">API微压缩</td><td>API返回prompt太长错误</td><td class="mono text-xs">apiMicrocompact.ts</td></tr>
+            </tbody>
+          </table>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3 mt-6">压缩流程</h5>
+          <div class="mermaid">
+graph TB
+    A[触发压缩] --> B[executePreCompactHooks]
+    B --> C[analyzeContext 分析上下文]
+    C --> D[grouping.ts 消息分组]
+    D --> E[fork子Agent执行压缩]
+    E --> F[生成摘要替换历史]
+    F --> G[markPostCompaction]
+    G --> H[executePostCompactHooks]
+    H --> I[释放压缩边界前内存]
+
+    style A fill:#1e3a5f,stroke:#f59e0b
+    style E fill:#1e3a5f,stroke:#f43f5e
+    style I fill:#1e3a5f,stroke:#10b981
+          </div>
+        </div>
+
+        <div id="tab-agent" class="tab-content" >
+          <h4 class="text-lg font-bold text-cyan-400 mb-4" id="agent">Agent/Team协作</h4>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3">Agent类型</h5>
+          <table>
+            <thead><tr><th>类型</th><th>实现</th><th>场景</th></tr></thead>
+            <tbody>
+              <tr><td class="text-cyan-400">内置Agent</td><td class="mono text-xs">AgentTool/built-in/</td><td>explore/plan/verification/general</td></tr>
+              <tr><td class="text-cyan-400">自定义Agent</td><td class="mono text-xs">.claude/agents/</td><td>用户定义的Agent</td></tr>
+              <tr><td class="text-cyan-400">Fork子Agent</td><td class="mono text-xs">forkSubagent.ts</td><td>进程fork隔离执行</td></tr>
+              <tr><td class="text-cyan-400">Worktree Agent</td><td class="mono text-xs">worktree.ts</td><td>Git worktree隔离</td></tr>
+            </tbody>
+          </table>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3 mt-6">Team/Swarm后端</h5>
+          <div class="mermaid">
+graph TB
+    LEADER[Leader 主Agent] --> IP[InProcessBackend<br/>进程内Teammate]
+    LEADER --> TMUX[TmuxBackend<br/>Tmux窗格Teammate]
+    LEADER --> ITERM[ITermBackend<br/>iTerm2分屏Teammate]
+
+    LEADER -.->|SendMessageTool| IP
+    LEADER -.->|mailbox| TMUX
+    LEADER -.->|permissionSync| ITERM
+
+    style LEADER fill:#1e3a5f,stroke:#3b82f6,stroke-width:2px
+    style IP fill:#1e3a5f,stroke:#10b981
+    style TMUX fill:#1e3a5f,stroke:#8b5cf6
+    style ITERM fill:#1e3a5f,stroke:#f59e0b
+          </div>
+        </div>
+
+        <div id="tab-mcp" class="tab-content" >
+          <h4 class="text-lg font-bold text-purple-400 mb-4" id="mcp">MCP/Skill扩展</h4>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3">MCP协议流程</h5>
+          <div class="mermaid">
+graph TB
+    CFG[用户配置 MCP Server] --> MGR[MCPConnectionManager]
+    MGR --> STDIO[StdioClientTransport]
+    MGR --> SSE[SSEClientTransport]
+    MGR --> HTTP[StreamableHTTPTransport]
+    STDIO & SSE & HTTP --> CLIENT[client.ts MCP Client]
+    CLIENT --> |listTools| DISC[发现工具]
+    CLIENT --> |callTool| CALL[调用工具]
+    CLIENT --> |listResources| RES[发现资源]
+    DISC --> NORM[normalization.ts<br/>Schema标准化]
+    NORM --> MCP_TOOL[MCPTool.ts<br/>统一桥接]
+    MCP_TOOL --> POOL[ToolPool<br/>与内置工具合并]
+
+    style CFG fill:#1e3a5f,stroke:#8b5cf6
+    style CLIENT fill:#1e3a5f,stroke:#3b82f6
+    style MCP_TOOL fill:#1e3a5f,stroke:#10b981
+    style POOL fill:#1e3a5f,stroke:#f59e0b
+          </div>
+          <div class="mt-4 p-4 rounded-lg bg-[#0f172a] border border-[#334155]">
+            <h5 class="text-sm font-semibold text-purple-400 mb-2">Skill系统</h5>
+            <p class="text-xs text-slate-400">Skill通过 SkillTool 调用 → skillChangeDetector 监听变更 → registerSkillHooks 注册Hook → frontmatter定义Skill元数据</p>
+          </div>
+        </div>
+
+        <div id="tab-state" class="tab-content" >
+          <h4 class="text-lg font-bold text-slate-300 mb-4">状态与持久化</h4>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3">AppState 单一真相源</h5>
+          <div class="p-4 rounded-lg bg-[#0f172a] border border-[#334155] mb-4 mono text-xs text-slate-300">
+            AppState {<br>
+            &nbsp;&nbsp;settings: SettingsJson &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 用户设置<br>
+            &nbsp;&nbsp;mainLoopModel: ModelSetting &nbsp;&nbsp;// 当前模型<br>
+            &nbsp;&nbsp;toolPermissionContext &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 工具权限上下文<br>
+            &nbsp;&nbsp;messages: Message[] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 消息列表<br>
+            &nbsp;&nbsp;tasks: TaskState[] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 任务列表<br>
+            &nbsp;&nbsp;speculationState &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 推测执行状态<br>
+            }
+          </div>
+          <h5 class="text-sm font-semibold text-slate-300 mb-3">持久化层次</h5>
+          <table>
+            <thead><tr><th>层次</th><th>存储</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr><td class="text-blue-400">会话存储</td><td class="mono text-xs">sessionStorage.ts</td><td>Transcript消息记录</td></tr>
+              <tr><td class="text-purple-400">记忆文件</td><td class="mono text-xs">memdir/</td><td>CLAUDE.md、长期记忆</td></tr>
+              <tr><td class="text-emerald-400">设置文件</td><td class="mono text-xs">utils/settings/</td><td>settings.json</td></tr>
+              <tr><td class="text-amber-400">任务输出</td><td class="mono text-xs">task/diskOutput.ts</td><td>异步任务结果文件</td></tr>
+              <tr><td class="text-rose-400">Bootstrap</td><td class="mono text-xs">bootstrap/state.ts</td><td>会话ID、token预算</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hook Lifecycle Section -->
+<section class="py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">Hook生命周期工程</h2>
+    <p class="section-subtitle">标准化的拦截点，支持阻断、修改、追加上下文</p>
+    <div class="card">
+      <table>
+        <thead><tr><th>Hook</th><th>触发时机</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td class="text-blue-400 font-semibold">PreToolUse</td><td>工具执行前</td><td>权限检查、输入修改、阻断</td></tr>
+          <tr><td class="text-purple-400 font-semibold">PostToolUse</td><td>工具执行后</td><td>结果修改、日志</td></tr>
+          <tr><td class="text-emerald-400 font-semibold">UserPromptSubmit</td><td>用户提交Prompt前</td><td>追加上下文、改写行为</td></tr>
+          <tr><td class="text-amber-400 font-semibold">Stop</td><td>主循环停止时</td><td>清理、通知</td></tr>
+          <tr><td class="text-rose-400 font-semibold">PreCompact / PostCompact</td><td>压缩前后</td><td>压缩控制</td></tr>
+        </tbody>
+      </table>
+      <div class="mt-4 p-4 rounded-lg bg-[#0f172a] border border-[#334155]">
+        <p class="text-xs text-slate-400"><strong class="text-cyan-400">AsyncHookRegistry</strong> 支持异步串行执行，Hook可阻断流程、修改输入输出。配置来源：<code class="mono">.claude/hooks.json</code> 和 Skill frontmatter</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Startup Sequence Diagram -->
+<section class="py-16 px-6 bg-[#0c1222]">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">启动时序图</h2>
+    <p class="section-subtitle">从用户输入 <code class="mono text-blue-400">claude</code> 到TUI渲染完成的全流程</p>
+    <div class="card">
+      <div class="mermaid">
+sequenceDiagram
+    participant User as 用户
+    participant CLI as cli.tsx
+    participant Main as main.tsx
+    participant Init as init.ts
+    participant Auth as 认证系统
+    participant MCP as MCP连接管理
+    participant LSP as LSP服务
+    participant Skills as Skills加载
+    participant State as AppState
+    participant TUI as Ink TUI
+
+    User->>CLI: 输入 claude
+    CLI->>CLI: 快速分流(--version?)
+    CLI->>Main: 进入主流程
+    Main->>Init: 全局初始化
+    Init->>Auth: 认证检查(API key/OAuth)
+    Auth-->>Init: 认证完成
+    Init->>MCP: 连接MCP Servers
+    MCP-->>Init: MCP工具就绪
+    Init->>LSP: 初始化LSP
+    LSP-->>Init: LSP就绪
+    Init->>Skills: 加载Skills
+    Skills-->>Init: Skills就绪
+    Init->>State: 初始化AppState
+    State-->>Init: Store创建完成
+    Init-->>Main: 初始化完成
+    Main->>TUI: 渲染Ink TUI
+    TUI-->>User: 显示交互界面
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tool Execution Sequence Diagram -->
+<section class="py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">工具执行时序图</h2>
+    <p class="section-subtitle">从模型输出ToolUseBlock到结果回灌消息流的完整交互</p>
+    <div class="card">
+      <div class="mermaid">
+sequenceDiagram
+    participant Model as LLM模型
+    participant Query as query()主循环
+    participant Find as findToolByName
+    participant Schema as Schema校验
+    participant Perm as 权限检查
+    participant Hook as PreToolUse Hook
+    participant Tool as tool.execute()
+    participant PostHook as PostToolUse Hook
+    participant Tele as 遥测系统
+    participant Msg as 消息流
+
+    Model->>Query: 输出 ToolUseBlock{name, input, id}
+    Query->>Find: 查找工具
+    Find-->>Query: Tool实例
+    Query->>Schema: Zod校验input
+    Schema-->>Query: 校验通过
+    Query->>Perm: useCanUseTool()
+    alt 允许
+        Perm-->>Query: 允许执行
+    else 拒绝
+        Perm-->>Query: 返回denied结果
+    else 需确认
+        Perm-->>Query: 弹出PermissionRequest
+    end
+    Query->>Hook: 执行PreToolUse Hooks
+    Hook-->>Query: 可修改input或阻断
+    Query->>Tool: execute(input, context)
+    Tool-->>Query: ToolResult
+    Query->>PostHook: 执行PostToolUse Hooks
+    PostHook-->>Query: 可修改result
+    Query->>Tele: logEvent()遥测
+    Query->>Msg: ToolResultBlock塞回消息流
+    Msg-->>Model: 下一轮模型调用
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Context Engineering Sequence -->
+<section class="py-16 px-6 bg-[#0c1222]">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">上下文压缩时序图</h2>
+    <p class="section-subtitle">从触发压缩到释放内存的完整流程</p>
+    <div class="card">
+      <div class="mermaid">
+sequenceDiagram
+    participant Trigger as 压缩触发器
+    participant PreHook as PreCompact Hook
+    participant Analyze as analyzeContext
+    participant Group as grouping.ts
+    participant Fork as fork子Agent
+    participant Compact as 压缩Prompt
+    participant PostHook as PostCompact Hook
+    participant GC as 内存回收
+
+    Trigger->>PreHook: executePreCompactHooks()
+    PreHook-->>Trigger: Hook完成
+    Trigger->>Analyze: 分析上下文使用率
+    Analyze-->>Trigger: 统计信息
+    Trigger->>Group: 消息分组
+    Group-->>Trigger: 分组结果
+    Trigger->>Fork: fork子Agent执行压缩
+    Fork->>Compact: 使用压缩专用Prompt
+    Compact-->>Fork: 生成摘要
+    Fork-->>Trigger: 摘要替换历史消息
+    Trigger->>PostHook: executePostCompactHooks()
+    PostHook-->>Trigger: Hook完成
+    Trigger->>GC: markPostCompaction()
+    GC-->>Trigger: 压缩边界前内存释放
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Agent Collaboration Sequence -->
+<section class="py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">多Agent协作时序图</h2>
+    <p class="section-subtitle">Leader-Agent协作的完整交互流程</p>
+    <div class="card">
+      <div class="mermaid">
+sequenceDiagram
+    participant User as 用户
+    participant Leader as Leader主Agent
+    participant AgentTool as AgentTool
+    participant Sub as 子Agent
+    participant Perm as 权限系统
+    participant Mail as Mailbox
+    participant Summary as AgentSummary
+
+    User->>Leader: 请求需要多Agent协作
+    Leader->>AgentTool: 调用AgentTool
+    AgentTool->>AgentTool: 选择Agent类型
+    AgentTool->>AgentTool: 构建Agent专属Prompt
+    AgentTool->>AgentTool: 决定执行方式(Fork/Worktree/InProcess)
+    AgentTool->>Sub: 启动子Agent
+    Sub->>Sub: 独立query()循环
+    Sub->>Perm: 权限请求
+    Perm->>Leader: leaderPermissionBridge代理
+    Leader->>Perm: 权限响应
+    Perm-->>Sub: 权限授予/拒绝
+    Sub->>Mail: SendMessageTool发送消息
+    Mail-->>Leader: 接收子Agent消息
+    Sub-->>AgentTool: 执行完成
+    AgentTool->>Summary: 生成结果摘要
+    Summary-->>Leader: 摘要塞回消息流
+    Leader-->>User: 返回最终结果
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MCP Integration Sequence -->
+<section class="py-16 px-6 bg-[#0c1222]">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">MCP集成时序图</h2>
+    <p class="section-subtitle">从配置MCP Server到工具可用的完整流程</p>
+    <div class="card">
+      <div class="mermaid">
+sequenceDiagram
+    participant Config as settings.json
+    participant Mgr as MCPConnectionManager
+    participant Transport as Transport层
+    participant Client as MCP Client
+    participant Norm as normalization
+    participant MCPTool as MCPTool
+    participant Pool as ToolPool
+    participant Model as LLM模型
+
+    Config->>Mgr: 加载MCP Server配置
+    Mgr->>Transport: 启动传输通道(stdio/SSE/HTTP)
+    Transport-->>Mgr: 连接建立
+    Mgr->>Client: 创建MCP Client
+    Client->>Client: initialize()握手
+    Client->>Client: listTools()发现工具
+    Client->>Client: listResources()发现资源
+    Client-->>Mgr: 工具和资源列表
+    Mgr->>Norm: Schema标准化
+    Norm->>Norm: 转换为Tool<T>接口
+    Norm-->>Mgr: 标准化工具列表
+    Mgr->>MCPTool: 创建MCPTool桥接
+    MCPTool->>Pool: 注入ToolPool
+    Pool-->>Model: 模型可调用MCP工具
+    Model->>MCPTool: 调用MCP工具
+    MCPTool->>Client: client.callTool()
+    Client->>Transport: 发送请求
+    Transport-->>Client: 返回结果
+    Client-->>MCPTool: 工具结果
+    MCPTool-->>Model: 结果塞回消息流
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Core Query Loop Sequence Diagram -->
+<section class="py-16 px-6" id="sequence">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">★ 核心推理主循环时序图</h2>
+    <p class="section-subtitle">从用户输入到结果输出的完整交互——这是整个系统最重要的时序图</p>
+    <div class="card">
+      <div class="mermaid">
+sequenceDiagram
+    participant User as 用户
+    participant REPL as REPL.tsx
+    participant PUI as processUserInput
+    participant Query as query()主循环
+    participant Ctx as 上下文准备
+    participant Prompt as Prompt构建
+    participant API as Anthropic API
+    participant ToolExec as 工具执行
+    participant TUI as TUI渲染
+
+    User->>REPL: 输入指令
+    REPL->>PUI: 处理用户输入
+    PUI->>PUI: 解析slash命令
+    PUI->>PUI: 提取文件附件
+    PUI->>PUI: 执行UserPromptSubmit hooks
+    PUI-->>Query: 标准化消息
+
+    loop 推理循环
+        Query->>Ctx: 上下文准备
+        Ctx->>Ctx: getSystemContext(git status)
+        Ctx->>Ctx: getUserContext(CLAUDE.md)
+        Ctx->>Ctx: loadMemoryPrompt()
+        Ctx->>Ctx: 检查是否需要compact
+        Ctx-->>Query: 上下文就绪
+
+        Query->>Prompt: 构建API请求
+        Prompt->>Prompt: 六层叠加Prompt
+        Prompt->>Prompt: assembleToolPool()
+        Prompt->>Prompt: cache_control标记
+        Prompt-->>Query: 请求就绪
+
+        Query->>API: streaming调用模型
+        API-->>Query: 流式content blocks
+
+        alt text block
+            Query->>TUI: 渲染文本
+        else tool_use block
+            Query->>ToolExec: 工具执行管线
+            ToolExec->>ToolExec: 权限检查
+            ToolExec->>ToolExec: PreToolUse hooks
+            ToolExec->>ToolExec: tool.execute()
+            ToolExec->>ToolExec: PostToolUse hooks
+            ToolExec-->>Query: 结果塞回消息流
+            Note over Query: 继续下一轮迭代
+        else 无更多工具调用
+            Note over Query: 结束循环
+        end
+    end
+
+    Query-->>REPL: 最终结果
+    REPL-->>User: 显示结果
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Data Flow Section -->
+<section class="py-16 px-6 bg-[#0c1222]" id="dataflow">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">数据流与通信方式</h2>
+    <p class="section-subtitle">模块间如何通信和传递数据</p>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card">
+        <h3 class="text-lg font-bold text-blue-400 mb-4">1️⃣ 消息流（核心数据通道）</h3>
+        <p class="text-sm text-slate-400 mb-3">所有模块通过 Message[] 数组通信</p>
+        <div class="space-y-2 text-xs text-slate-300">
+          <div class="p-2 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-blue-400 font-semibold">UserMessage</span> → 用户输入
+          </div>
+          <div class="p-2 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-purple-400 font-semibold">AssistantMessage</span> → 模型输出（text + tool_use）
+          </div>
+          <div class="p-2 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-emerald-400 font-semibold">SystemMessage</span> → 系统指令
+          </div>
+          <div class="p-2 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-amber-400 font-semibold">AttachmentMessage</span> → 文件附件
+          </div>
+          <div class="p-2 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-rose-400 font-semibold">ProgressMessage</span> → 进度通知
+          </div>
+          <div class="p-2 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-cyan-400 font-semibold">SystemCompactBoundaryMessage</span> → 压缩边界
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-lg font-bold text-purple-400 mb-4">2️⃣ AppState（全局状态总线）</h3>
+        <p class="text-sm text-slate-400 mb-3">React Context + 不可变Store模式</p>
+        <div class="space-y-3 text-sm text-slate-300">
+          <div class="p-3 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-blue-400 font-semibold">写入</span>：<code class="mono text-xs">store.setState()</code> 产生新不可变状态
+          </div>
+          <div class="p-3 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-purple-400 font-semibold">读取</span>：<code class="mono text-xs">useSyncExternalStore</code> 订阅
+          </div>
+          <div class="p-3 rounded bg-[#0f172a] border border-[#334155]">
+            <span class="text-emerald-400 font-semibold">跨组件</span>：AppStateProvider 包裹整个组件树
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-lg font-bold text-emerald-400 mb-4">3️⃣ Mailbox（跨Agent邮箱）</h3>
+        <p class="text-sm text-slate-400 mb-3">跨Agent异步消息传递</p>
+        <div class="space-y-2 text-sm text-slate-300">
+          <p>• <span class="text-blue-400">Leader → Worker</span>：指令下发、权限响应</p>
+          <p>• <span class="text-purple-400">Worker → Leader</span>：结果上报、权限请求</p>
+          <p>• 基于 React Context + 事件机制</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-lg font-bold text-amber-400 mb-4">4️⃣ 文件系统（持久化通道）</h3>
+        <p class="text-sm text-slate-400 mb-3">所有状态最终落盘到文件</p>
+        <div class="space-y-2 text-sm text-slate-300">
+          <p>• <span class="text-blue-400">Transcript文件</span>：会话消息持久化</p>
+          <p>• <span class="text-purple-400">Memory文件</span>：CLAUDE.md、长期记忆</p>
+          <p>• <span class="text-emerald-400">任务输出文件</span>：异步任务结果</p>
+          <p>• <span class="text-amber-400">设置文件</span>：settings.json</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Complete Data Flow Diagram -->
+<section class="py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">完整数据流图</h2>
+    <p class="section-subtitle">从用户输入到最终输出的全链路数据流转</p>
+    <div class="card">
+      <div class="mermaid">
+graph TB
+    USER[👤 用户输入] --> REPL[REPL.tsx]
+    REPL --> PUI[processUserInput]
+    PUI --> |slash命令| CMDS[commands/]
+    PUI --> |附件| ATTACH[attachments.ts]
+    PUI --> |hooks| HOOKS[UserPromptSubmit]
+
+    PUI --> QUERY[query.ts 主循环]
+
+    QUERY --> CTX[上下文准备]
+    CTX --> |git status| GIT[utils/git.ts]
+    CTX --> |CLAUDE.md| MEM[memdir/]
+    CTX --> |compact检查| COMPACT[services/compact/]
+
+    QUERY --> PROMPT[Prompt构建]
+    PROMPT --> |6层叠加| SPROMPT[constants/prompts.ts]
+    PROMPT --> |工具Schema| TOOLS[tools.ts]
+    PROMPT --> |缓存标记| CACHE[cache_control]
+
+    QUERY --> API[Anthropic API]
+    API --> |streaming| STREAM[流式输出]
+
+    STREAM --> |text| TUI[TUI渲染]
+    STREAM --> |tool_use| TEXEC[工具执行管线]
+
+    TEXEC --> |内置工具| BASH[BashTool]
+    TEXEC --> |内置工具| FREAD[FileReadTool]
+    TEXEC --> |内置工具| FEDIT[FileEditTool]
+    TEXEC --> |Agent| AGENT[AgentTool]
+    TEXEC --> |MCP| MCPT[MCPTool]
+
+    AGENT --> |fork| FORK[forkSubagent]
+    AGENT --> |worktree| WT[worktree]
+    AGENT --> |in-process| INP[InProcessBackend]
+
+    MCPT --> |callTool| MCPC[client.ts]
+    MCPC --> |stdio/sse/http| TRANSPORT[Transport层]
+
+    TEXEC --> |结果| MSGFLOW[消息流 Message数组]
+    MSGFLOW --> QUERY
+
+    QUERY --> |最终结果| REPL2[REPL.tsx]
+    REPL2 --> USER2[👤 用户看到结果]
+
+    style USER fill:#1e3a5f,stroke:#3b82f6,stroke-width:2px
+    style QUERY fill:#1e3a5f,stroke:#f43f5e,stroke-width:2px
+    style API fill:#1e3a5f,stroke:#8b5cf6,stroke-width:2px
+    style TEXEC fill:#1e3a5f,stroke:#f59e0b,stroke-width:2px
+    style USER2 fill:#1e3a5f,stroke:#10b981,stroke-width:2px
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Design Summary Section -->
+<section class="py-16 px-6 bg-[#0c1222]">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title gradient-text">设计巧思总结</h2>
+    <p class="section-subtitle">Claude Code 架构中的关键设计决策</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="card">
+        <div class="text-2xl mb-3">🔄</div>
+        <h4 class="font-bold text-blue-400 mb-2">统一Runtime，分层角色</h4>
+        <p class="text-xs text-slate-400">主Agent/子Agent/teammate共享同一个query循环，避免重复实现</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">🧠</div>
+        <h4 class="font-bold text-purple-400 mb-2">上下文工程 > 功能堆砌</h4>
+        <p class="text-xs text-slate-400">缓存命中率、压缩策略、分流落盘是一等公民</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">🔒</div>
+        <h4 class="font-bold text-emerald-400 mb-2">工具调用事务化</h4>
+        <p class="text-xs text-slate-400">每次调用经过schema→验证→hook→权限→执行→遥测完整管线</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">💾</div>
+        <h4 class="font-bold text-amber-400 mb-2">文件系统是状态底座</h4>
+        <p class="text-xs text-slate-400">transcript/memory/plan/team全部文件化持久化，崩溃可恢复</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">🏗️</div>
+        <h4 class="font-bold text-rose-400 mb-2">多Agent有治理结构</h4>
+        <p class="text-xs text-slate-400">leader-worker权限同步、显式消息、共享任务板</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">⚡</div>
+        <h4 class="font-bold text-cyan-400 mb-2">延迟导入+死代码消除</h4>
+        <p class="text-xs text-slate-400">bun:bundle feature门控 + 动态import，快速路径零加载</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">🔁</div>
+        <h4 class="font-bold text-blue-400 mb-2">递归生成器模式</h4>
+        <p class="text-xs text-slate-400">query() 是async generator，SDK可流式获取中间结果</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">🚀</div>
+        <h4 class="font-bold text-purple-400 mb-2">流式工具预执行</h4>
+        <p class="text-xs text-slate-400">StreamingToolExecutor不等模型输出完毕就启动读型工具</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">📝</div>
+        <h4 class="font-bold text-emerald-400 mb-2">Prompt分布式维护</h4>
+        <p class="text-xs text-slate-400">每个工具目录下有自己的prompt.ts，就近维护易演进</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">✂️</div>
+        <h4 class="font-bold text-amber-400 mb-2">缓存边界切割</h4>
+        <p class="text-xs text-slate-400">静态段跨请求共享prompt cache，动态段每次重新生成</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">🔮</div>
+        <h4 class="font-bold text-rose-400 mb-2">推测执行</h4>
+        <p class="text-xs text-slate-400">空闲时预生成下一轮可能的响应，减少用户等待</p>
+      </div>
+      <div class="card">
+        <div class="text-2xl mb-3">🪝</div>
+        <h4 class="font-bold text-cyan-400 mb-2">Hook生命周期工程</h4>
+        <p class="text-xs text-slate-400">标准化的拦截点，支持阻断、修改、追加上下文</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-12 px-6 border-t border-[#334155]">
+  <div class="max-w-6xl mx-auto text-center">
+    <div class="flex items-center justify-center gap-3 mb-4">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">CC</div>
+      <span class="font-bold text-lg">Claude Code 架构深度解析</span>
+    </div>
+    <p class="text-sm text-slate-500 mb-6">面向工程任务的多智能体可扩展执行内核</p>
+    <div class="flex items-center justify-center gap-4 text-xs text-slate-600">
+      <span>TypeScript · React · Ink · Mermaid</span>
+      <span>|</span>
+      <span>8层架构 · 30+工具 · 6层Prompt · 50+命令</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#3b82f6',
+    primaryTextColor: '#f1f5f9',
+    primaryBorderColor: '#475569',
+    lineColor: '#64748b',
+    secondaryColor: '#1e293b',
+    tertiaryColor: '#0f172a',
+    background: '#0f172a',
+    mainBkg: '#1e293b',
+    nodeBorder: '#3b82f6',
+    clusterBkg: '#1e293b',
+    clusterBorder: '#334155',
+    titleColor: '#f1f5f9',
+    edgeLabelBackground: '#1e293b',
+    actorTextColor: '#f1f5f9',
+    actorBorder: '#3b82f6',
+    actorBkg: '#1e293b',
+    signalColor: '#f1f5f9',
+    labelBoxBkgColor: '#1e293b',
+    labelBoxBorderColor: '#334155',
+    labelTextColor: '#f1f5f9',
+    loopTextColor: '#f1f5f9',
+    noteBorderColor: '#334155',
+    noteBkgColor: '#1e293b',
+    activationBorderColor: '#3b82f6',
+    activationBkgColor: '#1e3a5f',
+    sequenceNumberColor: '#f1f5f9'
+  },
+  flowchart: { curve: 'basis', padding: 20 },
+  sequence: { actorMargin: 80, mirrorActors: false }
+});
+
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTopBtn');
+  if (window.scrollY > 400) {
+    btn.style.display = 'flex';
+  } else {
+    btn.style.display = 'none';
+  }
+});
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchTab(tabGroup, tabId) {
+  document.querySelectorAll(`[data-tab-group="${tabGroup}"] .tab-btn`).forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[data-tab-group="${tabGroup}"] .tab-content`).forEach(c => c.classList.remove('active'));
+  document.querySelector(`[data-tab-group="${tabGroup}"] [data-tab="${tabId}"]`).classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+</script>
+
+<button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTop()">↑</button>
+
+</body>
+</html>
