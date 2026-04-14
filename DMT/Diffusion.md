@@ -1,23 +1,10 @@
-![alt text](image-10.png)
-![alt text](image-9.png)
-![alt text](image-11.png)
-![alt text](image-12.png)
-![alt text](image-13.png)
-输入的图片+一个文字描述+一个stepid，去denoise，然后生成一个图片。
-
-![alt text](image-14.png)
-
-![alt text](image-16.png)
-实际上操作的时候不是真正一步一步加入噪声，而是直接加入全部噪声，predictor直接预测加入的全部噪声是多少。
-
-
-![alt text](image-18.png)
-在最后还要加一个噪声是干嘛？
-
-![alt text](image-19.png)
-式子表示使用极大似然来近似一个分布的的时候，最终就是近似要最小化kl散度
-就是最小化kl散度，让两个分布更加相似。 kl散度是一个衡量两个分布之间差异的指标。越小越好。
 # 扩散模型（Diffusion Model）详解
+
+> 扩散模型的直觉：输入图片 + 文字描述 + step id，去噪生成图片。实际操作中不是逐步加噪，而是直接加入全部噪声，predictor 直接预测加入的全部噪声。训练目标本质上是最小化 KL 散度，让模型学到的分布尽可能接近真实数据分布。
+
+![扩散过程示意](image-10.png)
+![去噪过程](image-9.png)
+![条件生成](image-14.png)
 
 
 ## 一、核心原理  

@@ -1,11 +1,11 @@
-- [多模态笔记](DMT/schedule.md)
-- [DMT介绍](DMT/DMTIntro.md)
+- [多模态概念笔记](DMT/schedule.md)
+- [多模态学习导论](DMT/DMTIntro.md)
 - [CLIP](DMT/CLIP.md)
 - [BLIP](DMT/BLIP.md)
 - [BLIP2](DMT/BLIP2.md)
 - [Diffusion](DMT/Diffusion.md)
-- [AutoAggressive](DMT/AutoAggressive.md)
-- [NLP Learning](DMT/NLPLearning.md)
-- [VidKV](DMT/VidKV.md)
-
+- [自回归生成模型](DMT/AutoAggressive.md)
+- [NLP 基础](DMT/NLPLearning.md)
+- [VidKV 量化](Quantization/VidKV.md)
+- [Back to Homepage](README.md)
 

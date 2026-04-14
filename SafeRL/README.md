@@ -1,5 +1,15 @@
-# SafeRL (Safe Reinforcement Learning)
+# 安全强化学习 (Safe Reinforcement Learning)
 
-These are some notes for Safe Reinforcement Learning.
+本部分整理了安全强化学习（SafeRL）方向的综述和研究笔记。SafeRL 关注的核心问题是：如何在强化学习的探索和利用过程中满足安全约束，避免智能体执行危险动作。
+
+笔记包含以下内容：
+
+- **SafeRL 综述 (IJCAI 2024)**：较新的综述，梳理了 SafeRL 领域的最新进展和方法分类。
+- **SafeRL 综述 (IJCAI 2023)**：基于状态的安全强化学习综述，系统介绍了约束马尔可夫决策过程（CMDP）框架下的各类方法。
+- **约束公式化的 8 种类型**：总结了 SafeRL 中不同的安全约束建模方式，包括期望约束、概率约束、条件风险值（CVaR）等。
+- **Safe Critic**：安全评价函数的设计与训练方法。
+- **研究进度记录**：SafeRL 方向的学习和研究进展笔记。
+
+SafeRL 的主流方法可以分为两大类：基于拉格朗日乘子法将约束优化转化为无约束优化，以及基于安全层/安全投影直接修正不安全动作。
 
 [](_sidebar.md ':include')

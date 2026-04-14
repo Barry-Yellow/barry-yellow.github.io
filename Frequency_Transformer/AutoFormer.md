@@ -1,5 +1,7 @@
-> 今天主要是重温autoformer以及fedformer，并且结合之前读论文的资料，把论文的整体思路整理进自己的学习资料库，以便之后要用的时候快速查看
 # AutoFormer 基于序列周期性的自相关机制
+
+> 今天主要是重温autoformer以及fedformer，并且结合之前读论文的资料，把论文的整体思路整理进自己的学习资料库，以便之后要用的时候快速查看
+
 > 'Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting' 2021 NeurIPS
 该文章针对时序预测问题，尤其长期序列，提出一种时序分解模块并对注意力模块进行创新。用于长期序列预测的自相关分解Transformer。
 ## 摘要

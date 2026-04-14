@@ -1,6 +1,6 @@
 - [VidKV](Quantization/VidKV.md)
-- [量化知识](Quantization/Rotation_Quantization.md)
-- [量化知识](Quantization/QuantIntro.md)
+- [旋转量化](Quantization/Rotation_Quantization.md)
+- [量化基础](Quantization/QuantIntro.md)
 - [QuantCode](Quantization/QuantCode.md)
 - [KIVI](Quantization/KIVI.md)
 - [QuaRot](Quantization/QuaRot.md)

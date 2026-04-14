@@ -1,5 +1,15 @@
-# Asset Pricing
+# 资产定价 (Asset Pricing)
 
-These are some notes for asset pricing.
+本部分整理了资产定价理论的核心框架与数学推导，主要基于 Back (2017) *Asset Pricing and Portfolio Choice Theory* 的学习笔记。
+
+资产定价的核心问题是：如何为金融资产确定合理的价格？围绕这一问题，笔记从以下几个层面展开：
+
+- **SDF 与回报空间**：随机折现因子（Stochastic Discount Factor）是资产定价的统一框架。从无套利条件出发，推导 SDF 的存在性，并讨论其在回报空间中的几何含义。
+- **风险价格与风险溢价**：区分"风险的价格"（price of risk）和"风险溢价"（risk premium）这两个容易混淆的概念，从 SDF 框架和因子模型两个视角分别推导。
+- **不同框架之间的联系**：SDF 表达式、β 定价模型、均值方差前沿三者之间存在深刻的等价关系，这部分梳理了它们的数学联系。
+- **HJ 边界与 HJ 距离**：Hansen-Jagannathan 边界给出了 SDF 方差的下界，是检验资产定价模型的重要工具。
+- **特征的不同视角与数据预处理**：从 Barra 模型等实证角度讨论特征构建和数据标准化方法。
+
+这些笔记侧重理论推导，适合有一定数学基础的读者作为资产定价入门参考。
 
 [](_sidebar.md ':include')

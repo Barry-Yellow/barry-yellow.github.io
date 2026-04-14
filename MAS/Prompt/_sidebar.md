@@ -1,4 +1,3 @@
 - [MIPRO](MAS/Prompt/MIPRO.md)
-- [EvoPrompt](MAS/Prompt/EvoPrompt.md)  
 - [MAS-GPT](MAS/Prompt/MAS_GPT.md)
-- [Back](MAS/README.md)
+- [Back to MAS](MAS/README.md)

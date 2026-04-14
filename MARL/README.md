@@ -1,5 +1,13 @@
-# MARL (Multi-Agent Reinforcement Learning)
+# 多智能体强化学习 (Multi-Agent Reinforcement Learning)
 
-These are some notes for MARL.
+本部分记录了多智能体强化学习（MARL）方向的学习笔记。MARL 研究多个智能体在共享环境中如何通过交互学习协作或竞争策略。
+
+与单智能体强化学习相比，MARL 面临的核心挑战包括：环境非平稳性（其他智能体的策略在不断变化）、信用分配问题（如何将团队奖励归因到个体贡献）、通信与协调（智能体之间如何高效交换信息）。
+
+笔记包含以下内容：
+
+- **MARL 基础概念**：从单智能体 RL 到多智能体的扩展，包括完全合作、完全竞争、混合博弈等问题设定，以及集中式训练分散式执行（CTDE）范式。
+- **经典算法笔记**：QMIX、MAPPO 等代表性算法的原理和实现。
+- **安全 MARL 综述**：在多智能体场景下引入安全约束的研究综述。
 
 [](_sidebar.md ':include')

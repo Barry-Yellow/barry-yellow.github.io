@@ -3,5 +3,5 @@
 - [AutoFormer：基于序列周期性的自相关机制](Frequency_Transformer/AutoFormer.md)
 - [FEDformer](Frequency_Transformer/FEDformer.md)
 - [FECAM：DCT改进SE架构](Frequency_Transformer/DCTTransformer.md)
-- [特征的不同视角与数据预处理](Frequency_Transformer/different_views_of_charac_and_data_preprocessing.md)
+- [特征的不同视角与数据预处理](asset_pricing/different_views_of_charac_and_data_preprocessing.md)
 - [Back to Homepage](README.md)

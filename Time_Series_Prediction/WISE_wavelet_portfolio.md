@@ -1,6 +1,3 @@
-> [!TIP|label:近况]
-> 上周五生病了，一直发烧到前天才稍微好点。然后就是我把模型改吧改吧，把注意力模块加入了那个频率+LSTM的模型之后，模型的效果不够好。然后又试了试把ff5因子数据加入模型，试图以此提供额外信息，发现效果仍然一般。
-> 所以今天又尝试性的看了一篇别的文章，看看能不能有所启发。还没看完。
 # 基于小波的投资组合管理
 > 'WISE: Wavelet based Interpretable Stock Embedding for Risk-Averse Portfolio Management'   WWW 2022
 ## 摘要

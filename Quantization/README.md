@@ -1,5 +1,16 @@
-# Quantization
+# 模型量化 (Model Quantization)
 
-These are some notes for model quantization.
- 
+本部分整理了大模型量化技术的学习笔记，涵盖从基础理论到前沿方法的多个方面。
+
+模型量化的核心目标是：在尽量保持模型精度的前提下，通过降低权重和激活值的数值精度（如从 FP16 到 INT4/INT8）来减少模型的存储和计算开销。笔记包含以下内容：
+
+- **量化基础**：PTQ（训练后量化）和 QAT（量化感知训练）的基本概念、量化公式、对称/非对称量化等基础知识。
+- **旋转量化**：通过正交旋转变换消除权重和激活中的异常值（outlier），使量化更加均匀，代表方法包括 QuaRot 等。
+- **QuaRot**：利用 Hadamard 旋转和 GPTQ 实现端到端的 4-bit 量化，无需校准数据。
+- **KIVI**：针对 KV Cache 的量化方法，对 Key 按通道量化、对 Value 按 token 量化。
+- **VidKV**：视频大语言模型中 KV Cache 的量化压缩，从量化视角分析视觉 token 的冗余性。
+- **Lexico**：基于稀疏编码的模型压缩方法。
+- **CalibQuant**：面向多模态模型的量化校准方法。
+- **量化代码实现**：量化算法的代码实践笔记。
+
 [](_sidebar.md ':include')
