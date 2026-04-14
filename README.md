@@ -8,45 +8,33 @@ Here are some notes mainly for myself to review. I would be glad if you can lear
 
 ---
 
-## 🎯 机器学习与深度学习
+## 👥 智能体与多智能体系统
 
-### 📊 时间序列与预测
-- [时间序列预测 (Time Series Prediction)](/Time_Series_Prediction/README.md) - LSTM、小波变换、注意力机制在时间序列预测中的应用
-- [Transformer预测 (Transformer Prediction)](/Transformer_Prediction/README.md) - Transformer在时间序列预测中的经典模型
-
-### 🔊 频域分析
-- [频域分析基础](/Frequency/README.md) - 自相关系数、自谱密度、互协方差、共谱密度等频域知识
-- [频域Transformer (Frequency Transformer)](/Frequency_Transformer/README.md) - SpectFormer、AutoFormer、FEDformer等频域+Transformer模型
-
-### 🤖 大模型架构
-- [Mamba架构](/Mamba/README.md) - Mamba模型理论基础、频率分解实验、改进方法
-- [语言模型 (Language Model, LM)](/LM/README.md) - BERT、Transformer、NLP基础、MoE等
-- [深度多模态学习](/DMT/README.md) - CLIP、BLIP、BLIP2、Diffusion等多模态模型
+- [多智能体系统 (MAS)](/MAS/README.md) - 基于 LLM 的多智能体系统：拓扑优化、提示词优化、失败分析、记忆机制
+- [多智能体强化学习 (MARL)](/MARL/README.md) - QMIX、MAPPO、CTDE 范式、信用分配、安全 MARL
+- [语言模型 (LM)](/LM/README.md) - BERT、Transformer、MoE、Prompt Engineering、RAG、RLHF
 
 ---
 
-## 🎮 强化学习
+## 🤖 深度学习模型
 
-### 🛡️ 安全强化学习
-- [安全强化学习 (Safe Reinforcement Learning, SafeRL)](/SafeRL/README.md) - SafeRL综述、安全约束、风险控制
-
-### 👥 多智能体系统
-- [多智能体强化学习](/MARL/README.md) - MARL综述、多智能体协作与竞争
-- [多智能体系统](/MAS/README.md) - 拓扑优化、提示词优化、失败分析、记忆机制
+- [深度多模态学习 (DMT)](/DMT/README.md) - CLIP、BLIP、BLIP2、Diffusion、自回归生成模型
+- [安全强化学习 (SafeRL)](/SafeRL/README.md) - CMDP、拉格朗日方法、安全层、安全评论家
+- [Mamba 架构](/Mamba/README.md) - SSM 理论基础、频率分解实验、Patch/Cross-Channel 改进
 
 ---
 
-## 💰 量化金融
+## 📊 时间序列与频域分析
 
-### 📈 资产定价
-- [资产定价 (Asset Pricing)](/asset_pricing/README.md) - SDF、风险溢价、HJ边界、均值方差前沿
+- [频域分析与 Transformer 预测](/Frequency/README.md) - 频域基础、SpectFormer、AutoFormer、FEDformer、Informer、PatchTST
+- [时间序列预测](/Time_Series_Prediction/README.md) - LSTM + 频率、小波变换 + 注意力、投资组合构建
 
 ---
 
-## ⚡ 模型优化
+## 💰 量化金融与模型优化
 
-### 🔧 模型量化
-- [模型量化](/Quantization/README.md) - VidKV、KIVI、QuaRot、旋转量化等量化技术
+- [资产定价 (Asset Pricing)](/asset_pricing/README.md) - SDF、风险溢价、HJ 边界、均值方差前沿
+- [模型量化 (Quantization)](/Quantization/README.md) - 旋转量化、KV 缓存量化、KIVI、QuaRot
 
 ---
 

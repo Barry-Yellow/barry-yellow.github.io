@@ -28,6 +28,6 @@ class GlobalFilter(nn.Module):
 ![wfly](image/GFNet.png)
 
 
-- **SpectFormer**的贡献在上周汇报过了。实际上就是它发现，需要将频谱层和attention层合一起，先用频谱层再用self-attention层堆叠。[spectformer](Frequency_Transformer/SpectFormer_freq_att.md)
+- **SpectFormer**的贡献在上周汇报过了。实际上就是它发现，需要将频谱层和attention层合一起，先用频谱层再用self-attention层堆叠。[spectformer](Frequency/SpectFormer_freq_att.md)
 ![swin_att](image/spectformer_model.png)
 
