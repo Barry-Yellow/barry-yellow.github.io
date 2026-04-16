@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多智能体系统框架对比分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        nav {
+            background: #1a1a2e;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-weight: 500;
+            background: rgba(255,255,255,0.1);
+        }
+        nav a:hover {
+            background: #e94560;
+            transform: translateY(-2px);
+        }
+        nav a.active {
+            background: #e94560;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #1a1a2e;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e94560;
+        }
+        .section h3 {
+            color: #0f3460;
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+        }
+        .section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #e94560;
+        }
+        .feature-card h4 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        code {
+            background: #1a1a2e;
+            color: #e94560;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: "Fira Code", Consolas, monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #1a1a2e;
+            color: #a9b7c6;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: "Fira Code", Consolas, monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .comment { color: #6a9955; }
+        .keyword { color: #cc7832; }
+        .string { color: #6a8759; }
+        .function { color: #ffc66d; }
+        .class-name { color: #a9b7c6; }
+        .agent-role {
+            display: inline-block;
+            background: linear-gradient(135deg, #e94560, #0f3460);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #1a1a2e;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .comparison-table tr:hover {
+            background: #e9ecef;
+        }
+        .architecture-diagram {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .layer {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .layer-box {
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            min-width: 120px;
+        }
+        .layer-orchestrator { background: #e94560; color: white; }
+        .layer-specialist { background: #0f3460; color: white; }
+        .layer-tools { background: #16213e; color: white; }
+        .layer-memory { background: #1a1a2e; color: white; }
+        .arrow-down {
+            font-size: 2em;
+            color: #e94560;
+            margin: 5px 0;
+        }
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #e94560;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .step-content {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #0f3460;
+        }
+        .prompt-box {
+            background: #fafafa;
+            border: 2px solid #e94560;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .prompt-box h4 {
+            color: #e94560;
+            margin-bottom: 10px;
+        }
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .pros { border-left: 4px solid #4caf50; }
+        .cons { border-left: 4px solid #f44336; }
+        .pros h4 { color: #4caf50; }
+        .cons h4 { color: #f44336; }
+        .toc {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .toc h4 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .toc li {
+            margin: 8px 0;
+            position: relative;
+        }
+        .toc li::before {
+            content: "→";
+            position: absolute;
+            left: -20px;
+            color: #e94560;
+        }
+        .toc a {
+            color: #0f3460;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            color: #e94560;
+        }
+        footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+        @media (max-width: 768px) {
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🤖 多智能体系统框架对比分析</h1>
+        <p>Magentic-One | CrewAI | OpenAI Swarm | MetaGPT | MAR</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#overview">总览</a></li>
+            <li><a href="#magentic-one">Magentic-One</a></li>
+            <li><a href="#crewai">CrewAI</a></li>
+            <li><a href="#swarm">OpenAI Swarm</a></li>
+            <li><a href="#metagpt">MetaGPT</a></li>
+            <li><a href="#mar">MAR</a></li>
+            <li><a href="#comparison">对比总结</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <section id="overview" class="section">
+            <h2>📋 总览：多智能体框架对比</h2>
+            <p>多智能体系统（Multi-Agent System, MAS）通过多个AI代理的协作，能够完成复杂任务，比单体LLM具有更强的推理能力、任务分工灵活性和容错性。本文档深入分析五个主流多智能体框架的架构设计与实现细节。</p>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>框架</th>
+                        <th>组织架构</th>
+                        <th>核心设计</th>
+                        <th>记忆机制</th>
+                        <th>通信方式</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Magentic-One</strong></td>
+                        <td>Orchestrator + 4 Specialists</td>
+                        <td>主编排器驱动任务分解</td>
+                        <td>共享账本(Ledger)</td>
+                        <td>消息传递</td>
+                        <td>复杂网页/文件任务</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CrewAI</strong></td>
+                        <td>Crew + Agents + Tasks</td>
+                        <td>角色扮演团队协作</td>
+                        <td>记忆模块</td>
+                        <td>顺序/层次流程</td>
+                        <td>研究、分析、内容创作</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI Swarm</strong></td>
+                        <td>Agent + Handoffs</td>
+                        <td>极简交接机制</td>
+                        <td>上下文继承</td>
+                        <td>函数返回转交</td>
+                        <td>轻量级路由场景</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MetaGPT</strong></td>
+                        <td>SOP驱动软件公司</td>
+                        <td>标准作业程序嵌入</td>
+                        <td>结构化团队记忆</td>
+                        <td>SOP定义的消息流</td>
+                        <td>软件开发生成</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MAR</strong></td>
+                        <td>图结构 + 决策节点</td>
+                        <td>空间/时间边优化</td>
+                        <td>拓扑感知的上下文</td>
+                        <td>空间+时间消息传递</td>
+                        <td>数学/推理任务</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="magentic-one" class="section">
+            <h2>🔷 Magentic-One（微软）</h2>
+            <div class="toc">
+                <h4>目录导航</h4>
+                <ul>
+                    <li><a href="#m1-arch">1. 框架整体架构</a></li>
+                    <li><a href="#m1-agents">2. 核心智能体角色</a></li>
+                    <li><a href="#m1-interaction">3. 智能体交互流程</a></li>
+                    <li><a href="#m1-message">4. 消息传递机制</a></li>
+                    <li><a href="#m1-memory">5. 记忆与账本系统</a></li>
+                    <li><a href="#m1-planning">6. 任务规划机制</a></li>
+                    <li><a href="#m1-workflow">7. 工作流编排</a></li>
+                    <li><a href="#m1-prompt">8. 系统提示词设计</a></li>
+                    <li><a href="#m1-proscons">9. 优缺点分析</a></li>
+                </ul>
+            </div>
+
+            <h3 id="m1-arch">1. 框架整体架构</h3>
+            <p>Magentic-One是微软发布的开源多智能体系统，基于AutoGen框架构建，采用<strong>Orchestrator-Managed（主编排器）架构</strong>。系统由一个主编排器（Orchestrator）和四个专业智能体组成，负责解决复杂的网页和文件操作任务。</p>
+            
+            <div class="architecture-diagram">
+                <h4>Magentic-One 架构分层</h4>
+                <div class="layer">
+                    <div class="layer-box layer-orchestrator">Orchestrator</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-specialist">File Surfer</div>
+                    <div class="layer-box layer-specialist">Web Surfer</div>
+                    <div class="layer-box layer-specialist">Computer Terminal</div>
+                    <div class="layer-box layer-specialist">Coder</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-tools">File System</div>
+                    <div class="layer-box layer-tools">Web Browser</div>
+                    <div class="layer-box layer-tools">Terminal</div>
+                    <div class="layer-box layer-tools">Python Executor</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-memory">Shared Ledger</div>
+                </div>
+            </div>
+
+            <h3 id="m1-agents">2. 内置核心智能体角色与职责</h3>
+            <p>Magentic-One定义了四个专业智能体和一个主编排器：</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🧭 Orchestrator（主编排器）</h4>
+                    <p>负责任务分解、协调子智能体工作、管理共享账本。是系统的"大脑"，决定任务分配和执行顺序。</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📄 File Surfer（文件导航员）</h4>
+                    <p>专门处理本地文件操作，包括读取、搜索、分析文档内容。</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🌐 Web Surfer（网页导航员）</h4>
+                    <p>专门处理网页浏览任务，包括搜索、点击、填表、内容提取。</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💻 Computer Terminal（终端操作员）</h4>
+                    <p>执行命令行操作，处理代码编译、脚本运行等终端任务。</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⌨️ Coder（编码员）</h4>
+                    <p>负责编写和调试代码，处理编程相关任务。</p>
+                </div>
+            </div>
+
+            <h3 id="m1-interaction">3. 智能体之间如何交互</h3>
+            <p>Orchestrator通过<strong>指令-响应</strong>模式与专业智能体交互：</p>
+            
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>任务接收</strong>：用户向Orchestrator提交复杂任务
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>任务分解</strong>：Orchestrator将任务分解为子任务队列
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <strong>指派执行</strong>：向相应专业智能体发送执行指令
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <strong>结果收集</strong>：收集各智能体执行结果
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <strong>状态更新</strong>：将结果写入共享账本，更新任务进度
+                </div>
+            </div>
+
+            <h3 id="m1-message">4. 消息传递机制与路由规则</h3>
+            <p>Magentic-One采用<strong>共享账本（Ledger）</strong>作为消息传递的核心媒介：</p>
+            <ul>
+                <li>所有智能体通过读写共享账本进行通信</li>
+                <li>账本记录任务状态、中间结果、待完成事项</li>
+                <li>Orchestrator负责维护账本的一致性</li>
+                <li>智能体通过订阅特定账本条目获取相关信息</li>
+            </ul>
+
+            <h3 id="m1-memory">5. 记忆/上下文共享方案</h3>
+            <p>共享账本系统包含三个主要部分：</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📝 任务清单（Task List）</h4>
+                    <p>记录所有待执行的子任务及其状态</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 进度跟踪（Progress Tracker）</h4>
+                    <p>记录已完成任务的结果和当前进展</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 事实记录（Factual Notes）</h4>
+                    <p>存储从网页、文件中提取的关键信息</p>
+                </div>
+            </div>
+
+            <h3 id="m1-planning">6. 任务规划（Plan）机制</h3>
+            <p>Orchestrator采用<strong>迭代式任务分解</strong>：</p>
+            <pre><code>// 伪代码示例
+class Orchestrator:
+    def plan(self, task):
+        # 1. 理解任务目标
+        subtasks = self.decompose(task)
+        
+        # 2. 检查依赖关系
+        ready_tasks = self.get_ready_tasks(subtasks)
+        
+        # 3. 分配给专业智能体
+        for subtask in ready_tasks:
+            agent = self.select_agent(subtask)
+            result = agent.execute(subtask)
+            
+        # 4. 评估结果，决定是否需要重规划
+        if not self.is_satisfied(result):
+            remaining = self.replan(result)
+            # 继续执行剩余任务
+</code></pre>
+
+            <h3 id="m1-workflow">7. 工作流编排方式</h3>
+            <p>Magentic-One采用<strong>动态工作流</strong>：</p>
+            <ul>
+                <li>任务不是预定义的流程，而是动态生成和调度</li>
+                <li>Orchestrator根据当前状态决定下一步行动</li>
+                <li>支持条件分支和循环，直到任务完成</li>
+                <li>提供终止条件检测，自动结束任务</li>
+            </ul>
+
+            <h3 id="m1-prompt">8. 核心系统提示词模板</h3>
+            <div class="prompt-box">
+                <h4>Orchestrator System Prompt（核心指令）</h4>
+                <pre><code>你是一个任务编排器，负责协调多个专业智能体完成复杂任务。
+
+你的职责：
+1. 将复杂任务分解为可执行的子任务
+2. 选择合适的专业智能体执行每个子任务
+3. 监控任务进度，管理共享账本
+4. 处理错误并进行必要的重规划
+
+工作流程：
+1. 分析用户请求，确定任务目标
+2. 列出完成目标所需的步骤
+3. 为每个步骤选择最合适的智能体
+4. 收集结果并更新任务状态
+5. 如遇失败，尝试重新规划路径
+
+重要原则：
+- 保持任务状态的准确性
+- 确保智能体之间的信息共享
+- 最小化不必要的交互
+- 及时识别并处理错误</code></pre>
+            </div>
+
+            <h3 id="m1-proscons">9. 优缺点与适用场景</h3>
+            <div class="pros-cons">
+                <div class="feature-card pros">
+                    <h4>✅ 优点</h4>
+                    <ul>
+                        <li><strong>透明可控</strong>：共享账本提供完整的任务追踪</li>
+                        <li><strong>任务分解能力强</strong>：Orchestrator擅长处理复杂多步骤任务</li>
+                        <li><strong>人机协作友好</strong>：支持人类介入和监督</li>
+                        <li><strong>基于成熟AutoGen</strong>：有强大的社区支持</li>
+                    </ul>
+                </div>
+                <div class="feature-card cons">
+                    <h4>❌ 缺点</h4>
+                    <ul>
+                        <li><strong>资源消耗高</strong>：主编排器可能成为瓶颈</li>
+                        <li><strong>延迟较大</strong>：多智能体协调带来额外开销</li>
+                        <li><strong>配置复杂</strong>：需要为不同任务调整智能体组合</li>
+                        <li><strong>专业性受限</strong>：4个固定智能体类型可能不够灵活</li>
+                    </ul>
+                </div>
+            </div>
+            <p><strong>适用场景</strong>：复杂网页自动化、数据采集与分析、文件处理流水线、需要人类监督的多步骤任务</p>
+        </section>
+
+        <section id="crewai" class="section">
+            <h2>🔷 CrewAI</h2>
+            <div class="toc">
+                <h4>目录导航</h4>
+                <ul>
+                    <li><a href="#c1-arch">1. 框架整体架构</a></li>
+                    <li><a href="#c1-agents">2. 核心智能体角色</a></li>
+                    <li><a href="#c1-interaction">3. 智能体交互流程</a></li>
+                    <li><a href="#c1-message">4. 消息传递机制</a></li>
+                    <li><a href="#c1-memory">5. 记忆与上下文</a></li>
+                    <li><a href="#c1-planning">6. 任务规划机制</a></li>
+                    <li><a href="#c1-workflow">7. 工作流编排</a></li>
+                    <li><a href="#c1-prompt">8. 系统提示词设计</a></li>
+                    <li><a href="#c1-proscons">9. 优缺点分析</a></li>
+                </ul>
+            </div>
+
+            <h3 id="c1-arch">1. 框架整体架构</h3>
+            <p>CrewAI是一个专注于<strong>角色扮演团队协作</strong>的多智能体框架，模拟真实团队的分工合作模式。其核心理念是"招聘-分配-执行"，让每个AI智能体像真实员工一样工作。</p>
+
+            <div class="architecture-diagram">
+                <h4>CrewAI 架构分层</h4>
+                <div class="layer">
+                    <div class="layer-box layer-orchestrator">Crew（团队）</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-specialist">Agent 1</div>
+                    <div class="layer-box layer-specialist">Agent 2</div>
+                    <div class="layer-box layer-specialist">Agent N...</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-tools">Task 1</div>
+                    <div class="layer-box layer-tools">Task 2</div>
+                    <div class="layer-box layer-tools">Task N...</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-memory">Memory | Knowledge | Tools</div>
+                </div>
+            </div>
+
+            <h3 id="c1-agents">2. 内置核心智能体角色与职责</h3>
+            <p>CrewAI采用<strong>开放式角色定义</strong>，用户可以灵活定义各种角色：</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>👤 Agent（智能体）</h4>
+                    <p>核心组成：role（角色）、goal（目标）、backstory（背景故事）</p>
+                    <p>每个Agent可以绑定多个Tools，具备特定领域的专业知识</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Task（任务）</h4>
+                    <p>描述、期望输出、关联Agent、上下文依赖</p>
+                </div>
+                <div class="feature-card">
+                    <h4>👥 Crew（团队）</h4>
+                    <p>Agent集合 + Task集合 + Process（顺序/层次）</p>
+                </div>
+            </div>
+
+            <h3 id="c1-interaction">3. 智能体交互流程</h3>
+            <p>CrewAI支持两种主要流程：</p>
+
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>Sequential（顺序执行）</strong>：按任务定义顺序执行，上游任务输出可作为下游输入
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>Hierarchical（层次执行）</strong>：类似管理结构，有Manager协调任务的分配和结果整合
+                </div>
+            </div>
+
+            <h3 id="c1-message">4. 消息传递机制</h3>
+            <p>CrewAI通过<strong>上下文注入（Context）</strong>实现消息传递：</p>
+            <pre><code># CrewAI 核心代码示例
+from crewai import Agent, Task, Crew, Process
+
+# 定义研究员
+researcher = Agent(
+    role='高级研究员',
+    goal='发现AI领域的最新突破',
+    backstory='你是一个对技术趋势有敏锐嗅觉的专家',
+    tools=[search_tool]
+)
+
+# 定义作家
+writer = Agent(
+    role='内容作家',
+    goal='创建易于理解的科普文章',
+    backstory='你擅长将复杂技术翻译成通俗语言',
+    tools=[None]
+)
+
+# 定义任务
+task1 = Task(
+    description='研究2025年AI Agent的最新趋势',
+    expected_output='详细的研究报告',
+    agent=researcher
+)
+
+task2 = Task(
+    description='基于研究报告创作文章',
+    expected_output='科普文章初稿',
+    agent=writer,
+    context=[task1]  # 依赖前一个任务
+)
+
+# 创建团队并启动
+crew = Crew(
+    agents=[researcher, writer],
+    tasks=[task1, task2],
+    process=Process.sequential
+)
+
+result = crew.kickoff()</code></pre>
+
+            <h3 id="c1-memory">5. 记忆与上下文共享</h3>
+            <p>CrewAI提供三层记忆系统：</p>
+            <ul>
+                <li><strong>Memory</strong>：智能体的短期记忆，存储当前会话信息</li>
+                <li><strong>Knowledge</strong>：知识库，存储结构化信息供检索</li>
+                <li><strong>Context</strong>：任务上下文，Task之间的信息传递</li>
+            </ul>
+
+            <h3 id="c1-planning">6. 任务规划机制</h3>
+            <p>CrewAI的任务规划通过<strong>Task定义时指定依赖</strong>实现：</p>
+            <ul>
+                <li>每个Task可以指定context参数，指明其依赖的其他Task</li>
+                <li>Hierarchical模式会自动创建Manager Agent进行任务分配</li>
+                <li>支持条件任务执行逻辑</li>
+            </ul>
+
+            <h3 id="c1-workflow">7. 工作流编排方式</h3>
+            <pre><code># 使用YAML配置工作流
+# agents.yaml
+researcher:
+  role: "{topic}研究员"
+  goal: "收集{topic}的最新信息"
+  backstory: "作为专业研究员，你擅长..."
+
+# tasks.yaml
+research_task:
+  description: "调研{topic}领域"
+  expected_output: "详细报告"
+  agent: researcher</code></pre>
+
+            <h3 id="c1-prompt">8. 核心系统提示词设计</h3>
+            <div class="prompt-box">
+                <h4>Agent System Prompt</h4>
+                <pre><code>role: "研究员"
+goal: "发现并分析最新技术趋势"
+backstory: """
+你是一家顶级科技公司的首席研究员，拥有20年的行业经验。
+你擅长从海量信息中提炼关键洞察，对新兴技术有敏锐的直觉。
+你的分析报告以结构清晰、数据充分著称。
+"""
+tools: [web_search, file_reader]
+
+当执行任务时：
+1. 明确理解任务目标
+2. 利用可用工具收集信息
+3. 分析信息的可靠性和相关性
+4. 提供结构化的分析结果</code></pre>
+            </div>
+
+            <h3 id="c1-proscons">9. 优缺点与适用场景</h3>
+            <div class="pros-cons">
+                <div class="feature-card pros">
+                    <h4>✅ 优点</h4>
+                    <ul>
+                        <li><strong>上手简单</strong>：概念直观，API设计人性化</li>
+                        <li><strong>角色扮演强</strong>：通过backstory实现丰富的角色设定</li>
+                        <li><strong>本地模型支持</strong>：可配合Ollama使用本地LLM</li>
+                        <li><strong>社区活跃</strong>：文档丰富，示例众多</li>
+                    </ul>
+                </div>
+                <div class="feature-card cons">
+                    <h4>❌ 缺点</h4>
+                    <ul>
+                        <li><strong>流程固定</strong>：主要支持顺序和层次两种流程</li>
+                        <li><strong>复杂场景受限</strong>：动态路由能力较弱</li>
+                        <li><strong>文档不一致</strong>：快速迭代导致文档滞后</li>
+                    </ul>
+                </div>
+            </div>
+            <p><strong>适用场景</strong>：市场研究、内容创作、数据分析、客服系统、简单自动化流程</p>
+        </section>
+
+        <section id="swarm" class="section">
+            <h2>🔷 OpenAI Swarm</h2>
+            <div class="toc">
+                <h4>目录导航</h4>
+                <ul>
+                    <li><a href="#s1-arch">1. 框架整体架构</a></li>
+                    <li><a href="#s1-agents">2. 核心概念</a></li>
+                    <li><a href="#s1-interaction">3. Handoffs机制</a></li>
+                    <li><a href="#s1-message">4. 消息传递</a></li>
+                    <li><a href="#s1-memory">5. 上下文管理</a></li>
+                    <li><a href="#s1-planning">6. 任务规划</a></li>
+                    <li><a href="#s1-workflow">7. 工作流编排</a></li>
+                    <li><a href="#s1-prompt">8. 系统提示词</a></li>
+                    <li><a href="#s1-proscons">9. 优缺点</a></li>
+                </ul>
+            </div>
+
+            <h3 id="s1-arch">1. 框架整体架构</h3>
+            <p>OpenAI Swarm是OpenAI官方推出的<strong>轻量级多智能体研究框架</strong>，核心设计哲学是"极简主义"。它只有两个核心概念：Agent（智能体）和Handoffs（交接），却实现了灵活的多智能体协作。</p>
+
+            <div class="architecture-diagram">
+                <h4>Swarm 核心概念</h4>
+                <div class="layer">
+                    <div class="layer-box layer-orchestrator">Agent</div>
+                    <div class="layer-box layer-orchestrator">Handoff</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-specialist">instructions</div>
+                    <div class="layer-box layer-specialist">tools</div>
+                    <div class="layer-box layer-specialist">handoff_functions</div>
+                </div>
+            </div>
+
+            <h3 id="s1-agents">2. 核心概念：Agent与Handoffs</h3>
+            <div class="feature-card">
+                <h4>Agent（智能体）</h4>
+                <p>每个Agent包含：</p>
+                <ul>
+                    <li><strong>instructions</strong>：系统指令，定义Agent行为</li>
+                    <li><strong>tools</strong>：可调用的工具函数</li>
+                    <li><strong>handoff_functions</strong>：交接目标列表</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h4>Handoff（交接）</h4>
+                <p>通过函数返回实现智能体之间的切换：</p>
+                <pre><code># 交接函数示例
+def transfer_to_sales():
+    """切换到销售智能体"""
+    return sales_agent
+
+# 在Agent执行中返回
+result = agent.execute("我想购买产品")
+if result.need_sales:
+    return sales_agent  # 自动转交</code></pre>
+            </div>
+
+            <h3 id="s1-interaction">3. 智能体交互流程</h3>
+            <p>Swarm的交互模式非常简洁：</p>
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">当前Agent处理用户请求</div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">如需切换，返回目标Agent</div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">新Agent继承上下文继续处理</div>
+            </div>
+
+            <h3 id="s1-message">4. 消息传递机制</h3>
+            <p>Swarm通过<strong>函数返回值</strong>传递消息和控制权：</p>
+            <pre><code># Swarm 完整示例
+from swarm import Swarm, Agent
+
+client = Swarm()
+
+def transfer_to_sales():
+    return sales_agent
+
+def transfer_to_support():
+    return support_agent
+
+sales_agent = Agent(
+    name="销售",
+    instructions="你是一个热情的销售代表",
+    functions=[transfer_to_support]
+)
+
+support_agent = Agent(
+    name="客服",
+    instructions="你是一个专业的客服代表",
+    functions=[transfer_to_sales]
+)
+
+triage_agent = Agent(
+    name="接待",
+    instructions="""你是接待员，根据用户需求转接：
+    - 购买相关 → 销售
+    - 问题咨询 → 客服""",
+    functions=[transfer_to_sales, transfer_to_support]
+)
+
+# 启动对话
+response = client.run(
+    agent=triage_agent,
+    messages=[{"role":"user", "content":"我想咨询产品"}]
+)</code></pre>
+
+            <h3 id="s1-memory">5. 上下文管理</h3>
+            <p>Swarm的上下文管理遵循以下原则：</p>
+            <ul>
+                <li>当前Agent的完整上下文会传递给下一个Agent</li>
+                <li>通过函数参数可以携带额外的状态信息</li>
+                <li>不提供持久化存储，所有状态在内存中</li>
+            </ul>
+
+            <h3 id="s1-planning">6. 任务规划</h3>
+            <p>Swarm<strong>本身不提供显式的任务规划</strong>，规划逻辑由开发者通过Handoffs实现：</p>
+            <ul>
+                <li>接待Agent根据用户意图决定转接</li>
+                <li>每个Agent决定何时转交及转交给谁</li>
+                <li>复杂流程需要开发者自行设计状态机</li>
+            </ul>
+
+            <h3 id="s1-workflow">7. 工作流编排</h3>
+            <p>Swarm的工作流通过<strong>Handoff链</strong>实现：</p>
+            <pre><code># 复杂工作流示例
+Agent → Handoff → Agent → Handoff → Agent → ...</code></pre>
+
+            <h3 id="s1-prompt">8. 核心系统提示词</h3>
+            <div class="prompt-box">
+                <h4>Swarm Agent System Prompt</h4>
+                <pre><code>instructions: """
+你是电商平台的AI客服。
+根据用户需求，提供以下服务：
+- 产品推荐
+- 订单查询
+- 退换货处理
+
+如果需要专业帮助，转接到对应专员。
+"""</code></pre>
+            </div>
+
+            <h3 id="s1-proscons">9. 优缺点与适用场景</h3>
+            <div class="pros-cons">
+                <div class="feature-card pros">
+                    <h4>✅ 优点</h4>
+                    <ul>
+                        <li><strong>极简设计</strong>：核心概念只有两个</li>
+                        <li><strong>易于理解</strong>：适合入门学习</li>
+                        <li><strong>轻量快速</strong>：几乎没有额外开销</li>
+                        <li><strong>OpenAI官方</strong>：品质有保障</li>
+                    </ul>
+                </div>
+                <div class="feature-card cons">
+                    <h4>❌ 缺点</h4>
+                    <ul>
+                        <li><strong>功能有限</strong>：缺少高级编排能力</li>
+                        <li><strong>无记忆存储</strong>：状态不持久化</li>
+                        <li><strong>复杂场景受限</strong>：不适合复杂工作流</li>
+                        <li><strong>实验性</strong>：已被Agents SDK取代</li>
+                    </ul>
+                </div>
+            </div>
+            <p><strong>适用场景</strong>：轻量级路由、客服系统、多轮对话分流、简单的多智能体协作</p>
+        </section>
+
+        <section id="metagpt" class="section">
+            <h2>🔷 MetaGPT</h2>
+            <div class="toc">
+                <h4>目录导航</h4>
+                <ul>
+                    <li><a href="#m2-arch">1. 框架整体架构</a></li>
+                    <li><a href="#m2-agents">2. 核心智能体角色</a></li>
+                    <li><a href="#m2-interaction">3. 智能体交互流程</a></li>
+                    <li><a href="#m2-message">4. 消息传递机制</a></li>
+                    <li><a href="#m2-memory">5. 记忆与上下文</a></li>
+                    <li><a href="#m2-planning">6. SOP驱动规划</a></li>
+                    <li><a href="#m2-workflow">7. 工作流编排</a></li>
+                    <li><a href="#m2-prompt">8. 系统提示词</a></li>
+                    <li><a href="#m2-proscons">9. 优缺点</a></li>
+                </ul>
+            </div>
+
+            <h3 id="m2-arch">1. 框架整体架构</h3>
+            <p>MetaGPT是<strong>ICLR 2024</strong>发表的高分论文框架，其核心理念是"Code = SOP(Team)"——将标准作业程序（SOP）具象化，让LLM团队像真实软件公司一样协作。</p>
+
+            <div class="architecture-diagram">
+                <h4>MetaGPT 软件公司模拟</h4>
+                <div class="layer">
+                    <div class="layer-box layer-orchestrator">产品经理 (PM)</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-specialist">架构师 (Architect)</div>
+                    <div class="layer-box layer-specialist">项目经理 (PM)</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-specialist">工程师 (Engineer)</div>
+                    <div class="layer-box layer-specialist">测试 (QA)</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-memory">SOP → 结构化输出</div>
+                </div>
+            </div>
+
+            <h3 id="m2-agents">2. 内置核心智能体角色</h3>
+            <p>MetaGPT模拟软件公司的完整角色：</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>👔 Product Manager (PM)</h4>
+                    <p>需求分析、用户故事编写、优先级排序</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏗️ Architect</h4>
+                    <p>系统设计、API定义、数据结构设计</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📐 Project Manager</h4>
+                    <p>任务分解、进度跟踪、资源协调</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💻 Engineer</h4>
+                    <p>代码实现、调试、优化</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔍 QA Engineer</h4>
+                    <p>测试用例编写、质量把控</p>
+                </div>
+            </div>
+
+            <h3 id="m2-interaction">3. 智能体交互流程</h3>
+            <p>MetaGPT的交互严格遵循SOP定义：</p>
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>PM接收需求</strong> → 编写用户故事和PRD
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>Architect评审</strong> → 设计系统架构和接口
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <strong>Engineer实现</strong> → 基于设计文档编写代码
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <strong>QA测试</strong> → 验证功能完整性
+                </div>
+            </div>
+
+            <h3 id="m2-message">4. 消息传递机制</h3>
+            <p>MetaGPT采用<strong>结构化消息队列</strong>，每个消息都有预定义的格式：</p>
+            <pre><code># MetaGPT 消息结构示例
+class Message:
+    content: str      # 消息内容
+    role: str         # 发送者角色
+    caused_by: str    # 触发原因
+    emit_to: str      # 目标角色
+    priority: int     # 优先级
+
+# 消息类型示例
+{"type": "requirement", "content": "用户登录功能", "role": "pm"}
+{"type": "design", "content": "REST API设计", "role": "architect"}
+{"type": "code", "content": "Python实现", "role": "engineer"}</code></pre>
+
+            <h3 id="m2-memory">5. 记忆与上下文共享</h3>
+            <p>MetaGPT的团队记忆系统：</p>
+            <ul>
+                <li><strong>Environment</strong>：共享工作空间，存储所有文档和代码</li>
+                <li><strong>Role Profiles</strong>：每个角色的背景和职责定义</li>
+                <li><strong>History Messages</strong>：完整的消息历史记录</li>
+                <li><strong>Shared Knowledge</strong>：团队共享的技术知识库</li>
+            </ul>
+
+            <h3 id="m2-planning">6. SOP驱动的任务规划</h3>
+            <p>MetaGPT的核心理念：<strong>Code = SOP(Team)</strong></p>
+            <pre><code># SOP定义示例
+SOP = {
+    "step1": {
+        "actor": "pm",
+        "action": "requirement_analysis",
+        "output": "PRD文档",
+        "next": "step2"
+    },
+    "step2": {
+        "actor": "architect",
+        "action": "system_design",
+        "output": "架构设计",
+        "next": "step3"
+    },
+    ...
+}</code></pre>
+
+            <h3 id="m2-workflow">7. 工作流编排</h3>
+            <p>MetaGPT的Workflow定义：</p>
+            <ul>
+                <li>每个Action定义输入、输出和处理逻辑</li>
+                <li>Actions按SOP顺序执行</li>
+                <li>支持条件分支和并行执行</li>
+                <li>输出结构化文档作为下一环节输入</li>
+            </ul>
+
+            <h3 id="m2-prompt">8. 核心系统提示词</h3>
+            <div class="prompt-box">
+                <h4>MetaGPT Role System Prompt</h4>
+                <pre><code># Product Manager Role
+You are a product manager in a software company.
+Your responsibilities:
+- Analyze user requirements
+- Write user stories and PRDs
+- Prioritize features
+- Communicate with stakeholders
+
+You should output structured documents:
+- Requirements: 需求列表
+- User Story: 用户故事格式
+- Acceptance Criteria: 验收标准</code></pre>
+            </div>
+
+            <h3 id="m2-proscons">9. 优缺点与适用场景</h3>
+            <div class="pros-cons">
+                <div class="feature-card pros">
+                    <h4>✅ 优点</h4>
+                    <ul>
+                        <li><strong>SOP驱动</strong>：流程规范，结果可预期</li>
+                        <li><strong>论文支撑</strong>：ICLR 2024高分，有理论深度</li>
+                        <li><strong>软件工程导向</strong>：非常适合代码生成任务</li>
+                        <li><strong>结构化输出</strong>：每个环节有明确的交付物</li>
+                    </ul>
+                </div>
+                <div class="feature-card cons">
+                    <h4>❌ 缺点</h4>
+                    <ul>
+                        <li><strong>适用面窄</strong>：主要针对软件开发场景</li>
+                        <li><strong>流程固定</strong>：难以适应灵活需求</li>
+                        <li><strong>资源消耗大</strong>：多个LLM调用成本高</li>
+                        <li><strong>学习曲线</strong>：SOP设计需要一定经验</li>
+                    </ul>
+                </div>
+            </div>
+            <p><strong>适用场景</strong>：软件代码生成、需求到代码的完整流水线、自动化软件开发团队</p>
+        </section>
+
+        <section id="mar" class="section">
+            <h2>🔷 MAR（本地多智能体系统）</h2>
+            <div class="toc">
+                <h4>目录导航</h4>
+                <ul>
+                    <li><a href="#mar1-arch">1. 框架整体架构</a></li>
+                    <li><a href="#mar1-agents">2. 核心智能体角色</a></li>
+                    <li><a href="#mar1-interaction">3. 智能体交互流程</a></li>
+                    <li><a href="#mar1-message">4. 消息传递机制</a></li>
+                    <li><a href="#mar1-memory">5. 记忆与上下文</a></li>
+                    <li><a href="#mar1-planning">6. 任务规划机制</a></li>
+                    <li><a href="#mar1-workflow">7. 工作流编排</a></li>
+                    <li><a href="#mar1-prompt">8. 系统提示词</a></li>
+                    <li><a href="#mar1-proscons">9. 优缺点</a></li>
+                </ul>
+            </div>
+
+            <h3 id="mar1-arch">1. 框架整体架构</h3>
+            <p>MAR（Multi-Agent Router）是一个基于<strong>图结构</strong>的本地多智能体系统，通过学习优化的方式确定智能体之间的空间和时间连接关系。系统包含MasRouter（路由决策）和Graph（图执行引擎）两个核心组件。</p>
+
+            <div class="architecture-diagram">
+                <h4>MAR 架构分层</h4>
+                <div class="layer">
+                    <div class="layer-box layer-orchestrator">MasRouter（路由决策）</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-specialist">Graph（图执行引擎）</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-specialist">Agent 1 | Agent 2 | ... | Agent N</div>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="layer">
+                    <div class="layer-box layer-tools">Decision Node（决策节点）</div>
+                    <div class="layer-box layer-tools">Clarify Manager（澄清管理）</div>
+                </div>
+            </div>
+
+            <h3 id="mar1-agents">2. 核心智能体角色</h3>
+            <p>MAR定义了基于领域的角色系统：</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📐 Math Roles（数学领域）</h4>
+                    <p>MathSolver、Mathematician、MathAnalyst、AlgorithmEngineer等</p>
+                    <p>专注数学推理、计算、证明</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💻 Code Roles（代码领域）</h4>
+                    <p>ProgrammingExpert、BugFixer、AlgorithmDesigner等</p>
+                    <p>专注代码生成、调试、优化</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🧠 Commonsense Roles（常识领域）</h4>
+                    <p>Scientist、Economist、Historian、Critic等</p>
+                    <p>专注知识推理和常识问答</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Decision Node（决策节点）</h4>
+                    <p>整合多智能体输出，做出最终决策</p>
+                    <p>支持FinalRefer等多种决策方法</p>
+                </div>
+            </div>
+
+            <h3 id="mar1-interaction">3. 智能体交互流程</h3>
+            <p>MAR通过<strong>空间边（Spatial）</strong>和<strong>时间边（Temporal）</strong>定义智能体间的交互：</p>
+
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>MasRouter接收任务</strong> → 分析查询内容
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>路由决策</strong> → 选择协作方法、角色、LLM
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <strong>构建图结构</strong> → 根据决策构建智能体图
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <strong>执行图</strong> → 按拓扑顺序执行各节点
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <strong>决策节点汇总</strong> → 综合输出最终答案
+                </div>
+            </div>
+
+            <h3 id="mar1-message">4. 消息传递机制</h3>
+            <p>MAR采用<strong>拓扑感知的消息传递</strong>：</p>
+            <pre><code># Agent._execute 方法
+def _execute(self, input, spatial_info, temporal_info, **kwargs):
+    # spatial_info: 来自空间前驱节点的输出
+    # temporal_info: 来自时间前驱节点的输出
+    
+    # 组合所有相关信息
+    prompt = self._process_inputs(
+        input, 
+        spatial_info,  # 当前轮的空间依赖
+        temporal_info   # 历史轮的时间依赖
+    )
+    
+    response = self.llm.gen(prompt)
+    return response</code></pre>
+
+            <h3 id="mar1-memory">5. 记忆与上下文共享</h3>
+            <p>MAR的记忆系统包含两部分：</p>
+            <ul>
+                <li><strong>空间上下文（Spatial Info）</strong>：当前执行轮中，依赖节点的最后输出</li>
+                <li><strong>时间上下文（Temporal Info）</strong>：历史执行轮中，节点的最后记忆</li>
+            </ul>
+            <pre><code># Node.get_spatial_info 方法
+def get_spatial_info(self):
+    spatial_info = {}
+    for predecessor in self.spatial_predecessors:
+        spatial_info[predecessor.id] = {
+            "role": predecessor.role,
+            "output": predecessor.outputs[-1]
+        }
+    return spatial_info
+
+# Node.get_temporal_info 方法
+def get_temporal_info(self):
+    temporal_info = {}
+    for predecessor in self.temporal_predecessors:
+        temporal_info[predecessor.id] = {
+            "role": predecessor.role,
+            "output": predecessor.last_memory['outputs'][-1]
+        }
+    return temporal_info</code></pre>
+
+            <h3 id="mar1-planning">6. 任务规划机制</h3>
+            <p>MAR的任务规划通过<strong>MasRouter</strong>实现：</p>
+            <pre><code>class MasRouter:
+    def forward(self, queries, tasks, llms, collabs):
+        # 1. 任务分类
+        selected_tasks_idx = self.task_classifier(queries, tasks)
+        
+        # 2. 协作方法选择
+        selected_collabs_idx = self.collab_determiner(collabs)
+        
+        # 3. Agent数量确定
+        agent_num = self.num_determiner(queries)
+        
+        # 4. 角色分配
+        selected_roles_idx = self.role_allocation(roles)
+        
+        # 5. LLM分配
+        selected_llms_idx = self.llm_router(llms)
+        
+        # 构建并返回结果
+        return final_result</code></pre>
+
+            <h3 id="mar1-workflow">7. 工作流编排</h3>
+            <p>MAR的Graph执行引擎支持动态工作流：</p>
+            <pre><code># Graph.run 方法
+def run(self, inputs, num_rounds=2):
+    for round in range(num_rounds):
+        # 1. 构建空间连接（基于学习的边权重）
+        log_probs += self.construct_spatial_connection()
+        
+        # 2. 构建时间连接
+        log_probs += self.construct_temporal_connection(round)
+        
+        # 3. 拓扑排序执行
+        in_degree = {node_id: len(node.spatial_predecessors) 
+                     for node_id, node in self.nodes.items()}
+        zero_in_degree_queue = [node_id for node_id, deg 
+                                in in_degree.items() if deg == 0]
+        
+        while zero_in_degree_queue:
+            # 执行节点
+            current_node_id = zero_in_degree_queue.pop(0)
+            self.nodes[current_node_id].execute(inputs)
+            
+            # 更新后继节点的入度
+            for successor in self.nodes[current_node_id].spatial_successors:
+                in_degree[successor.id] -= 1
+                if in_degree[successor.id] == 0:
+                    zero_in_degree_queue.append(successor.id)
+        
+        # 4. 更新记忆
+        self.update_memory()
+    
+    # 5. 决策节点汇总
+    self.connect_decision_node()
+    self.decision_node.execute(inputs)
+    return self.decision_node.outputs</code></pre>
+
+            <h3 id="mar1-prompt">8. 核心系统提示词设计</h3>
+            <p>MAR的角色提示词定义在JSON配置中：</p>
+            <div class="prompt-box">
+                <h4>MathSolver Role Prompt</h4>
+                <pre><code>{
+    "Name": "MathSolver",
+    "MessageAggregation": "PHP",
+    "Description": "You are a math expert. You will be given 
+        a math problem and hints from other agents. Give your 
+        own solving process based on hints.",
+    "OutputFormat": "Calculation"
+}</code></pre>
+            </div>
+            <div class="prompt-box">
+                <h4>Final Node System Prompt (gsm8k)</h4>
+                <pre><code>{
+    "system": "You will be given a math problem, analysis and 
+        code from other agents. Please find the most reliable 
+        answer based on the analysis and results of other agents. 
+        Give reasons for making decisions. The last line of your 
+        output contains only the final result without any units...",
+    "user": "Please provide the final answer based on the analysis 
+        and results of other agents."
+}</code></pre>
+            </div>
+
+            <h3 id="mar1-proscons">9. 优缺点与适用场景</h3>
+            <div class="pros-cons">
+                <div class="feature-card pros">
+                    <h4>✅ 优点</h4>
+                    <ul>
+                        <li><strong>可学习的拓扑</strong>：边权重可优化，适应不同任务</li>
+                        <li><strong>多LLM支持</strong>：支持不同LLM分配给不同角色</li>
+                        <li><strong>空间+时间建模</strong>：同时建模当前轮和历史信息</li>
+                        <li><strong>澄清机制</strong>：内置ClarifyManager进行结果校验</li>
+                    </ul>
+                </div>
+                <div class="feature-card cons">
+                    <h4>❌ 缺点</h4>
+                    <ul>
+                        <li><strong>复杂度较高</strong>：图结构和路由机制较复杂</li>
+                        <li><strong>领域特定</strong>：主要针对数学和推理任务</li>
+                        <li><strong>资源消耗</strong>：VAE学习和多轮执行带来开销</li>
+                        <li><strong>文档较少</strong>：开源但社区支持有限</li>
+                    </ul>
+                </div>
+            </div>
+            <p><strong>适用场景</strong>：数学推理任务（如GSM8K、MATH）、多智能体协作推理、需要优化的拓扑结构</p>
+        </section>
+
+        <section id="comparison" class="section">
+            <h2>📊 五框架综合对比</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>维度</th>
+                        <th>Magentic-One</th>
+                        <th>CrewAI</th>
+                        <th>OpenAI Swarm</th>
+                        <th>MetaGPT</th>
+                        <th>MAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>架构模式</strong></td>
+                        <td>Orchestrator+ Specialists</td>
+                        <td>Crew+Agents+Tasks</td>
+                        <td>Agent+Handoffs</td>
+                        <td>SOP驱动流程</td>
+                        <td>图结构+Router</td>
+                    </tr>
+                    <tr>
+                        <td><strong>核心复杂度</strong></td>
+                        <td>中等</td>
+                        <td>中等</td>
+                        <td>极简</td>
+                        <td>中等</td>
+                        <td>较高</td>
+                    </tr>
+                    <tr>
+                        <td><strong>记忆机制</strong></td>
+                        <td>共享账本</td>
+                        <td>Memory+Knowledge</td>
+                        <td>上下文继承</td>
+                        <td>结构化团队记忆</td>
+                        <td>空间+时间上下文</td>
+                    </tr>
+                    <tr>
+                        <td><strong>规划能力</strong></td>
+                        <td>强（Orchestrator）</td>
+                        <td>中等（Task依赖）</td>
+                        <td>弱（需手动）</td>
+                        <td>强（SOP定义）</td>
+                        <td>强（MasRouter）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>工作流</strong></td>
+                        <td>动态编排</td>
+                        <td>顺序/层次</td>
+                        <td>Handoff链</td>
+                        <td>SOP定义</td>
+                        <td>拓扑排序</td>
+                    </tr>
+                    <tr>
+                        <td><strong>任务类型</strong></td>
+                        <td>网页/文件</td>
+                        <td>研究/创作</td>
+                        <td>轻量路由</td>
+                        <td>软件开发</td>
+                        <td>数学推理</td>
+                    </tr>
+                    <tr>
+                        <td><strong>上手难度</strong></td>
+                        <td>中等</td>
+                        <td>低</td>
+                        <td>极低</td>
+                        <td>中等</td>
+                        <td>较高</td>
+                    </tr>
+                    <tr>
+                        <td><strong>社区支持</strong></td>
+                        <td>强(AutoGen)</td>
+                        <td>强</td>
+                        <td>弱(实验性)</td>
+                        <td>中等</td>
+                        <td>弱</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>选型建议</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎯 选择 Magentic-One</h4>
+                    <p>需要处理复杂网页自动化、多步骤文件操作任务，需要人类监督和透明的任务追踪</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 选择 CrewAI</h4>
+                    <p>需要快速构建AI团队进行研究和内容创作，希望有丰富的角色定义和本地模型支持</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 选择 OpenAI Swarm</h4>
+                    <p>学习多智能体概念，搭建轻量级客服或分流系统，使用OpenAI官方方案</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 选择 MetaGPT</h4>
+                    <p>需要从需求到代码的完整软件开发生成流程，希望用SOP规范团队协作</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 选择 MAR</h4>
+                    <p>专注于数学推理任务，希望通过学习优化智能体拓扑结构，需要多LLM协作</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>多智能体系统框架对比分析 | 数据来源：官方文档、ICLR 2024论文、技术博客</p>
+        <p>Last Updated: 2026-04</p>
+    </footer>
+</body>
+</html>
