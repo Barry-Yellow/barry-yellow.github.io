@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <!-- Background -->
+  <rect width="900" height="520" fill="#f5f7fa" rx="16"/>
+
+  <!-- ===== TOP HALF: Traditional Method ===== -->
+  <rect x="20" y="16" width="860" height="228" fill="#fff" rx="12" stroke="#e0e4e8" stroke-width="1.5"/>
+  <text x="44" y="44" font-size="14" font-weight="700" fill="#c62828">传统方法：从失败点之后，全量重跑所有后续步骤</text>
+
+  <!-- Legend top -->
+  <circle cx="620" cy="38" r="7" fill="#4caf50"/>
+  <text x="632" y="43" font-size="11" fill="#555">正常执行</text>
+  <circle cx="690" cy="38" r="7" fill="#dc2626"/>
+  <text x="702" y="43" font-size="11" fill="#555">失败/重跑</text>
+
+  <!-- === Main branch nodes (top) === -->
+  <!-- n1 -->
+  <circle cx="80" cy="130" r="22" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="80" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n1</text>
+  <!-- n2 -->
+  <circle cx="180" cy="130" r="22" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="180" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n2</text>
+  <!-- n3 — failure node -->
+  <circle cx="280" cy="130" r="22" fill="#dc2626" stroke="#b71c1c" stroke-width="2.5"/>
+  <text x="280" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n3</text>
+  <text x="280" y="165" text-anchor="middle" font-size="10" fill="#dc2626" font-weight="700">✗ 失败</text>
+
+  <!-- After failure: all red (traditional) -->
+  <!-- n4 main -->
+  <circle cx="380" cy="100" r="22" fill="#ef9a9a" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="380" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">n4</text>
+  <!-- n5 main -->
+  <circle cx="480" cy="100" r="22" fill="#ef9a9a" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="480" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">n5</text>
+  <!-- n6 branch -->
+  <circle cx="380" cy="175" r="22" fill="#ef9a9a" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="380" y="180" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">n6</text>
+  <!-- n7 branch -->
+  <circle cx="480" cy="175" r="22" fill="#ef9a9a" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="480" y="180" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">n7</text>
+  <!-- n8 merge -->
+  <circle cx="590" cy="130" r="22" fill="#ef9a9a" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="590" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">n8</text>
+  <!-- n9 end -->
+  <circle cx="700" cy="130" r="22" fill="#ef9a9a" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="700" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">n9</text>
+
+  <!-- Arrows top: main chain -->
+  <line x1="102" y1="130" x2="156" y2="130" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+  <line x1="202" y1="130" x2="256" y2="130" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+  <!-- n3 -> fork -->
+  <line x1="300" y1="118" x2="358" y2="104" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <line x1="300" y1="142" x2="358" y2="169" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <!-- n4->n5 -->
+  <line x1="402" y1="100" x2="456" y2="100" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <!-- n6->n7 -->
+  <line x1="402" y1="175" x2="456" y2="175" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <!-- n5->n8, n7->n8 -->
+  <line x1="502" y1="106" x2="566" y2="122" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <line x1="502" y1="169" x2="566" y2="140" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <!-- n8->n9 -->
+  <line x1="612" y1="130" x2="676" y2="130" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+
+  <!-- "全量重跑" brace label -->
+  <rect x="355" y="60" width="370" height="22" fill="#fce4ec" rx="4"/>
+  <text x="540" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#c62828">← 全量重跑（浪费大量计算）→</text>
+
+  <!-- ===== BOTTOM HALF: AG-Repair ===== -->
+  <rect x="20" y="272" width="860" height="228" fill="#fff" rx="12" stroke="#e0e4e8" stroke-width="1.5"/>
+  <text x="44" y="300" font-size="14" font-weight="700" fill="#0d9488">AG-Repair：只修复根因（红）+ 被污染节点（橙），保留干净节点（绿）</text>
+
+  <!-- Legend bottom -->
+  <circle cx="560" cy="294" r="7" fill="#4caf50"/>
+  <text x="572" y="299" font-size="11" fill="#555">保留 PRESERVE</text>
+  <circle cx="660" cy="294" r="7" fill="#dc2626"/>
+  <text x="672" y="299" font-size="11" fill="#555">根因 RERUN</text>
+  <circle cx="750" cy="294" r="7" fill="#f97316"/>
+  <text x="762" y="299" font-size="11" fill="#555">污染 PATCH/RERUN</text>
+
+  <!-- === Main branch nodes (bottom) === -->
+  <!-- n1 green -->
+  <circle cx="80" cy="390" r="22" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="80" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n1</text>
+  <!-- n2 green -->
+  <circle cx="180" cy="390" r="22" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="180" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n2</text>
+  <!-- n3 red — root cause -->
+  <circle cx="280" cy="390" r="24" fill="#dc2626" stroke="#b71c1c" stroke-width="3"/>
+  <text x="280" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n3</text>
+  <text x="280" y="425" text-anchor="middle" font-size="10" fill="#dc2626" font-weight="700">根因</text>
+
+  <!-- n4 orange (contaminated, upper branch) -->
+  <circle cx="380" cy="360" r="22" fill="#f97316" stroke="#c2410c" stroke-width="2"/>
+  <text x="380" y="365" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n4</text>
+  <!-- n5 orange -->
+  <circle cx="480" cy="360" r="22" fill="#f97316" stroke="#c2410c" stroke-width="2"/>
+  <text x="480" y="365" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n5</text>
+  <!-- n6 green (lower branch — not contaminated) -->
+  <circle cx="380" cy="430" r="22" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="380" y="435" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n6</text>
+  <!-- n7 green -->
+  <circle cx="480" cy="430" r="22" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="480" y="435" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n7</text>
+  <!-- n8 orange (merge, receives contaminated input) -->
+  <circle cx="590" cy="390" r="22" fill="#f97316" stroke="#c2410c" stroke-width="2"/>
+  <text x="590" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n8</text>
+  <!-- n9 green (end, only depends on n8 after repair) -->
+  <circle cx="700" cy="390" r="22" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="700" y="395" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">n9</text>
+
+  <!-- Arrows bottom: main chain -->
+  <line x1="102" y1="390" x2="156" y2="390" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+  <line x1="202" y1="390" x2="256" y2="390" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+  <!-- n3 -> fork -->
+  <line x1="300" y1="378" x2="358" y2="364" stroke="#dc2626" stroke-width="2" marker-end="url(#arr-red)"/>
+  <line x1="300" y1="402" x2="358" y2="424" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+  <!-- n4->n5 orange -->
+  <line x1="402" y1="360" x2="456" y2="360" stroke="#f97316" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <!-- n6->n7 green -->
+  <line x1="402" y1="430" x2="456" y2="430" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+  <!-- n5->n8, n7->n8 -->
+  <line x1="502" y1="366" x2="566" y2="382" stroke="#f97316" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <line x1="502" y1="424" x2="566" y2="400" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+  <!-- n8->n9 -->
+  <line x1="612" y1="390" x2="676" y2="390" stroke="#888" stroke-width="2" marker-end="url(#arr-gray)"/>
+
+  <!-- Repair action labels -->
+  <rect x="258" y="336" width="48" height="16" fill="#fce4ec" rx="3"/>
+  <text x="282" y="348" text-anchor="middle" font-size="9" font-weight="700" fill="#c62828">RERUN</text>
+
+  <rect x="358" y="330" width="48" height="16" fill="#fff3e0" rx="3"/>
+  <text x="382" y="342" text-anchor="middle" font-size="9" font-weight="700" fill="#c2410c">PATCH</text>
+
+  <rect x="458" y="330" width="48" height="16" fill="#fff3e0" rx="3"/>
+  <text x="482" y="342" text-anchor="middle" font-size="9" font-weight="700" fill="#c2410c">PATCH</text>
+
+  <rect x="568" y="360" width="48" height="16" fill="#fff3e0" rx="3"/>
+  <text x="592" y="372" text-anchor="middle" font-size="9" font-weight="700" fill="#c2410c">RERUN</text>
+
+  <rect x="58" y="460" width="48" height="16" fill="#e8f5e9" rx="3"/>
+  <text x="82" y="472" text-anchor="middle" font-size="9" font-weight="700" fill="#2e7d32">KEEP</text>
+  <rect x="158" y="460" width="48" height="16" fill="#e8f5e9" rx="3"/>
+  <text x="182" y="472" text-anchor="middle" font-size="9" font-weight="700" fill="#2e7d32">KEEP</text>
+  <rect x="358" y="450" width="48" height="16" fill="#e8f5e9" rx="3"/>
+  <text x="382" y="462" text-anchor="middle" font-size="9" font-weight="700" fill="#2e7d32">KEEP</text>
+  <rect x="458" y="450" width="48" height="16" fill="#e8f5e9" rx="3"/>
+  <text x="482" y="462" text-anchor="middle" font-size="9" font-weight="700" fill="#2e7d32">KEEP</text>
+  <rect x="678" y="460" width="48" height="16" fill="#e8f5e9" rx="3"/>
+  <text x="702" y="472" text-anchor="middle" font-size="9" font-weight="700" fill="#2e7d32">KEEP</text>
+
+  <!-- Savings label -->
+  <rect x="355" y="480" width="370" height="22" fill="#e8f5e9" rx="4"/>
+  <text x="540" y="495" text-anchor="middle" font-size="12" font-weight="700" fill="#2e7d32">← 仅修复必要节点，保留 5/8 节点 →</text>
+
+  <!-- Divider line -->
+  <line x1="40" y1="256" x2="860" y2="256" stroke="#e0e4e8" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arr-gray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#888"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
+    </marker>
+  </defs>
+</svg>
