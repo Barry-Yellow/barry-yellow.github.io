@@ -2,6 +2,8 @@
   - [AG-Repair 方法论](MAS/Projects/AG-Repair-Methodology.html ':ignore')
   - [AG-Repair 汇报（Z版）](MAS/Projects/12_zClaudeCodehuibao.html ':ignore')
   - [FinAgent 面试汇报](MAS/Projects/FinAgent面试汇报.html ':ignore')
+- **面试准备**
+  - [Agent 面试高频考点](MAS/Projects/Agent面试高频考点.md)
 - **学习笔记**
   - [Claude Code 多智能体架构](MAS/Projects/ClaudeCode的多智能体架构.md)
   - [上下文工程完全指南](MAS/Projects/上下文工程完全指南.md)
