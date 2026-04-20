@@ -49,6 +49,7 @@
 ### 4.1 MAS/ — 多智能体系统（LLM-based）
 
 **`MAS/_sidebar.md`** 结构：
+- 个人项目与学习 → Projects/
 - 拓扑优化 → Topology/
 - 提示词优化 → Prompt/
 - 失败分析 → FailAndWhy/
@@ -58,6 +59,10 @@
 |----------|------|------|
 | `MAS/` 根 | `README.md` | 概述 |
 | | `references.md` | 参考文献列表 |
+| `MAS/Projects/` | `ClaudeCode的多智能体架构.md` | Claude Code 多智能体架构分析 ✅ |
+| | `上下文工程完全指南.md` | 上下文工程方法论 ✅ |
+| | `LangGraph完整指南.md` | LangGraph 完整使用指南 ✅ |
+| | `多格式数据摘要处理.md` | 多格式数据摘要处理流水线 ✅ |
 | `MAS/Topology/` | `MASFrameWork.md` | MAS 框架对比分析（新增，已有 .html 版） |
 | | `DyLAN.md` | DyLAN 论文笔记（内容极少，待补充） |
 | | `AFlow.md` | AFlow 论文笔记（内容极少，待补充） |

@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow-data" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+    <marker id="arrow-tool" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrow-artifact" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6a1b9a"/>
+    </marker>
+    <marker id="arrow-plan" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e65100"/>
+    </marker>
+    <marker id="arrow-context" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#78909c"/>
+    </marker>
+    <marker id="arrow-temporal" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#b0bec5"/>
+    </marker>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0d47a1"/>
+      <stop offset="100%" style="stop-color:#1a73e8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="750" rx="16" fill="#f5f7fa"/>
+
+  <!-- Title bar -->
+  <rect width="1100" height="60" rx="16" fill="url(#headerGrad)"/>
+  <rect y="30" width="1100" height="30" fill="url(#headerGrad)"/>
+  <text x="550" y="40" text-anchor="middle" fill="white" font-size="22" font-weight="700">MAICG 多智能体交互因果图 — 节点与边类型示意</text>
+
+  <!-- ========== GRAPH AREA ========== -->
+
+  <!-- Node: Planner (agent_step) -->
+  <rect x="60" y="140" width="160" height="70" rx="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" filter="url(#shadow)"/>
+  <text x="100" y="170" font-size="20">🧠</text>
+  <text x="120" y="170" font-size="13" font-weight="700" fill="#0d47a1">Planner</text>
+  <text x="140" y="192" font-size="11" fill="#5f6368" text-anchor="middle">agent_step · 规划分配</text>
+
+  <!-- Node: Researcher (agent_step) -->
+  <rect x="340" y="100" width="160" height="70" rx="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" filter="url(#shadow)"/>
+  <text x="380" y="130" font-size="20">🧠</text>
+  <text x="400" y="130" font-size="13" font-weight="700" fill="#0d47a1">Researcher</text>
+  <text x="420" y="152" font-size="11" fill="#5f6368" text-anchor="middle">agent_step · 调研推理</text>
+
+  <!-- Node: Tool Call (search) -->
+  <rect x="580" y="100" width="160" height="70" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="620" y="130" font-size="20">🔧</text>
+  <text x="640" y="130" font-size="13" font-weight="700" fill="#2e7d32">call_search</text>
+  <text x="660" y="152" font-size="11" fill="#5f6368" text-anchor="middle">tool_call · 搜索请求</text>
+
+  <!-- Node: Tool Result -->
+  <rect x="820" y="100" width="160" height="70" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="860" y="130" font-size="20">📋</text>
+  <text x="880" y="130" font-size="13" font-weight="700" fill="#2e7d32">search_result</text>
+  <text x="900" y="152" font-size="11" fill="#5f6368" text-anchor="middle">tool_result · 搜索返回</text>
+
+  <!-- Node: Coder (agent_step) -->
+  <rect x="340" y="220" width="160" height="70" rx="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" filter="url(#shadow)"/>
+  <text x="380" y="250" font-size="20">🧠</text>
+  <text x="400" y="250" font-size="13" font-weight="700" fill="#0d47a1">Coder</text>
+  <text x="420" y="272" font-size="11" fill="#5f6368" text-anchor="middle">agent_step · 编码执行</text>
+
+  <!-- Node: Artifact (shared code file) -->
+  <rect x="620" y="280" width="160" height="70" rx="12" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" filter="url(#shadow)"/>
+  <text x="660" y="310" font-size="20">📦</text>
+  <text x="680" y="310" font-size="13" font-weight="700" fill="#6a1b9a">code.py</text>
+  <text x="700" y="332" font-size="11" fill="#5f6368" text-anchor="middle">artifact · 共享代码文件</text>
+
+  <!-- Node: Reviewer (agent_step) -->
+  <rect x="620" y="400" width="160" height="70" rx="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" filter="url(#shadow)"/>
+  <text x="660" y="430" font-size="20">🧠</text>
+  <text x="680" y="430" font-size="13" font-weight="700" fill="#0d47a1">Reviewer</text>
+  <text x="700" y="452" font-size="11" fill="#5f6368" text-anchor="middle">agent_step · 审查反馈</text>
+
+  <!-- Node: Checkpoint -->
+  <rect x="340" y="380" width="160" height="70" rx="12" fill="#fff8e1" stroke="#f9a825" stroke-width="2" filter="url(#shadow)"/>
+  <text x="380" y="410" font-size="20">💾</text>
+  <text x="400" y="410" font-size="13" font-weight="700" fill="#f57f17">Checkpoint</text>
+  <text x="420" y="432" font-size="11" fill="#5f6368" text-anchor="middle">checkpoint · 状态快照</text>
+
+  <!-- Node: Verifier Signal -->
+  <rect x="870" y="400" width="160" height="70" rx="12" fill="#fce4ec" stroke="#c62828" stroke-width="2" filter="url(#shadow)"/>
+  <text x="910" y="430" font-size="20">⚠️</text>
+  <text x="930" y="430" font-size="13" font-weight="700" fill="#c62828">verify_fail</text>
+  <text x="950" y="452" font-size="11" fill="#5f6368" text-anchor="middle">verifier_signal · 验证失败</text>
+
+  <!-- ========== EDGES ========== -->
+
+  <!-- plan edge: Planner → Researcher -->
+  <line x1="220" y1="160" x2="338" y2="135" stroke="#e65100" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arrow-plan)"/>
+  <!-- plan edge: Planner → Coder -->
+  <line x1="220" y1="190" x2="338" y2="240" stroke="#e65100" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arrow-plan)"/>
+
+  <!-- data edge: Researcher → Tool Call -->
+  <line x1="500" y1="135" x2="578" y2="135" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrow-data)"/>
+
+  <!-- tool edge: Tool Call → Tool Result -->
+  <line x1="740" y1="135" x2="818" y2="135" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#arrow-tool)"/>
+
+  <!-- data edge: Tool Result → Coder (curved) -->
+  <path d="M 900,170 Q 900,220 500,255" fill="none" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrow-data)"/>
+
+  <!-- artifact edge: Coder → Artifact -->
+  <line x1="500" y1="270" x2="618" y2="300" stroke="#6a1b9a" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrow-artifact)"/>
+
+  <!-- artifact edge: Artifact → Reviewer -->
+  <line x1="700" y1="350" x2="700" y2="398" stroke="#6a1b9a" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrow-artifact)"/>
+
+  <!-- context edge: Coder → Checkpoint -->
+  <line x1="400" y1="290" x2="400" y2="378" stroke="#78909c" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-context)"/>
+
+  <!-- data edge: Reviewer → Verifier -->
+  <line x1="780" y1="435" x2="868" y2="435" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrow-data)"/>
+
+  <!-- temporal edge: Checkpoint → Reviewer (weak) -->
+  <line x1="500" y1="420" x2="618" y2="430" stroke="#b0bec5" stroke-width="1.5" stroke-dasharray="3,5" marker-end="url(#arrow-temporal)"/>
+
+  <!-- ========== LEGEND ========== -->
+  <rect x="40" y="520" width="1020" height="210" rx="12" fill="white" stroke="#e0e4e8" stroke-width="1" filter="url(#shadow)"/>
+  <text x="60" y="550" font-size="15" font-weight="700" fill="#1a1a2e">图例</text>
+
+  <!-- Node type legend -->
+  <text x="60" y="580" font-size="13" font-weight="600" fill="#5f6368">节点类型：</text>
+  <rect x="60" y="592" width="18" height="18" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="84" y="606" font-size="12" fill="#1a1a2e">🧠 agent_step</text>
+  <rect x="210" y="592" width="18" height="18" rx="4" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="234" y="606" font-size="12" fill="#1a1a2e">🔧 tool_call / 📋 tool_result</text>
+  <rect x="450" y="592" width="18" height="18" rx="4" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+  <text x="474" y="606" font-size="12" fill="#1a1a2e">📦 artifact</text>
+  <rect x="590" y="592" width="18" height="18" rx="4" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="614" y="606" font-size="12" fill="#1a1a2e">💾 checkpoint</text>
+  <rect x="740" y="592" width="18" height="18" rx="4" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+  <text x="764" y="606" font-size="12" fill="#1a1a2e">⚠️ verifier_signal</text>
+
+  <!-- Edge type legend -->
+  <text x="60" y="645" font-size="13" font-weight="600" fill="#5f6368">边类型：</text>
+
+  <line x1="60" y1="665" x2="100" y2="665" stroke="#1565c0" stroke-width="2.5"/>
+  <text x="108" y="670" font-size="12" fill="#1a1a2e">data (1.0)</text>
+
+  <line x1="210" y1="665" x2="250" y2="665" stroke="#2e7d32" stroke-width="2.5"/>
+  <text x="258" y="670" font-size="12" fill="#1a1a2e">tool (0.95)</text>
+
+  <line x1="370" y1="665" x2="410" y2="665" stroke="#6a1b9a" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="418" y="670" font-size="12" fill="#1a1a2e">artifact (0.85)</text>
+
+  <line x1="540" y1="665" x2="580" y2="665" stroke="#e65100" stroke-width="2.5" stroke-dasharray="8,4"/>
+  <text x="588" y="670" font-size="12" fill="#1a1a2e">plan (0.7)</text>
+
+  <line x1="680" y1="665" x2="720" y2="665" stroke="#78909c" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="728" y="670" font-size="12" fill="#1a1a2e">context (0.5)</text>
+
+  <line x1="840" y1="665" x2="880" y2="665" stroke="#b0bec5" stroke-width="1.5" stroke-dasharray="3,5"/>
+  <text x="888" y="670" font-size="12" fill="#1a1a2e">temporal (0.1)</text>
+
+  <!-- Description -->
+  <text x="60" y="710" font-size="12" fill="#5f6368">括号内数值为传播权重 — 权重越高，错误越容易沿该边传播。实线表示强依赖，虚线表示弱依赖。</text>
+</svg>

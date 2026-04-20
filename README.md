@@ -13,6 +13,7 @@ Here are some notes mainly for myself to review. I would be glad if you can lear
 - [多智能体系统 (MAS)](/MAS/README.md) - 基于 LLM 的多智能体系统：拓扑优化、提示词优化、失败分析、记忆机制
 - [多智能体强化学习 (MARL)](/MARL/README.md) - QMIX、MAPPO、CTDE 范式、信用分配、安全 MARL
 - [语言模型 (LM)](/LM/README.md) - BERT、Transformer、MoE、Prompt Engineering、RAG、RLHF
+- [模型量化 (Quantization)](/Quantization/README.md) - 旋转量化、KV 缓存量化、KIVI、QuaRot
 
 ---
 
@@ -31,10 +32,9 @@ Here are some notes mainly for myself to review. I would be glad if you can lear
 
 ---
 
-## 💰 量化金融与模型优化
+## 💰 量化金融
 
 - [资产定价 (Asset Pricing)](/asset_pricing/README.md) - SDF、风险溢价、HJ 边界、均值方差前沿
-- [模型量化 (Quantization)](/Quantization/README.md) - 旋转量化、KV 缓存量化、KIVI、QuaRot
 
 ---
 

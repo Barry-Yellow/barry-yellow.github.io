@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AG-Repair 方法论汇报</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #1a73e8;
+    --primary-dark: #0d47a1;
+    --accent: #ff6d00;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --text-light: #5f6368;
+    --border: #e0e4e8;
+    --green: #0d9488;
+    --yellow: #d97706;
+    --red: #dc2626;
+    --purple: #7c3aed;
+  }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+  /* Slide container */
+  .slide { min-height: 100vh; padding: 60px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; border-bottom: 3px solid var(--primary); }
+  .slide:last-child { border-bottom: none; }
+
+  /* Title slide */
+  .slide-title { background: linear-gradient(135deg, #0d47a1 0%, #1a73e8 50%, #4fc3f7 100%); color: #fff; text-align: center; }
+  .slide-title h1 { font-size: 3.2em; font-weight: 800; margin-bottom: 16px; letter-spacing: 2px; }
+  .slide-title .subtitle { font-size: 1.4em; opacity: 0.9; margin-bottom: 40px; }
+  .slide-title .pipeline { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+  .slide-title .pipeline .step { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; padding: 10px 18px; font-size: 0.95em; font-weight: 600; backdrop-filter: blur(4px); }
+  .slide-title .pipeline .arrow { font-size: 1.4em; opacity: 0.7; }
+
+  /* Section headers */
+  .section-num { display: inline-block; background: var(--primary); color: #fff; width: 44px; height: 44px; border-radius: 50%; text-align: center; line-height: 44px; font-size: 1.2em; font-weight: 700; margin-right: 14px; flex-shrink: 0; }
+  h2 { font-size: 2em; font-weight: 700; color: var(--primary-dark); margin-bottom: 30px; display: flex; align-items: center; }
+  h3 { font-size: 1.3em; font-weight: 700; color: var(--text); margin: 20px 0 12px; }
+
+  /* Cards */
+  .card { background: var(--card); border-radius: 12px; padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--primary); }
+  .card.accent { border-left-color: var(--accent); }
+  .card.green { border-left-color: var(--green); }
+  .card.red { border-left-color: var(--red); }
+  .card.purple { border-left-color: var(--purple); }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  /* Formula */
+  .formula { background: #f0f4ff; border: 1px solid #c5d5f7; border-radius: 8px; padding: 16px 24px; margin: 16px 0; font-family: "Times New Roman", serif; font-size: 1.15em; text-align: center; color: #1a1a2e; }
+
+  /* Tags */
+  .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.82em; font-weight: 600; margin: 2px 4px; }
+  .tag-blue { background: #e3f2fd; color: #1565c0; }
+  .tag-green { background: #e8f5e9; color: #2e7d32; }
+  .tag-orange { background: #fff3e0; color: #e65100; }
+  .tag-red { background: #fce4ec; color: #c62828; }
+  .tag-purple { background: #f3e5f5; color: #6a1b9a; }
+  .tag-gray { background: #eceff1; color: #455a64; }
+
+  /* Flow diagram */
+  .flow { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 20px 0; }
+  .flow-box { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.95em; text-align: center; min-width: 100px; }
+  .flow-arrow { font-size: 1.5em; color: var(--text-light); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95em; }
+  th { background: var(--primary); color: #fff; padding: 12px 16px; text-align: left; font-weight: 600; }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef2ff; }
+
+  /* Lists */
+  ul, ol { margin-left: 20px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; }
+
+  /* Highlight box */
+  .highlight { background: linear-gradient(135deg, #fff8e1, #fff3e0); border: 1px solid #ffe0b2; border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .highlight strong { color: var(--accent); }
+
+  /* Node type badges */
+  .node-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .node-item { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
+  .node-item .icon { font-size: 1.8em; margin-bottom: 6px; }
+  .node-item .name { font-weight: 700; font-size: 0.95em; color: var(--primary-dark); }
+  .node-item .desc { font-size: 0.82em; color: var(--text-light); margin-top: 4px; }
+
+  /* Cost gradient bar */
+  .cost-bar { display: flex; align-items: stretch; border-radius: 8px; overflow: hidden; margin: 16px 0; height: 52px; }
+  .cost-bar .seg { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.82em; color: #fff; }
+
+  /* Page number */
+  .page-num { position: absolute; bottom: 20px; right: 40px; font-size: 0.85em; color: var(--text-light); }
+
+  /* Comparison */
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin: 20px 0; }
+  .vs-divider { font-size: 1.6em; font-weight: 800; color: var(--accent); }
+
+  /* Print */
+  @media print { .slide { page-break-after: always; min-height: auto; padding: 40px; } }
+  @media (max-width: 768px) { .slide { padding: 30px 20px; } .grid-2, .grid-3 { grid-template-columns: 1fr; } h2 { font-size: 1.5em; } .slide-title h1 { font-size: 2em; } }
+</style>
+</head>
+<body>
+<!-- ==================== SLIDE 1: Title ==================== -->
+<div class="slide slide-title">
+  <h1>AG-Repair 方法论</h1>
+  <div class="subtitle">面向多智能体系统长错误轨迹的自动化修复框架</div>
+  <div class="pipeline">
+    <div class="step">轨迹采集</div><div class="arrow">→</div>
+    <div class="step">因果图构建</div><div class="arrow">→</div>
+    <div class="step">根因定位</div><div class="arrow">→</div>
+    <div class="step">影响边界识别</div><div class="arrow">→</div>
+    <div class="step">修复动作生成</div><div class="arrow">→</div>
+    <div class="step">增量重执行</div><div class="arrow">→</div>
+    <div class="step">一致性验证</div>
+  </div>
+  <p style="margin-top:40px;opacity:0.8;font-size:0.95em;">核心思想：不丢弃整条失败轨迹，而是定位最小修复范围，增量恢复</p>
+  <div class="page-num" style="color:rgba(255,255,255,0.6)">1</div>
+</div>
+
+<!-- ==================== SLIDE 2: Problem & Motivation ==================== -->
+<div class="slide">
+  <h2><span class="section-num">1</span>问题定义与动机</h2>
+  <div class="vs">
+    <div class="card red">
+      <h3>传统方法的问题</h3>
+      <p>发现错误后，从错误点开始<strong>全量重跑</strong>所有后续步骤</p>
+      <ul style="margin-top:12px;">
+        <li>假设"错误点之后的所有内容都失效"</li>
+        <li>大量无意义重跑，浪费计算资源</li>
+        <li>无法区分"真正被污染"和"只是时间上在后面"</li>
+      </ul>
+    </div>
+    <div class="vs-divider">VS</div>
+    <div class="card green">
+      <h3>AG-Repair 的思路</h3>
+      <p>将失败轨迹视为<strong>可分析、可切分、可局部修补</strong>的结构化过程</p>
+      <ul style="margin-top:12px;">
+        <li>通过依赖建模找出真正的信息传播路径</li>
+        <li>只修复必要的最小子图</li>
+        <li>保留未被污染的有效执行结果</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>修复目标的四个约束：</strong>
+    <div class="grid-2" style="margin-top:12px;">
+      <div><span class="tag tag-blue">正确性</span> 修复后轨迹满足任务目标或推进里程碑</div>
+      <div><span class="tag tag-green">最小干预</span> 尽量减少需要重执行的节点数</div>
+      <div><span class="tag tag-orange">最大复用</span> 尽量保留原轨迹中未被污染的部分</div>
+      <div><span class="tag tag-purple">一致性</span> 新旧轨迹在接口、逻辑和状态上不冲突</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>执行轨迹的形式化定义</h3>
+    <div class="formula">T = ⟨ e₁, e₂, ..., eₙ ⟩</div>
+    <p>每个事件 eᵢ 是一次可观测执行单元：agent 推理输出、工具调用、工具返回、artifact 写入、checkpoint、verifier 信号</p>
+  </div>
+  <div class="page-num">2</div>
+</div>
+
+<!-- ==================== SLIDE 3: MAICG Graph Construction ==================== -->
+<div class="slide">
+  <h2><span class="section-num">2</span>因果图构建 — 从线性日志到 MAICG 图结构</h2>
+
+  <div class="card accent">
+    <h3>核心前提</h3>
+    <p>多智能体执行过程<strong>不是单纯的线性链</strong>，而是具有复杂依赖关系的交互系统。一个节点是否受错误影响，不能只看它是否出现在错误点之后，还必须看它是否<strong>真正使用了错误信息</strong>。</p>
+    <div class="formula">G = (V, E) — 多智能体交互因果图 (MAICG)</div>
+  </div>
+
+  <h3>节点类型 (V)</h3>
+  <div class="node-grid">
+    <div class="node-item"><div class="icon">🧠</div><div class="name">agent_step</div><div class="desc">agent 的一次推理输出</div></div>
+    <div class="node-item"><div class="icon">🔧</div><div class="name">tool_call</div><div class="desc">一次工具调用请求</div></div>
+    <div class="node-item"><div class="icon">📋</div><div class="name">tool_result</div><div class="desc">工具执行返回结果</div></div>
+    <div class="node-item"><div class="icon">📦</div><div class="name">artifact</div><div class="desc">共享对象（代码、搜索结果等）</div></div>
+    <div class="node-item"><div class="icon">💾</div><div class="name">checkpoint</div><div class="desc">可恢复状态快照</div></div>
+    <div class="node-item"><div class="icon">⚠️</div><div class="name">verifier_signal</div><div class="desc">验证器失败/违例信号</div></div>
+  </div>
+
+  <h3>边类型 (E) — 六类因果依赖</h3>
+  <table>
+    <tr><th>边类型</th><th>含义</th><th>示例</th><th>传播权重</th></tr>
+    <tr><td><span class="tag tag-blue">data</span></td><td>显式数据依赖</td><td>某步直接读取前一步输出</td><td style="font-weight:700;color:var(--red)">1.0</td></tr>
+    <tr><td><span class="tag tag-green">tool</span></td><td>工具调用 ↔ 工具结果</td><td>call_search → search_result</td><td style="font-weight:700;color:var(--red)">0.95</td></tr>
+    <tr><td><span class="tag tag-purple">artifact</span></td><td>共享 artifact 读写依赖</td><td>writer 写入 → reader 读取同一文件</td><td style="font-weight:700;color:var(--yellow)">0.85</td></tr>
+    <tr><td><span class="tag tag-orange">plan</span></td><td>规划 → 子任务执行</td><td>planner 分配任务 → executor 执行</td><td>0.7</td></tr>
+    <tr><td><span class="tag tag-gray">context</span></td><td>同 agent 跨轮上下文延续</td><td>agent 第3轮 → 第4轮对话</td><td>0.5</td></tr>
+    <tr><td><span class="tag tag-gray">temporal</span></td><td>纯时序相邻（弱依赖）</td><td>仅表示顺序，不代表语义依赖</td><td style="color:var(--text-light)">0.1</td></tr>
+  </table>
+  <p style="margin-top:8px;color:var(--text-light);font-size:0.9em;">关键区分：将"真实信息传播"和"只是时间上发生在后面"分开，这是精确边界识别的基础。</p>
+  <div class="page-num">3</div>
+</div>
+
+<!-- ==================== SLIDE 3.5: MAICG Diagram ==================== -->
+<div class="slide" style="align-items:center;">
+  <h2><span class="section-num">2</span>因果图构建 — MAICG 节点与边类型示意</h2>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;width:100%;">
+    <img src="src/causal_graph.svg" alt="MAICG 因果图" style="max-width:100%;max-height:75vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
+  </div>
+  <div class="page-num">3.1</div>
+</div>
+
+<!-- ==================== SLIDE 4: Graph Construction Process ==================== -->
+<div class="slide">
+  <h2><span class="section-num">2</span>因果图构建 — 两阶段构建过程</h2>
+
+  <div class="grid-2">
+    <div class="card" style="border-left-color:#7c3aed;">
+      <h3>阶段一：节点实例化</h3>
+      <div style="background:#f8f5ff;border-radius:8px;padding:16px;margin-top:10px;">
+        <div style="margin-bottom:10px;">
+          <span class="tag tag-purple">Step 1</span> 从原始轨迹提取标准化事件
+        </div>
+        <div style="text-align:center;font-size:1.2em;color:var(--text-light);margin:6px 0;">↓</div>
+        <div style="margin-bottom:10px;">
+          <span class="tag tag-purple">Step 2</span> 映射为统一的 TraceEvent
+        </div>
+        <div style="text-align:center;font-size:1.2em;color:var(--text-light);margin:6px 0;">↓</div>
+        <div style="margin-bottom:10px;">
+          <span class="tag tag-purple">Step 3</span> 转化为 TrajectoryNode
+        </div>
+        <div style="text-align:center;font-size:1.2em;color:var(--text-light);margin:6px 0;">↓</div>
+        <div>
+          <span class="tag tag-purple">Step 4</span> 若写入 artifact → 额外创建 artifact 节点 + 写入边
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left-color:#0d9488;">
+      <h3>阶段二：依赖补全</h3>
+      <table style="margin-top:10px;">
+        <tr><td><span class="tag tag-gray">context</span></td><td>同一 agent 连续输出</td></tr>
+        <tr><td><span class="tag tag-green">tool</span></td><td>工具调用 ↔ 工具结果</td></tr>
+        <tr><td><span class="tag tag-blue">data</span></td><td>显式声明 depends_on 的事件</td></tr>
+        <tr><td><span class="tag tag-purple">artifact</span></td><td>读写共享对象的事件</td></tr>
+        <tr><td><span class="tag tag-gray">temporal</span></td><td>相邻步骤（弱依赖）</td></tr>
+      </table>
+      <div class="highlight" style="margin-top:16px;">
+        <strong>最终结果：</strong>图既保留了执行顺序，也保留了真正的信息流动结构
+      </div>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>轨迹采集与可恢复状态管理</h3>
+    <div class="grid-3" style="margin-top:12px;">
+      <div style="text-align:center;padding:12px;background:#f0fdf4;border-radius:8px;">
+        <div style="font-size:1.5em;margin-bottom:6px;">📝</div>
+        <div style="font-weight:700;">结构化事件流</div>
+        <div style="font-size:0.85em;color:var(--text-light);margin-top:4px;">JSONL 顺序落盘 + SQLite 索引<br>(run_id, step_id, agent_id...)</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#f0fdf4;border-radius:8px;">
+        <div style="font-size:1.5em;margin-bottom:6px;">💾</div>
+        <div style="font-weight:700;">Checkpoint 快照</div>
+        <div style="font-size:0.85em;color:var(--text-light);margin-top:4px;">对话上下文摘要、agent 状态、<br>artifact 索引、祖先节点、环境元信息</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#f0fdf4;border-radius:8px;">
+        <div style="font-size:1.5em;margin-bottom:6px;">🔄</div>
+        <div style="font-weight:700;">Tool Journal</div>
+        <div style="font-size:0.85em;color:var(--text-light);margin-top:4px;">工具调用可回放日志<br>恢复时优先回放旧结果</div>
+      </div>
+    </div>
+    <p style="margin-top:12px;font-size:0.9em;color:var(--text-light);">Checkpoint 自动捕获时机：规划器输出后、工具调用前后、artifact 写入后、verifier 失败后、分支结束时</p>
+  </div>
+  <div class="page-num">4</div>
+</div>
+
+<!-- ==================== SLIDE 5: Root Cause Localization ==================== -->
+<div class="slide">
+  <h2><span class="section-num">3</span>根因定位 — 找最早、最关键、最值得修的节点</h2>
+
+  <div class="card accent">
+    <h3>定位目标</h3>
+    <p style="font-size:1.1em;">不是回答"哪一步有错误"，而是回答：<br>
+    <strong style="color:var(--accent);font-size:1.15em;">哪一个节点最早引入了对后续任务失败真正有决定性影响的偏差，并且最值得被修复。</strong></p>
+    <p style="margin-top:8px;color:var(--text-light);">定位的不是"最显眼的错误点"，而是"修复价值最高的根因点"。</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Step 1：候选错误发现</h3>
+      <div style="margin-bottom:12px;">
+        <p style="font-weight:700;color:var(--red);margin-bottom:8px;">硬信号（优先）</p>
+        <ul>
+          <li>显式异常 / 工具调用失败</li>
+          <li>协议违规（如声称搜索却无真实证据）</li>
+          <li>verifier 失败 / 约束断言失败</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-weight:700;color:var(--yellow);margin-bottom:8px;">软信号（补充）</p>
+        <ul>
+          <li>结果偏离任务目标</li>
+          <li>下游输出与上游事实冲突</li>
+          <li>边缘条件未覆盖 / 上下文信息丢失</li>
+        </ul>
+      </div>
+      <p style="margin-top:10px;font-size:0.9em;color:var(--text-light);">所有信号统一记录在节点的 <code>signals</code> 字段中</p>
+    </div>
+
+    <div class="card purple">
+      <h3>Step 2：根因评分公式</h3>
+      <div class="formula" style="font-size:1.2em;">
+        S<sub>root</sub>(v) = α·A(v) + β·I(v) + γ·D(v) + δ·R(v)
+      </div>
+      <table style="margin-top:12px;">
+        <tr><th>分量</th><th>含义</th><th>说明</th></tr>
+        <tr><td style="font-weight:700;color:var(--red);">A(v)</td><td>异常强度</td><td>该节点上观测到的错误证据强弱</td></tr>
+        <tr><td style="font-weight:700;color:var(--accent);">I(v)</td><td>影响强度</td><td>从该节点向后能到达多少潜在受影响节点</td></tr>
+        <tr><td style="font-weight:700;color:var(--purple);">D(v)</td><td>偏离程度</td><td>节点结果与任务目标/约束之间的偏差</td></tr>
+        <tr><td style="font-weight:700;color:var(--green);">R(v)</td><td>修复收益</td><td>修复该节点的潜在恢复价值</td></tr>
+      </table>
+      <p style="margin-top:10px;font-size:0.9em;color:var(--text-light);">默认策略：硬信号优先 → A(v) 和 I(v) 权重更高</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>Step 3：根因排序与选择策略</h3>
+    <div class="grid-3">
+      <div style="text-align:center;padding:12px;background:#f0fdf4;border-radius:8px;">
+        <div style="font-size:1.3em;font-weight:700;color:var(--green);">1</div>
+        <div style="font-weight:600;">按 root_score 排序</div>
+        <div style="font-size:0.85em;color:var(--text-light);">保留前若干个高价值根因点</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#f0fdf4;border-radius:8px;">
+        <div style="font-size:1.3em;font-weight:700;color:var(--green);">2</div>
+        <div style="font-weight:600;">首选单根因修复</div>
+        <div style="font-size:0.85em;color:var(--text-light);">缩小初始范围，便于边界传播</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#f0fdf4;border-radius:8px;">
+        <div style="font-size:1.3em;font-weight:700;color:var(--green);">3</div>
+        <div style="font-weight:600;">失败后升级</div>
+        <div style="font-size:0.85em;color:var(--text-light);">首次修复失败 → 多根因联合修复</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">5</div>
+</div>
+
+<!-- ==================== SLIDE 5.5: Error Identification Diagram ==================== -->
+<div class="slide" style="align-items:center;">
+  <h2><span class="section-num">3</span>根因定位 — 候选发现·评分·排序示意</h2>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;width:100%;">
+    <img src="src/error_identification.svg" alt="错误识别与根因定位" style="max-width:100%;max-height:75vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
+  </div>
+  <div class="page-num">5.1</div>
+</div>
+
+<!-- ==================== SLIDE 6: Boundary Identification ==================== -->
+<div class="slide">
+  <h2><span class="section-num">4</span>边界识别 — 区分 Clean / Partial / Invalid</h2>
+
+  <div class="card red">
+    <h3>为什么必须识别边界？</h3>
+    <p>如果只知道"第 50 步错了"，却不知道后续哪些节点真正被污染，就无法做到最小干预。传统方法将错误点之后<strong>全部步骤判为失效</strong>，带来大量无意义重跑。AG-Repair 把错误传播范围建模为<strong>图上的可计算问题</strong>。</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>污染传播模型</h3>
+      <div class="formula">P(v) = max<sub>u∈Pred(v)</sub> P(u) · w(u,v) · λ</div>
+      <table style="margin-top:12px;">
+        <tr><td style="font-weight:700;">P(v)</td><td>节点 v 的污染分数</td></tr>
+        <tr><td style="font-weight:700;">Pred(v)</td><td>所有指向 v 的前驱节点</td></tr>
+        <tr><td style="font-weight:700;">w(u,v)</td><td>边权重（按边类型不同）</td></tr>
+        <tr><td style="font-weight:700;">λ = 0.85</td><td>衰减系数</td></tr>
+      </table>
+      <div style="margin-top:14px;padding:12px;background:#fff8e1;border-radius:6px;font-size:0.9em;">
+        <strong>直观原则：</strong>显式数据依赖 (1.0) 和工具结果依赖 (0.95) 最容易传播错误；纯时序关系 (0.1) 只产生弱影响
+      </div>
+    </div>
+
+    <div class="card purple">
+      <h3>复用评分公式</h3>
+      <p style="font-size:0.9em;color:var(--text-light);margin-bottom:10px;">污染分数不能直接决定是否重跑 — 部分污染的节点可能仍保留大量可用结构</p>
+      <div class="formula">S<sub>reuse</sub> = 0.5·S<sub>correct</sub> + 0.3·(1−P) + 0.2·S<sub>compat</sub></div>
+      <table style="margin-top:12px;">
+        <tr><td style="font-weight:700;">S<sub>correct</sub></td><td>节点本地正确性（权重 50%）</td></tr>
+        <tr><td style="font-weight:700;">1 − P</td><td>未污染程度（权重 30%）</td></tr>
+        <tr><td style="font-weight:700;">S<sub>compat</sub></td><td>与修复后上下文的兼容性（权重 20%）</td></tr>
+      </table>
+      <p style="margin-top:8px;font-size:0.9em;color:var(--text-light);">最终缩放到 0–100 范围</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>节点三级分类 → 直接决定修复动作</h3>
+    <div style="display:flex;gap:16px;margin-top:12px;">
+      <div style="flex:1;background:#e8f5e9;border-radius:10px;padding:18px;text-align:center;">
+        <div style="font-size:2em;font-weight:800;color:#2e7d32;">Clean</div>
+        <div style="font-size:1.1em;font-weight:600;margin:6px 0;">S<sub>reuse</sub> ≥ 80</div>
+        <div style="font-size:0.9em;color:var(--text-light);">完全可复用 → 保留</div>
+      </div>
+      <div style="flex:1;background:#fff3e0;border-radius:10px;padding:18px;text-align:center;">
+        <div style="font-size:2em;font-weight:800;color:#e65100;">Partial</div>
+        <div style="font-size:1.1em;font-weight:600;margin:6px 0;">60 ≤ S<sub>reuse</sub> < 80</div>
+        <div style="font-size:0.9em;color:var(--text-light);">部分可复用 → 优先局部修补</div>
+      </div>
+      <div style="flex:1;background:#fce4ec;border-radius:10px;padding:18px;text-align:center;">
+        <div style="font-size:2em;font-weight:800;color:#c62828;">Invalid</div>
+        <div style="font-size:1.1em;font-weight:600;margin:6px 0;">S<sub>reuse</sub> < 60</div>
+        <div style="font-size:0.9em;color:var(--text-light);">不可复用 → 重放或重写</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>分支级升级策略：</strong>若某分支 Invalid 节点占比 > 40%，或包含高层 planning node 错误 → 整体升级为 <span class="tag tag-red">REWRITE_BRANCH</span>，避免在大面积崩坏的分支上做低收益小修小补。
+  </div>
+  <div class="page-num">6</div>
+</div>
+
+<!-- ==================== SLIDE 7: Repair Action Generation ==================== -->
+<div class="slide">
+  <h2><span class="section-num">5</span>修复规划 — 从受限动作空间选择最低代价动作</h2>
+
+  <div class="card accent">
+    <h3>设计理念</h3>
+    <p>不让模型自由生成"应该怎么修"，而是将修复规划视为<strong>受限决策问题</strong>：先识别错误模式，再在固定动作空间中做<strong>成本感知选择</strong>。</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>五类错误模式</h3>
+      <table>
+        <tr><th>错误模式</th><th>含义</th></tr>
+        <tr><td><span class="tag tag-red">evidence_fabrication</span></td><td>伪造证据 / 事实获取失败</td></tr>
+        <tr><td><span class="tag tag-orange">tool_call_error</span></td><td>工具参数错误 / 调用失败</td></tr>
+        <tr><td><span class="tag tag-purple">context_drop</span></td><td>上下文传递失败 / 信息丢失</td></tr>
+        <tr><td><span class="tag tag-blue">reasoning_bug</span></td><td>局部逻辑推理错误</td></tr>
+        <tr><td><span class="tag tag-gray">plan_bug</span></td><td>高层规划错误</td></tr>
+      </table>
+    </div>
+
+    <div class="card purple">
+      <h3>六种修复动作</h3>
+      <table>
+        <tr><th>动作</th><th>含义</th></tr>
+        <tr><td><span class="tag tag-green">PRESERVE</span></td><td>完全保留，不动</td></tr>
+        <tr><td><span class="tag tag-blue">PATCH</span></td><td>原位局部修补</td></tr>
+        <tr><td><span class="tag tag-blue">REPLAY_TOOL</span></td><td>仅重放工具调用</td></tr>
+        <tr><td><span class="tag tag-orange">RERUN_NODE</span></td><td>仅重跑单节点</td></tr>
+        <tr><td><span class="tag tag-red">RERUN_BRANCH</span></td><td>重跑整个分支</td></tr>
+        <tr><td><span class="tag tag-red">REWRITE_BRANCH</span></td><td>重写整个分支</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>代价梯度</h3>
+  <div class="cost-bar">
+    <div class="seg" style="background:#2e7d32;">PATCH</div>
+    <div class="seg" style="background:#1565c0;">REPLAY_TOOL</div>
+    <div class="seg" style="background:#6a1b9a;">RERUN_NODE</div>
+    <div class="seg" style="background:#e65100;">RERUN_BRANCH</div>
+    <div class="seg" style="background:#c62828;">REWRITE_BRANCH</div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:0.85em;color:var(--text-light);padding:0 4px;">
+    <span>← 代价最低</span><span>代价最高 →</span>
+  </div>
+
+  <div class="card green" style="margin-top:20px;">
+    <h3>决策逻辑映射</h3>
+    <table>
+      <tr><th>节点状态</th><th>默认动作</th><th>决策依据</th></tr>
+      <tr><td>Clean 节点</td><td><span class="tag tag-green">PRESERVE</span></td><td>复用评分 ≥ 80，无需干预</td></tr>
+      <tr><td>Partial 节点</td><td><span class="tag tag-blue">PATCH</span></td><td>局部修补即可恢复</td></tr>
+      <tr><td>Invalid 工具节点</td><td><span class="tag tag-blue">REPLAY_TOOL</span></td><td>仅工具调用出错，重放即可</td></tr>
+      <tr><td>Invalid 普通节点</td><td><span class="tag tag-orange">RERUN_NODE</span></td><td>节点逻辑错误，需重新执行</td></tr>
+      <tr><td>规划错误</td><td><span class="tag tag-red">RERUN_BRANCH</span></td><td>高层规划偏差，影响整个分支</td></tr>
+      <tr><td>分支级严重污染</td><td><span class="tag tag-red">REWRITE_BRANCH</span></td><td>Invalid > 40%，局部修补不经济</td></tr>
+    </table>
+  </div>
+  <div class="page-num">7</div>
+</div>
+
+<!-- ==================== SLIDE 8: Incremental Re-execution ==================== -->
+<div class="slide">
+  <h2><span class="section-num">6</span>增量重执行 — 只重跑必要子图，不动安全区域</h2>
+
+  <div class="card accent">
+    <h3>核心思想</h3>
+    <p>关键不是"重新运行模型"，而是<strong>"只重新运行必要部分，同时让保留部分继续有效"</strong>。</p>
+    <div class="grid-3" style="margin-top:14px;">
+      <div style="text-align:center;padding:10px;background:#fff8e1;border-radius:8px;">
+        <div style="font-weight:700;">能力 1</div>
+        <div style="font-size:0.9em;">从合适的 checkpoint 恢复状态</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:#fff8e1;border-radius:8px;">
+        <div style="font-weight:700;">能力 2</div>
+        <div style="font-size:0.9em;">对无需修改的旧结果做 journal replay</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:#fff8e1;border-radius:8px;">
+        <div style="font-weight:700;">能力 3</div>
+        <div style="font-size:0.9em;">对重跑节点注入修复后的最小依赖上下文</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>恢复起点选择</h3>
+      <p>从<strong>最靠近根因节点、且位于其之前</strong>的 checkpoint 恢复</p>
+      <ul style="margin-top:8px;">
+        <li>尽量缩短重放路径</li>
+        <li>避免将已受污染的状态带入恢复流程</li>
+      </ul>
+    </div>
+    <div class="card purple">
+      <h3>Active Dependency Frontier</h3>
+      <p>不将整条原始轨迹作为上下文，只注入<strong>依赖前沿</strong>：</p>
+      <ul style="margin-top:8px;">
+        <li>直接依赖的上游节点</li>
+        <li>相关的共享 artifact</li>
+        <li>修复后的最新中间结果</li>
+        <li>当前分支必要的规划信息</li>
+      </ul>
+      <p style="margin-top:8px;font-size:0.9em;color:var(--text-light);">显著减少长上下文干扰，降低随机性</p>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>各动作的具体执行方式</h3>
+    <table>
+      <tr><th>动作</th><th>执行方式</th><th>影响范围</th></tr>
+      <tr><td><span class="tag tag-green">PRESERVE</span></td><td>完全保留，不重新执行</td><td>零开销</td></tr>
+      <tr><td><span class="tag tag-blue">PATCH</span></td><td>对原节点内容局部更新（替换错误参数、修补结论、注入缺失字段）</td><td>单节点内部</td></tr>
+      <tr><td><span class="tag tag-blue">REPLAY_TOOL</span></td><td>仅重新执行该工具调用，其他节点继续复用</td><td>单工具调用</td></tr>
+      <tr><td><span class="tag tag-orange">RERUN_NODE</span></td><td>重新运行当前节点，使用修复后的依赖前沿作为输入</td><td>单节点</td></tr>
+      <tr><td><span class="tag tag-red">RERUN_BRANCH</span></td><td>对整个子分支重新运行，保留其它分支与公共节点</td><td>单分支</td></tr>
+      <tr><td><span class="tag tag-red">REWRITE_BRANCH</span></td><td>对整段分支重新生成（局部修补已不经济时）</td><td>单分支（完全重写）</td></tr>
+    </table>
+  </div>
+
+  <div class="highlight">
+    <strong>局部失败的自动升级机制：</strong>修复后未通过局部一致性校验 → 自动升级一级<br>
+    <div class="flow" style="margin-top:10px;">
+      <div class="flow-box" style="background:#e3f2fd;color:#1565c0;">PATCH</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:#e8eaf6;color:#283593;">REPLAY_TOOL</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:#fff3e0;color:#e65100;">RERUN_NODE</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:#fce4ec;color:#c62828;">RERUN_BRANCH</div>
+    </div>
+    <p style="margin-top:8px;font-size:0.9em;color:var(--text-light);">最多允许两轮升级，避免陷入无限重试</p>
+  </div>
+  <div class="page-num">8</div>
+</div>
+
+<!-- ==================== SLIDE 8.5: Repair Actions Diagram ==================== -->
+<div class="slide" style="align-items:center;">
+  <h2><span class="section-num">5</span>修复动作 — 分类·选择·增量重执行示意</h2>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;width:100%;">
+    <img src="src/repair_actions.svg" alt="修复动作生成" style="max-width:100%;max-height:75vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
+  </div>
+  <div class="page-num">8.1</div>
+</div>
+
+<!-- ==================== SLIDE 9: Consistency Verification ==================== -->
+<div class="slide">
+  <h2><span class="section-num">7</span>一致性验证与完整流程示例</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>局部一致性检查</h3>
+      <ul>
+        <li>修补后的输出是否满足下游输入接口</li>
+        <li>被引用的 artifact 是否仍存在</li>
+        <li>工具结果与调用状态是否匹配</li>
+        <li>修复后节点与保留节点之间是否产生直接矛盾</li>
+      </ul>
+      <p style="margin-top:10px;font-size:0.9em;color:var(--text-light);">局部一致性失败 → 当前动作粒度过小 → 升级修复动作</p>
+    </div>
+    <div class="card purple">
+      <h3>全局一致性检查</h3>
+      <ul>
+        <li>是否满足任务成功标准</li>
+        <li>任务里程碑是否前进 (milestone_forward)</li>
+        <li>是否引入了新的错误</li>
+        <li>最终结果是否与原目标兼容</li>
+      </ul>
+      <p style="margin-top:10px;font-size:0.9em;color:var(--text-light);">即使未完全成功，只要显著缩小失败范围或推动关键里程碑，也视为有效改进</p>
+    </div>
+  </div>
+
+  <div class="card accent" style="margin-top:10px;">
+    <h3>完整流程示例 — 网页搜索与事实整合任务</h3>
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin-top:14px;align-items:start;">
+      <span class="tag tag-blue" style="justify-self:end;">Step 1</span>
+      <div><strong>采集轨迹：</strong>planner 规划 → researcher 调用搜索 → 获得结果 → writer 写摘要</div>
+
+      <span class="tag tag-red" style="justify-self:end;">Step 2</span>
+      <div><strong>注入错误：</strong>摘要节点被替换为"伪造搜索证据后直接总结"，标记协议违规 + 验证失败</div>
+
+      <span class="tag tag-purple" style="justify-self:end;">Step 3</span>
+      <div><strong>构建 MAICG：</strong>4 个节点 + artifact 节点，建立 plan/data/tool/artifact/context 边</div>
+
+      <span class="tag tag-orange" style="justify-self:end;">Step 4</span>
+      <div><strong>根因定位：</strong>末端摘要节点检测到 protocol_violation + verification_failure + deviation_score=0.8 → 高根因分数</div>
+
+      <span class="tag tag-green" style="justify-self:end;">Step 5</span>
+      <div><strong>边界传播：</strong>末端错误 → 污染范围集中在最后节点，前面的 planner/tool_call/tool_result 判为可复用</div>
+
+      <span class="tag tag-blue" style="justify-self:end;">Step 6</span>
+      <div><strong>修复动作：</strong>前面步骤 PRESERVE，末端节点 RERUN_NODE（证据伪造 → 升级为真实重放）</div>
+
+      <span class="tag tag-purple" style="justify-self:end;">Step 7</span>
+      <div><strong>增量重放：</strong>从最近 checkpoint 恢复，保留已有搜索结果，仅对末端摘要节点重新执行</div>
+
+      <span class="tag tag-green" style="justify-self:end;">Step 8</span>
+      <div><strong>一致性验证：</strong>检查与旧搜索结果一致性 + 无伪造内容 + 里程碑前进 → 输出 repaired run</div>
+    </div>
+  </div>
+  <div class="page-num">9</div>
+</div>
+
+<!-- ==================== SLIDE 10: Summary ==================== -->
+<div class="slide" style="background:linear-gradient(135deg, #0d47a1 0%, #1a73e8 50%, #4fc3f7 100%);color:#fff;">
+  <h2 style="color:#fff;"><span class="section-num" style="background:rgba(255,255,255,0.25);color:#fff;">∑</span>方法总结 — 三层核心创新</h2>
+
+  <div style="display:flex;flex-direction:column;gap:24px;margin-top:20px;">
+    <div style="background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border-radius:14px;padding:28px 32px;border:1px solid rgba(255,255,255,0.25);">
+      <div style="font-size:1.4em;font-weight:800;margin-bottom:8px;">1. 错误边界识别</div>
+      <p style="font-size:1.05em;opacity:0.95;">把错误传播范围从<strong>经验判断</strong>变成<strong>图上的量化问题</strong> — 通过 MAICG 上的污染传播模型 + 复用评分，精确区分 Clean / Partial / Invalid</p>
+    </div>
+    <div style="background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border-radius:14px;padding:28px 32px;border:1px solid rgba(255,255,255,0.25);">
+      <div style="font-size:1.4em;font-weight:800;margin-bottom:8px;">2. 修复建议生成</div>
+      <p style="font-size:1.05em;opacity:0.95;">把开放式"怎么修"变成<strong>受限动作空间中的成本感知决策</strong> — 六种动作按代价梯度排列，层层升级，可解释可审计</p>
+    </div>
+    <div style="background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border-radius:14px;padding:28px 32px;border:1px solid rgba(255,255,255,0.25);">
+      <div style="font-size:1.4em;font-weight:800;margin-bottom:8px;">3. 增量重执行</div>
+      <p style="font-size:1.05em;opacity:0.95;">把"从错误点之后全部重来"变成<strong>"从最近安全状态出发，仅重放必要子图"</strong> — 依赖 checkpoint + journal replay + Active Dependency Frontier</p>
+    </div>
+  </div>
+
+  <div style="margin-top:36px;text-align:center;padding:20px;background:rgba(255,255,255,0.1);border-radius:10px;border:1px solid rgba(255,255,255,0.2);">
+    <p style="font-size:1.2em;font-weight:600;">AG-Repair 不只是一个 failure attribution 框架</p>
+    <p style="font-size:1.4em;font-weight:800;margin-top:6px;">而是一套真正面向 failure recovery 的完整方法论</p>
+  </div>
+  <div class="page-num" style="color:rgba(255,255,255,0.6)">10</div>
+</div>
+
+</body>
+</html>

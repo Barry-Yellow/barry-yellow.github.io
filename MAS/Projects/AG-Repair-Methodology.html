@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AG-Repair 方法论</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<style>
+:root {
+  --primary: #1a365d;
+  --primary-light: #2b6cb0;
+  --accent: #3182ce;
+  --accent-light: #ebf8ff;
+  --bg: #ffffff;
+  --bg-alt: #f7fafc;
+  --text: #1a202c;
+  --text-light: #4a5568;
+  --border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0,0,0,0.1);
+  --radius: 8px;
+  --sidebar-w: 280px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: var(--text);
+  background: var(--bg-alt);
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--primary);
+  color: #fff;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 30px 0;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 0 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.sidebar a {
+  display: block;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  padding: 8px 24px;
+  font-size: 13.5px;
+  transition: all .2s;
+  border-left: 3px solid transparent;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+  border-left-color: #63b3ed;
+}
+
+.sidebar a.sub {
+  padding-left: 40px;
+  font-size: 12.5px;
+}
+
+.main {
+  margin-left: var(--sidebar-w);
+  max-width: 900px;
+  margin-right: auto;
+  padding: 40px 50px 80px;
+  background: var(--bg);
+  min-height: 100vh;
+  box-shadow: -1px 0 0 var(--border);
+}
+
+.hero {
+  text-align: center;
+  padding: 50px 0 40px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid var(--border);
+}
+
+.hero h1 {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.hero .subtitle {
+  font-size: 16px;
+  color: var(--text-light);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.hero .pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 28px;
+  font-size: 13px;
+}
+
+.hero .pipeline .step {
+  background: var(--accent);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.hero .pipeline .arrow {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 48px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent);
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-light);
+  margin: 32px 0 14px;
+}
+
+h4 {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 22px 0 10px;
+}
+
+p { margin-bottom: 14px; }
+
+ul, ol {
+  margin: 10px 0 16px 24px;
+}
+
+li { margin-bottom: 6px; }
+
+strong { color: var(--primary); }
+
+code {
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+}
+
+pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 14px 0 18px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+.formula-box {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 18px 24px;
+  margin: 16px 0 20px;
+  text-align: center;
+  overflow-x: auto;
+}
+
+.info-box {
+  background: var(--accent-light);
+  border: 1px solid #bee3f8;
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 16px 0 20px;
+}
+
+.info-box .label {
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.warn-box {
+  background: #fffff0;
+  border: 1px solid #fefcbf;
+  border-left: 4px solid #d69e2e;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 16px 0 20px;
+}
+
+.warn-box .label {
+  font-weight: 700;
+  color: #d69e2e;
+  margin-bottom: 6px;
+  font-size: 13.5px;
+}
+
+.highlight-box {
+  background: #f0fff4;
+  border: 1px solid #c6f6d5;
+  border-left: 4px solid #38a169;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 16px 0 20px;
+}
+
+.highlight-box .label {
+  font-weight: 700;
+  color: #38a169;
+  margin-bottom: 6px;
+  font-size: 13.5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 22px;
+  font-size: 14px;
+}
+
+th {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+tr:nth-child(even) td { background: var(--bg-alt); }
+
+tr:hover td { background: var(--accent-light); }
+
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 2px 3px;
+}
+
+.tag-blue { background: #bee3f8; color: #2b6cb0; }
+.tag-green { background: #c6f6d5; color: #276749; }
+.tag-orange { background: #feebc8; color: #c05621; }
+.tag-red { background: #fed7d7; color: #c53030; }
+.tag-purple { background: #e9d8fd; color: #6b46c1; }
+.tag-gray { background: #e2e8f0; color: #4a5568; }
+
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.flow-diagram .node {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}
+
+.flow-diagram .node.accent {
+  background: var(--accent);
+}
+
+.flow-diagram .node.green {
+  background: #38a169;
+}
+
+.flow-diagram .arrow {
+  font-size: 20px;
+  color: var(--text-light);
+  font-weight: 700;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 16px 0 22px;
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.card .card-title {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+  font-size: 14.5px;
+}
+
+.card .card-desc {
+  font-size: 13.5px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.step-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 16px 0 22px;
+}
+
+.step-item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+}
+
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: -8px;
+  width: 2px;
+  background: var(--border);
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.step-content {
+  flex: 1;
+  padding-bottom: 20px;
+}
+
+.step-content .step-title {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.step-content .step-desc {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0 22px;
+}
+
+.comparison .col {
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.comparison .col.old {
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+}
+
+.comparison .col.new {
+  background: #f0fff4;
+  border: 1px solid #c6f6d5;
+}
+
+.comparison .col .col-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 14.5px;
+}
+
+.comparison .col.old .col-title { color: #c53030; }
+.comparison .col.new .col-title { color: #276749; }
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0 22px;
+}
+
+.module-item {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.module-item .mod-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.module-item .mod-name {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--primary);
+}
+
+.module-item .mod-desc {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 40px 0;
+}
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .comparison { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .sidebar { display: none; }
+  .main { margin-left: 0; box-shadow: none; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-title">AG-Repair 方法论</div>
+  <a href="#sec1">1. 方法概述</a>
+  <a href="#sec2">2. 问题定义</a>
+  <a href="#sec2-1" class="sub">2.1 多智能体执行轨迹</a>
+  <a href="#sec2-2" class="sub">2.2 修复目标</a>
+  <a href="#sec3">3. 统一表示：MAICG</a>
+  <a href="#sec3-1" class="sub">3.1 从线性轨迹到图结构</a>
+  <a href="#sec3-2" class="sub">3.2 节点类型</a>
+  <a href="#sec3-3" class="sub">3.3 边类型</a>
+  <a href="#sec3-4" class="sub">3.4 图构建过程</a>
+  <a href="#sec4">4. 轨迹采集与状态管理</a>
+  <a href="#sec4-1" class="sub">4.1 采集目标</a>
+  <a href="#sec4-2" class="sub">4.2 事件存储</a>
+  <a href="#sec4-3" class="sub">4.3 Checkpoint 设计</a>
+  <a href="#sec4-4" class="sub">4.4 Tool Journal</a>
+  <a href="#sec5">5. 根因定位</a>
+  <a href="#sec5-1" class="sub">5.1 根因定位的目标</a>
+  <a href="#sec5-2" class="sub">5.2 候选错误发现</a>
+  <a href="#sec5-3" class="sub">5.3 根因评分</a>
+  <a href="#sec5-4" class="sub">5.4 根因排序结果</a>
+  <a href="#sec6">6. 错误影响边界识别</a>
+  <a href="#sec6-1" class="sub">6.1 为什么必须识别边界</a>
+  <a href="#sec6-2" class="sub">6.2 污染传播模型</a>
+  <a href="#sec6-3" class="sub">6.3 节点复用评分</a>
+  <a href="#sec6-4" class="sub">6.4 节点分类</a>
+  <a href="#sec6-5" class="sub">6.5 分支级升级策略</a>
+  <a href="#sec7">7. 修复动作生成</a>
+  <a href="#sec8">8. 增量重执行</a>
+  <a href="#sec9">9. 一致性验证</a>
+  <a href="#sec10">10. 合成数据与故障注入</a>
+  <a href="#sec11">11. 全流程执行示例</a>
+  <a href="#sec12">12. 工程实现映射</a>
+</nav>
+
+<div class="main">
+
+<div class="hero">
+  <h1>AG-Repair 方法论</h1>
+  <p class="subtitle">多智能体系统长轨迹失效的自动化修复与增量恢复框架</p>
+  <div class="pipeline">
+    <span class="step">轨迹采集</span><span class="arrow">→</span>
+    <span class="step">因果图构建</span><span class="arrow">→</span>
+    <span class="step">根因定位</span><span class="arrow">→</span>
+    <span class="step">影响边界识别</span><span class="arrow">→</span>
+    <span class="step">修复动作生成</span><span class="arrow">→</span>
+    <span class="step">增量重执行</span><span class="arrow">→</span>
+    <span class="step">一致性验证</span>
+  </div>
+</div>
+
+<!-- ===== Section 1 ===== -->
+<h2 id="sec1">1. 方法概述</h2>
+
+<p>AG-Repair 的目标是解决多智能体系统在长轨迹执行过程中出现的失效问题，并在尽可能保留原有有效执行结果的前提下，完成自动化修复与增量恢复。</p>
+
+<div class="comparison">
+  <div class="col old">
+    <div class="col-title">❌ 传统方法</div>
+    <p>发现错误后从错误点开始<strong>全量重跑</strong>，假设"错误点之后的所有内容都失效"</p>
+  </div>
+  <div class="col new">
+    <div class="col-title">✅ AG-Repair</div>
+    <p>将失败执行视为<strong>可分析、可切分、可局部修补</strong>的结构化过程，通过依赖建模与增量重放，将修复范围缩小到最小子图</p>
+  </div>
+</div>
+
+<p>整个框架围绕一条完整闭环展开，该闭环的设计目标有四个：</p>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title">🎯 精准定位</div>
+    <div class="card-desc">在长轨迹中找出真正需要修复的关键错误点，而不是只做表面错误检测</div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 量化影响</div>
+    <div class="card-desc">对错误影响范围进行量化，区分哪些节点仍然可复用，哪些节点必须修补或重跑</div>
+  </div>
+  <div class="card">
+    <div class="card-title">💰 成本感知</div>
+    <div class="card-desc">用成本感知的方式生成修复方案，优先选择代价最小、风险最低的动作</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔄 增量恢复</div>
+    <div class="card-desc">修复后只重放必要部分，并通过一致性校验确保新轨迹正确接回原任务流程</div>
+  </div>
+</div>
+
+<p>为了实现这四个目标，AG-Repair 将多智能体运行过程统一建模为一个<strong>多智能体交互因果图</strong>，并在其上执行后续分析与恢复。</p>
+
+<hr class="section-divider">
+
+<!-- ===== Section 2 ===== -->
+<h2 id="sec2">2. 问题定义</h2>
+
+<h3 id="sec2-1">2.1 多智能体执行轨迹</h3>
+
+<p>设一个多智能体系统执行某个复杂任务后，产生一条执行轨迹：</p>
+
+<div class="formula-box">
+  $$T = \langle e_1, e_2, \ldots, e_n \rangle$$
+</div>
+
+<p>其中每个事件 $e_i$ 表示一次可观测执行单元，例如：</p>
+
+<table>
+  <thead><tr><th>事件类型</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><code>agent_step</code></td><td>某个 agent 输出一步推理结果</td></tr>
+    <tr><td><code>tool_call</code></td><td>某个 agent 发起一次工具调用</td></tr>
+    <tr><td><code>tool_result</code></td><td>某个工具返回一次执行结果</td></tr>
+    <tr><td><code>artifact</code></td><td>某个共享 artifact 被写入或更新</td></tr>
+    <tr><td><code>checkpoint</code></td><td>系统生成一次 checkpoint</td></tr>
+    <tr><td><code>verifier_signal</code></td><td>verifier 发出一次失败信号</td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <div class="label">关键转变</div>
+  <p>在传统方法中，这条轨迹往往只被看作一段<strong>时序日志</strong>；而在 AG-Repair 中，我们将其转换为<strong>图结构</strong>，以保留事件之间的真实依赖关系。</p>
+</div>
+
+<h3 id="sec2-2">2.2 修复目标</h3>
+
+<p>给定一条失败轨迹 $T$，修复系统需要构造一条新轨迹 $T'$，满足以下条件：</p>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title">✅ 正确性</div>
+    <div class="card-desc">修复后的轨迹能够满足任务目标或显著推进任务里程碑</div>
+  </div>
+  <div class="card">
+    <div class="card-title">✂️ 最小干预</div>
+    <div class="card-desc">尽量减少需要重执行的节点数</div>
+  </div>
+  <div class="card">
+    <div class="card-title">♻️ 最大复用</div>
+    <div class="card-desc">尽量保留原轨迹中未被污染的部分</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔗 一致性</div>
+    <div class="card-desc">新轨迹与保留轨迹之间在接口、逻辑和状态上不发生冲突</div>
+  </div>
+</div>
+
+<div class="warn-box">
+  <div class="label">核心优化目标</div>
+  <p>AG-Repair 优化的不是单一"成功率"，而是在<strong>"修复成功"</strong>和<strong>"重跑代价"</strong>之间寻找平衡。</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== Section 3 ===== -->
+<h2 id="sec3">3. 统一表示：多智能体交互因果图</h2>
+
+<h3 id="sec3-1">3.1 从线性轨迹到图结构</h3>
+
+<p>AG-Repair 的核心前提是：多智能体执行过程不是单纯的线性链，而是一个具有复杂依赖关系的交互系统。一个节点是否受错误影响，不能只看它是否出现在错误点之后，还必须看它是否<strong>真正使用了错误信息</strong>。</p>
+
+<p>因此，我们构建一个多智能体交互因果图（Multi-Agent Interaction Causal Graph, <strong>MAICG</strong>）：</p>
+
+<div class="formula-box">
+  $$G = (V, E)$$
+</div>
+
+<p>其中 $V$ 表示轨迹中的结构化节点集合，$E$ 表示节点之间的依赖边集合。</p>
+
+<h3 id="sec3-2">3.2 节点类型</h3>
+
+<table>
+  <thead><tr><th>节点类型</th><th>说明</th><th>标签</th></tr></thead>
+  <tbody>
+    <tr><td><code>agent_step</code></td><td>某个 agent 的一次输出或推理步骤</td><td><span class="tag tag-blue">Agent</span></td></tr>
+    <tr><td><code>tool_call</code></td><td>一次工具调用请求</td><td><span class="tag tag-orange">Tool</span></td></tr>
+    <tr><td><code>tool_result</code></td><td>一次工具执行返回</td><td><span class="tag tag-orange">Tool</span></td></tr>
+    <tr><td><code>artifact</code></td><td>共享对象（代码文件、搜索结果等）</td><td><span class="tag tag-purple">Artifact</span></td></tr>
+    <tr><td><code>checkpoint</code></td><td>可恢复状态快照</td><td><span class="tag tag-green">State</span></td></tr>
+    <tr><td><code>verifier_signal</code></td><td>验证器发出的失败或约束违例信号</td><td><span class="tag tag-red">Signal</span></td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <div class="label">设计意义</div>
+  <p><strong>1.</strong> 使系统不再只能分析"agent 说了什么"，而是同时追踪工具调用、共享对象和恢复状态。</p>
+  <p><strong>2.</strong> 为后续增量重放提供了更细粒度的修复单元。</p>
+</div>
+
+<h3 id="sec3-3">3.3 边类型</h3>
+
+<p>边表示节点之间的因果依赖。AG-Repair 使用六类边：</p>
+
+<table>
+  <thead><tr><th>边类型</th><th>含义</th><th>传播权重</th></tr></thead>
+  <tbody>
+    <tr><td><code>data</code></td><td>显式数据依赖，如某一步直接读取前一步输出</td><td><span class="tag tag-red">1.0</span></td></tr>
+    <tr><td><code>tool</code></td><td>工具调用与工具结果之间的对应关系</td><td><span class="tag tag-orange">0.95</span></td></tr>
+    <tr><td><code>artifact</code></td><td>节点对共享 artifact 的读写依赖</td><td><span class="tag tag-purple">0.85</span></td></tr>
+    <tr><td><code>plan</code></td><td>规划节点与其子任务执行节点之间的依赖</td><td><span class="tag tag-blue">0.7</span></td></tr>
+    <tr><td><code>context</code></td><td>同一 agent 跨轮对话的上下文延续关系</td><td><span class="tag tag-gray">0.5</span></td></tr>
+    <tr><td><code>temporal</code></td><td>纯时序相邻关系，仅表示顺序</td><td><span class="tag tag-gray">0.1</span></td></tr>
+  </tbody>
+</table>
+
+<div class="highlight-box">
+  <div class="label">核心区分</div>
+  <p>这种类型化依赖使系统能够将<strong>"真实信息传播"</strong>和<strong>"只是时间上发生在后面"</strong>区分开来。</p>
+</div>
+
+<h3 id="sec3-4">3.4 图构建过程</h3>
+
+<p>图构建分为两个阶段：</p>
+
+<div class="step-flow">
+  <div class="step-item">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">阶段一：节点实例化</div>
+      <div class="step-desc">从原始轨迹中提取标准化事件 → 映射为统一的 <code>TraceEvent</code> → 转化为 <code>TrajectoryNode</code>。如果事件写入了 artifact，则额外创建 artifact 节点并显式连接写入边。</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">阶段二：依赖补全</div>
+      <div class="step-desc">在节点存在之后，补充不同类型的依赖边：<code>context</code> 边、<code>tool</code> 边、<code>data</code> 边、<code>artifact</code> 边、<code>temporal</code> 边。最终得到的图既保留了执行顺序，也保留了真正的信息流动结构。</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== Section 4 ===== -->
+<h2 id="sec4">4. 轨迹采集与可恢复状态管理</h2>
+
+<h3 id="sec4-1">4.1 采集目标</h3>
+
+<p>AG-Repair 的采集层不只是记录日志，而是同时完成三件事：</p>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title">📝 结构化事件流</div>
+    <div class="card-desc">记录完整的执行事件序列，保留原始轨迹信息</div>
+  </div>
+  <div class="card">
+    <div class="card-title">📸 可恢复状态快照</div>
+    <div class="card-desc">在关键节点捕获 checkpoint，支持事后局部恢复</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔧 可回放工具日志</div>
+    <div class="card-desc">记录工具调用的完整输入输出，支持旧结果回放</div>
+  </div>
+</div>
+
+<h3 id="sec4-2">4.2 事件存储</h3>
+
+<div class="comparison">
+  <div class="col new">
+    <div class="col-title">📄 JSONL 顺序落盘</div>
+    <p>适合做回放与审计，保留原始轨迹</p>
+  </div>
+  <div class="col new">
+    <div class="col-title">🗄️ SQLite 索引</div>
+    <p>适合做快速定位与分析，索引关键字段</p>
+  </div>
+</div>
+
+<p>SQLite 索引的关键字段包括：</p>
+<table>
+  <thead><tr><th>字段</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><code>run_id</code></td><td>运行标识</td></tr>
+    <tr><td><code>step_id</code></td><td>步骤标识</td></tr>
+    <tr><td><code>agent_id</code></td><td>Agent 标识</td></tr>
+    <tr><td><code>tool_call_id</code></td><td>工具调用标识</td></tr>
+    <tr><td><code>checkpoint_id</code></td><td>Checkpoint 标识</td></tr>
+  </tbody>
+</table>
+
+<h3 id="sec4-3">4.3 Checkpoint 设计</h3>
+
+<p>Checkpoint 是 AG-Repair 增量恢复的基础。系统在以下关键时刻自动捕获：</p>
+
+<div class="step-flow">
+  <div class="step-item">
+    <div class="step-num">1</div>
+    <div class="step-content"><div class="step-title">规划器输出新子任务后</div></div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">2</div>
+    <div class="step-content"><div class="step-title">Agent 即将调用工具前</div></div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">3</div>
+    <div class="step-content"><div class="step-title">工具返回后</div></div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">4</div>
+    <div class="step-content"><div class="step-title">Artifact 被写入后</div></div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">5</div>
+    <div class="step-content"><div class="step-title">Verifier 发出失败信号后</div></div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">6</div>
+    <div class="step-content"><div class="step-title">某一执行分支结束时</div></div>
+  </div>
+</div>
+
+<p>每个 checkpoint 至少包含：</p>
+<table>
+  <thead><tr><th>内容</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>对话上下文摘要</td><td>当前对话状态</td></tr>
+    <tr><td>Agent 内部状态摘要</td><td>Agent 运行时状态</td></tr>
+    <tr><td>已确认 artifact 索引</td><td>已写入的共享对象</td></tr>
+    <tr><td>依赖祖先节点</td><td>最近若干真实依赖</td></tr>
+    <tr><td>工具调用 journal 引用</td><td>可回放日志</td></tr>
+    <tr><td>环境元信息与随机种子</td><td>环境可复现信息</td></tr>
+  </tbody>
+</table>
+
+<h3 id="sec4-4">4.4 Tool Journal</h3>
+
+<p>对于工具调用，AG-Repair 记录一个可回放日志。当一个工具节点未被纳入修复范围时，系统在恢复时<strong>优先回放旧结果</strong>而不是重新调用外部环境。</p>
+
+<div class="info-box">
+  <div class="label">双重目的</div>
+  <p><strong>1.</strong> 减少不必要的代价</p>
+  <p><strong>2.</strong> 避免因外部环境变化导致恢复结果与原上下文不一致</p>
+</div>
+
+<p>因此，<strong>checkpoint</strong> 和 <strong>journal</strong> 一起构成了"可恢复执行底座"。</p>
+
+<hr class="section-divider">
+
+<!-- ===== Section 5 ===== -->
+<h2 id="sec5">5. 根因定位</h2>
+
+<h3 id="sec5-1">5.1 根因定位的目标</h3>
+
+<div class="warn-box">
+  <div class="label">核心问题</div>
+  <p>AG-Repair 不是简单回答"哪一步有错误"，而是要回答：<strong>哪一个节点最早引入了对后续任务失败真正有决定性影响的偏差，并且最值得被修复。</strong></p>
+  <p>这意味着系统定位的不是"最显眼的错误点"，而是"修复价值最高的根因点"。</p>
+</div>
+
+<h3 id="sec5-2">5.2 候选错误发现</h3>
+
+<p>根因定位首先从所有节点中筛选候选错误点。系统优先使用可观测的<strong>硬信号</strong>，然后再补充<strong>软信号</strong>：</p>
+
+<div class="comparison">
+  <div class="col old">
+    <div class="col-title">🔴 硬信号（优先）</div>
+    <ul>
+      <li>显式异常</li>
+      <li>工具调用失败</li>
+      <li>协议违规</li>
+      <li>Verifier 失败</li>
+      <li>约束断言失败</li>
+    </ul>
+  </div>
+  <div class="col new">
+    <div class="col-title">🟡 软信号（补充）</div>
+    <ul>
+      <li>结果偏离任务目标</li>
+      <li>下游输出与上游事实冲突</li>
+      <li>边缘条件未覆盖</li>
+      <li>上下文信息丢失</li>
+    </ul>
+  </div>
+</div>
+
+<h3 id="sec5-3">5.3 根因评分</h3>
+
+<p>对每个候选节点 $v$，系统计算一个根因分数：</p>
+
+<div class="formula-box">
+  $$S_{root}(v) = \alpha \cdot A(v) + \beta \cdot I(v) + \gamma \cdot D(v) + \delta \cdot R(v)$$
+</div>
+
+<table>
+  <thead><tr><th>符号</th><th>含义</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>$A(v)$</td><td>异常强度</td><td>该节点上观测到的错误证据强弱</td></tr>
+    <tr><td>$I(v)$</td><td>影响强度</td><td>从该节点向后能到达多少潜在受影响节点</td></tr>
+    <tr><td>$D(v)$</td><td>偏离程度</td><td>该节点结果与任务目标或约束之间的偏差</td></tr>
+    <tr><td>$R(v)$</td><td>修复收益</td><td>修复该节点的潜在恢复价值</td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <div class="label">策略</div>
+  <p>系统默认采用<strong>"硬信号优先、语义信号补充"</strong>的策略，因此异常强度与影响强度具有更高权重。</p>
+</div>
+
+<h3 id="sec5-4">5.4 根因排序结果</h3>
+
+<p>系统将所有候选节点按 <code>root_score</code> 排序，并保留前若干个高价值根因点。对于第一版系统，通常只选择排名最高的节点作为主要修复锚点。这样做的原因：</p>
+
+<ol>
+  <li>有利于缩小初始修复范围</li>
+  <li>便于后续做边界传播</li>
+  <li>可以通过增量修复结果反向检验该根因是否正确</li>
+</ol>
+
+<p>如果第一次修复失败，系统才会考虑升级为<strong>多根因联合修复</strong>。</p>
+
+<hr class="section-divider">
+
+<!-- ===== Section 6 ===== -->
+<h2 id="sec6">6. 错误影响边界识别</h2>
+
+<h3 id="sec6-1">6.1 为什么必须识别边界</h3>
+
+<p>如果只知道"第 50 步错了"，却不知道后续哪些节点真正被污染，就无法做到最小干预。传统方法往往将第 50 步之后的全部步骤判为失效，这会带来大量无意义重跑。</p>
+
+<div class="highlight-box">
+  <div class="label">关键创新</div>
+  <p>AG-Repair 把错误传播范围建模为一个<strong>可计算问题</strong>，而不是简单地"一刀切"。</p>
+</div>
+
+<h3 id="sec6-2">6.2 污染传播模型</h3>
+
+<p>设根因节点为 $r$，系统在图上对其进行前向传播。传播采用<strong>衰减模型</strong>：</p>
+
+<div class="formula-box">
+  $$P(v) = \max_{u \in Pred(v)} P(u) \cdot w(u,v) \cdot \lambda$$
+</div>
+
+<table>
+  <thead><tr><th>符号</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td>$P(v)$</td><td>节点 $v$ 的污染分数</td></tr>
+    <tr><td>$Pred(v)$</td><td>所有指向 $v$ 的前驱节点</td></tr>
+    <tr><td>$w(u,v)$</td><td>边权重（影响强度）</td></tr>
+    <tr><td>$\lambda$</td><td>衰减系数，默认 0.85</td></tr>
+  </tbody>
+</table>
+
+<p>默认边权重设置：</p>
+
+<table>
+  <thead><tr><th>边类型</th><th>权重</th><th>直观含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>data</code></td><td>1.0</td><td>显式数据依赖，最容易传播错误</td></tr>
+    <tr><td><code>tool</code></td><td>0.95</td><td>工具结果依赖，几乎等同数据</td></tr>
+    <tr><td><code>artifact</code></td><td>0.85</td><td>共享对象依赖</td></tr>
+    <tr><td><code>plan</code></td><td>0.7</td><td>规划依赖，中等传播</td></tr>
+    <tr><td><code>context</code></td><td>0.5</td><td>上下文延续，较弱传播</td></tr>
+    <tr><td><code>temporal</code></td><td>0.1</td><td>纯时序关系，极弱传播</td></tr>
+  </tbody>
+</table>
+
+<h3 id="sec6-3">6.3 节点复用评分</h3>
+
+<p>污染分数本身并不能直接决定是否重跑，因为一个节点即使受到了部分污染，也可能仍然保留大量可用结构。因此，AG-Repair 进一步定义一个复用评分：</p>
+
+<div class="formula-box">
+  $$S_{reuse} = 0.5 \cdot S_{correct} + 0.3 \cdot (1 - P) + 0.2 \cdot S_{compat}$$
+</div>
+
+<table>
+  <thead><tr><th>符号</th><th>含义</th><th>权重</th></tr></thead>
+  <tbody>
+    <tr><td>$S_{correct}$</td><td>节点本地正确性</td><td>0.5</td></tr>
+    <tr><td>$1 - P$</td><td>污染分数的反向（越干净越高）</td><td>0.3</td></tr>
+    <tr><td>$S_{compat}$</td><td>节点与修复后上下文的兼容性</td><td>0.2</td></tr>
+  </tbody>
+</table>
+
+<p>该分数最终被缩放到 0 到 100 的范围内。</p>
+
+<h3 id="sec6-4">6.4 节点分类</h3>
+
+<p>根据复用评分，节点被分为三类：</p>
+
+<table>
+  <thead><tr><th>类别</th><th>条件</th><th>后续动作</th><th>标签</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>完全可复用（Clean）</strong></td>
+      <td>$S_{reuse} \ge 80$</td>
+      <td>保留</td>
+      <td><span class="tag tag-green">Clean</span></td>
+    </tr>
+    <tr>
+      <td><strong>部分可复用（Partial）</strong></td>
+      <td>$60 \le S_{reuse} < 80$</td>
+      <td>优先局部修补</td>
+      <td><span class="tag tag-orange">Partial</span></td>
+    </tr>
+    <tr>
+      <td><strong>不可复用（Invalid）</strong></td>
+      <td>$S_{reuse} < 60$</td>
+      <td>纳入重放或重写范围</td>
+      <td><span class="tag tag-red">Invalid</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="sec6-5">6.5 分支级升级策略</h3>
+
+<p>如果某一分支中 Invalid 节点占比超过 <strong>40%</strong>，或者该分支包含高层 planning node 的错误，则系统将该分支整体升级为 <code>REWRITE_BRANCH</code>。</p>
+
+<div class="warn-box">
+  <div class="label">升级原则</div>
+  <p>避免在已经大面积崩坏的分支上继续做低收益的小修小补。</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== Section 7 ===== -->
+<h2 id="sec7">7. 修复动作生成</h2>
+
+<h3>7.1 目标</h3>
+
+<p>AG-Repair 并不让模型自由生成"应该怎么修"，而是将修复规划视为一个<strong>受限决策问题</strong>。系统首先识别错误模式，再在固定动作空间中做成本感知选择。</p>
+
+<h3>7.2 错误模式</h3>
+
+<p>第一版系统支持五类主要错误模式：</p>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title"><span class="tag tag-red">evidence_fabrication</span></div>
+    <div class="card-desc">事实获取失败 / 证据伪造</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-orange">tool_call_error</span></div>
+    <div class="card-desc">工具参数错误 / 调用失败</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-purple">context_drop</span></div>
+    <div class="card-desc">上下文传递失败 / 信息丢失</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">reasoning_bug</span></div>
+    <div class="card-desc">局部逻辑错误 / 推理偏差</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-gray">plan_bug</span></div>
+    <div class="card-desc">高层规划错误 / 任务分解失败</div>
+  </div>
+</div>
+
+<h3>7.3 动作空间</h3>
+
+<p>系统支持六种修复动作，具有明确的代价梯度：</p>
+
+<div class="flow-diagram">
+  <div class="node green">PRESERVE</div>
+  <div class="arrow">→</div>
+  <div class="node accent">PATCH</div>
+  <div class="arrow">→</div>
+  <div class="node accent">REPLAY_TOOL</div>
+  <div class="arrow">→</div>
+  <div class="node">RERUN_NODE</div>
+  <div class="arrow">→</div>
+  <div class="node">RERUN_BRANCH</div>
+  <div class="arrow">→</div>
+  <div class="node" style="background:#c53030;">REWRITE_BRANCH</div>
+</div>
+
+<p style="text-align:center; color: var(--text-light); font-size: 13px;">代价从低到高 →</p>
+
+<table>
+  <thead><tr><th>动作</th><th>说明</th><th>代价</th></tr></thead>
+  <tbody>
+    <tr><td><code>PRESERVE</code></td><td>完全保留</td><td><span class="tag tag-green">最低</span></td></tr>
+    <tr><td><code>PATCH</code></td><td>原位局部修补</td><td><span class="tag tag-green">低</span></td></tr>
+    <tr><td><code>REPLAY_TOOL</code></td><td>仅重放工具调用</td><td><span class="tag tag-orange">中低</span></td></tr>
+    <tr><td><code>RERUN_NODE</code></td><td>仅重跑单节点</td><td><span class="tag tag-orange">中</span></td></tr>
+    <tr><td><code>RERUN_BRANCH</code></td><td>重跑分支</td><td><span class="tag tag-red">高</span></td></tr>
+    <tr><td><code>REWRITE_BRANCH</code></td><td>重写分支</td><td><span class="tag tag-red">最高</span></td></tr>
+  </tbody>
+</table>
+
+<h3>7.4 决策逻辑</h3>
+
+<p>在默认策略下：</p>
+
+<table>
+  <thead><tr><th>节点状态</th><th>默认动作</th></tr></thead>
+  <tbody>
+    <tr><td>Clean 节点</td><td><code>PRESERVE</code></td></tr>
+    <tr><td>Partial 节点</td><td>优先 <code>PATCH</code></td></tr>
+    <tr><td>Invalid 的工具节点</td><td>优先 <code>REPLAY_TOOL</code></td></tr>
+    <tr><td>Invalid 的普通执行节点</td><td>优先 <code>RERUN_NODE</code></td></tr>
+    <tr><td>规划错误</td><td>优先 <code>RERUN_BRANCH</code></td></tr>
+    <tr><td>分支级污染严重</td><td>升级为 <code>REWRITE_BRANCH</code></td></tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  <div class="label">设计作用</div>
+  <p><strong>1.</strong> 把重跑范围控制在最小必要集</p>
+  <p><strong>2.</strong> 让修复动作可解释、可审计，而不是完全依赖一次不可控的生成结果</p>
+</div>
+
+<h3>7.5 RepairPlan</h3>
+
+<p>最终，规划器输出一个 <code>RepairPlan</code>，其中包含：</p>
+
+<ul>
+  <li>需要恢复的 checkpoint</li>
+  <li>根因节点列表</li>
+  <li>所有动作列表</li>
+  <li>每个动作的优先级与原因</li>
+  <li>修复过程中的默认假设</li>
+</ul>
+
+<p><code>RepairPlan</code> 是连接<strong>"分析阶段"</strong>和<strong>"执行阶段"</strong>的核心接口。</p>
+
+<hr class="section-divider">
+
+<!-- ===== Section 8 ===== -->
+<h2 id="sec8">8. 增量重执行</h2>
+
+<h3>8.1 核心思想</h3>
+
+<div class="highlight-box">
+  <div class="label">核心理念</div>
+  <p>增量重执行的关键不是"重新运行模型"，而是<strong>"只重新运行必要部分，同时让保留部分继续有效"</strong>。</p>
+</div>
+
+<p>这要求系统在执行时具备三种能力：</p>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title">📸 Checkpoint 恢复</div>
+    <div class="card-desc">从合适的 checkpoint 恢复状态</div>
+  </div>
+  <div class="card">
+    <div class="card-title">📖 Journal Replay</div>
+    <div class="card-desc">对无需修改的旧结果进行回放</div>
+  </div>
+  <div class="card">
+    <div class="card-title">💉 依赖注入</div>
+    <div class="card-desc">对需要重跑的节点注入修复后的最小依赖上下文</div>
+  </div>
+</div>
+
+<h3>8.2 恢复起点选择</h3>
+
+<p>系统默认从<strong>最靠近根因节点、且位于其之前的 checkpoint</strong> 恢复。这样做有两个优点：</p>
+
+<ol>
+  <li>尽量缩短重放路径</li>
+  <li>避免将已经受污染的状态带入恢复流程</li>
+</ol>
+
+<h3>8.3 Active Dependency Frontier</h3>
+
+<p>在恢复某个待重跑节点时，AG-Repair 不会将整条原始轨迹重新作为上下文输入，而是只注入该节点当前真正需要的<strong>"依赖前沿"</strong>：</p>
+
+<ul>
+  <li>它直接依赖的上游节点</li>
+  <li>与之相关的共享 artifact</li>
+  <li>修复后的最新中间结果</li>
+  <li>当前分支必要的规划信息</li>
+</ul>
+
+<div class="info-box">
+  <div class="label">效果</div>
+  <p>这种输入裁剪机制可以显著减少长上下文干扰，并降低随机性。</p>
+</div>
+
+<h3>8.4 不同动作的执行方式</h3>
+
+<table>
+  <thead><tr><th>动作</th><th>执行方式</th></tr></thead>
+  <tbody>
+    <tr><td><code>PRESERVE</code></td><td>节点完全保留，不重新执行</td></tr>
+    <tr><td><code>PATCH</code></td><td>只对原节点内容进行局部更新（替换错误参数、修补错误结论、注入缺失字段）</td></tr>
+    <tr><td><code>REPLAY_TOOL</code></td><td>仅重新执行该工具调用，其他不受影响节点继续复用</td></tr>
+    <tr><td><code>RERUN_NODE</code></td><td>只重新运行当前节点，并使用修复后的依赖前沿作为输入</td></tr>
+    <tr><td><code>RERUN_BRANCH</code></td><td>对整个子分支重新运行，但仍保留其它分支与公共节点</td></tr>
+    <tr><td><code>REWRITE_BRANCH</code></td><td>当局部修补已不经济时，对整段分支进行重新生成</td></tr>
+  </tbody>
+</table>
+
+<h3>8.5 局部失败的升级机制</h3>
+
+<p>如果某个节点修复后未通过局部一致性校验，系统会自动将其动作<strong>升级一级</strong>：</p>
+
+<div class="flow-diagram">
+  <div class="node accent">PATCH</div>
+  <div class="arrow">→</div>
+  <div class="node accent">REPLAY_TOOL</div>
+  <div class="arrow">→</div>
+  <div class="node">RERUN_NODE</div>
+  <div class="arrow">→</div>
+  <div class="node">RERUN_BRANCH</div>
+</div>
+
+<p>最多允许<strong>两轮升级</strong>，以避免陷入无限重试。</p>
+
+<hr class="section-divider">
+
+<!-- ===== Section 9 ===== -->
+<h2 id="sec9">9. 一致性验证</h2>
+
+<h3>9.1 为什么要做一致性验证</h3>
+
+<p>即使某个节点被成功修补，也不代表整条轨迹已经正确。局部替换后可能会引入新的接口冲突、逻辑冲突或状态漂移。因此，AG-Repair 在修复完成后<strong>必须执行验证</strong>。</p>
+
+<h3>9.2 局部一致性</h3>
+
+<p>局部一致性主要检查：</p>
+
+<table>
+  <thead><tr><th>检查项</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>接口兼容</td><td>修补后的输出是否满足下游输入接口</td></tr>
+    <tr><td>Artifact 存在性</td><td>被引用的 artifact 是否仍存在</td></tr>
+    <tr><td>工具结果匹配</td><td>工具结果与调用状态是否匹配</td></tr>
+    <tr><td>矛盾检测</td><td>修复后节点与保留节点之间是否产生直接矛盾</td></tr>
+  </tbody>
+</table>
+
+<div class="warn-box">
+  <div class="label">升级触发</div>
+  <p>如果局部一致性失败，说明当前动作粒度过小，系统应升级修复动作。</p>
+</div>
+
+<h3>9.3 全局一致性</h3>
+
+<table>
+  <thead><tr><th>检查项</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>任务成功标准</td><td>是否满足任务成功标准</td></tr>
+    <tr><td>里程碑前进</td><td>任务里程碑是否前进</td></tr>
+    <tr><td>新错误引入</td><td>是否引入了新的错误</td></tr>
+    <tr><td>目标兼容</td><td>最终结果是否与原目标兼容</td></tr>
+  </tbody>
+</table>
+
+<p>系统输出一个 <code>VerificationReport</code>，包含：</p>
+
+<ul>
+  <li><code>local_consistency</code></li>
+  <li><code>global_success</code></li>
+  <li><code>milestone_forward</code></li>
+  <li><code>new_error_rate</code></li>
+  <li>若干聚合指标</li>
+</ul>
+
+<h3>9.4 Milestone Forward</h3>
+
+<div class="highlight-box">
+  <div class="label">关键指标</div>
+  <p>AG-Repair 特别关注修复是否<strong>"推动任务向前"</strong>，而不仅仅是"减少错误"。即使一次修复尚未完全成功，只要它显著缩小了失败范围，或推动了任务关键里程碑，也应被视为有效改进。</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== Section 10 ===== -->
+<h2 id="sec10">10. 合成数据与故障注入</h2>
+
+<h3>10.1 为什么使用合成数据</h3>
+
+<p>在多智能体修复系统的早期阶段，真实失败日志往往数量有限、标注成本高、复现实验困难。因此，AG-Repair 的第一版采用<strong>"合成数据优先"</strong>的策略，通过可控错误注入生成训练与验证样本。</p>
+
+<h3>10.2 任务类型</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">web_research</span></div>
+    <div class="card-desc">搜索整合场景</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-orange">tool_chain</span></div>
+    <div class="card-desc">多工具流水线场景</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-purple">code_repair</span></div>
+    <div class="card-desc">代码修复场景</div>
+  </div>
+</div>
+
+<h3>10.3 故障注入方式</h3>
+
+<p>针对每类任务，系统支持以下错误注入器：</p>
+
+<table>
+  <thead><tr><th>注入器</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><code>evidence_fabrication</code></td><td>证据伪造</td></tr>
+    <tr><td><code>tool_call_error</code></td><td>工具调用错误</td></tr>
+    <tr><td><code>context_drop</code></td><td>上下文丢失</td></tr>
+    <tr><td><code>reasoning_bug</code></td><td>推理错误</td></tr>
+    <tr><td><code>plan_bug</code></td><td>规划错误</td></tr>
+  </tbody>
+</table>
+
+<p>每次注入都只破坏轨迹中的某一关键节点，从而能够精确标注：</p>
+
+<ul>
+  <li>根因步骤</li>
+  <li>污染节点集合</li>
+  <li>安全节点集合</li>
+  <li>建议修复动作</li>
+  <li>成功修复作用域</li>
+</ul>
+
+<h3>10.4 数据划分</h3>
+
+<div style="display:flex; gap:2px; height:40px; border-radius:8px; overflow:hidden; margin:16px 0;">
+  <div style="flex:60; background:#3182ce; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:14px;">Train 60%</div>
+  <div style="flex:20; background:#63b3ed; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:14px;">Dev 20%</div>
+  <div style="flex:20; background:#bee3f8; display:flex; align-items:center; justify-content:center; color:#2b6cb0; font-weight:700; font-size:14px;">Test 20%</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== Section 11 ===== -->
+<h2 id="sec11">11. 全流程执行示例</h2>
+
+<p>下面以一个"网页搜索与事实整合任务"为例说明 AG-Repair 的完整工作流：</p>
+
+<div class="step-flow">
+  <div class="step-item">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">采集轨迹</div>
+      <div class="step-desc">系统运行一个 web research 任务，得到核心节点：planner 规划搜索流程 → researcher 调用搜索工具 → researcher 获得搜索结果 → writer 根据搜索结果写摘要</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">注入错误</div>
+      <div class="step-desc">在 fault injection 阶段，将最后的摘要节点替换为"伪造搜索证据后直接总结"的版本，并标记其存在协议违规和验证失败</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">构建图</div>
+      <div class="step-desc">将 4 个节点和相关 artifact 节点构造成 MAICG：planner → tool call 的 plan/data 边，tool call → tool result 的 tool 边，tool result → summary 的 data/artifact 边，同 agent 连续消息的 context 边</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">根因定位</div>
+      <div class="step-desc">localizer 检测到最后摘要节点存在：<code>protocol_violation = true</code>、<code>verification_failure = true</code>、<code>deviation_score = 0.8</code>，获得较高根因分数</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <div class="step-title">边界传播</div>
+      <div class="step-desc">boundary scorer 从根因节点向后传播污染。由于是末端错误节点，污染范围集中在最后节点本身，前面的 planner、tool call 和 tool result 节点大概率仍被判为可复用</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <div class="step-title">修复动作生成</div>
+      <div class="step-desc">前面步骤 <code>PRESERVE</code>，末端错误节点 <code>RERUN_NODE</code> 或 <code>PATCH</code>。由于涉及证据伪造，系统更倾向升级为真实重放</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">7</div>
+    <div class="step-content">
+      <div class="step-title">增量重放</div>
+      <div class="step-desc">从最近 checkpoint 恢复，保留已有搜索结果，仅对末端摘要节点重新执行，并向其注入真实搜索结果与修复后的上下文</div>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-num">8</div>
+    <div class="step-content">
+      <div class="step-title">一致性验证</div>
+      <div class="step-desc">检查新摘要是否与旧搜索结果一致、是否满足"有真实证据、无伪造内容"的成功标准、是否使任务里程碑前进。若通过，则输出 repaired run</div>
+    </div>
+  </div>
+</div>
+
+<div class="highlight-box">
+  <div class="label">核心结论</div>
+  <p>AG-Repair 修复的不是整个轨迹，而是只对<strong>真正受污染的最小区域</strong>进行恢复。</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- ===== Section 12 ===== -->
+<h2 id="sec12">12. 方法的工程实现映射</h2>
+
+<p>为了让方法论能够直接落地，AG-Repair 将上述流程映射为一组清晰的模块：</p>
+
+<div class="module-grid">
+  <div class="module-item">
+    <div class="mod-icon" style="background:#ebf8ff; color:#3182ce;">📂</div>
+    <div>
+      <div class="mod-name"><code>collector/</code></div>
+      <div class="mod-desc">存储事件与 checkpoint</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#f0fff4; color:#38a169;">🔗</div>
+    <div>
+      <div class="mod-name"><code>graph/</code></div>
+      <div class="mod-desc">构建 MAICG</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#fff5f5; color:#c53030;">🎯</div>
+    <div>
+      <div class="mod-name"><code>localization/</code></div>
+      <div class="mod-desc">根因定位</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#fffff0; color:#d69e2e;">📐</div>
+    <div>
+      <div class="mod-name"><code>boundary/</code></div>
+      <div class="mod-desc">污染传播与边界评分</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#faf5ff; color:#6b46c1;">📋</div>
+    <div>
+      <div class="mod-name"><code>planner/</code></div>
+      <div class="mod-desc">动作选择与 RepairPlan 生成</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#ebf8ff; color:#2b6cb0;">▶️</div>
+    <div>
+      <div class="mod-name"><code>replay/</code></div>
+      <div class="mod-desc">增量重放</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#f0fff4; color:#276749;">✅</div>
+    <div>
+      <div class="mod-name"><code>verify/</code></div>
+      <div class="mod-desc">一致性验证</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#fff5f5; color:#9b2c2c;">🧪</div>
+    <div>
+      <div class="mod-name"><code>bench/</code></div>
+      <div class="mod-desc">数据构造与评测</div>
+    </div>
+  </div>
+  <div class="module-item">
+    <div class="mod-icon" style="background:#e9d8fd; color:#553c9a;">🔌</div>
+    <div>
+      <div class="mod-name"><code>adapters/</code></div>
+      <div class="mod-desc">对接 AG2 或其它多智能体框架</div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:40px; padding:24px; background:var(--bg-alt); border-radius:var(--radius); border:1px solid var(--border); text-align:center;">
+  <p style="font-size:13px; color:var(--text-light);">AG-Repair 方法论 — 多智能体系统长轨迹失效的自动化修复与增量恢复框架</p>
+</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement === 'function') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });
+  }
+});
+
+var sidebarLinks = document.querySelectorAll('.sidebar a');
+var sections = [];
+sidebarLinks.forEach(function(link) {
+  var href = link.getAttribute('href');
+  if (href && href.startsWith('#')) {
+    var el = document.getElementById(href.substring(1));
+    if (el) sections.push({el: el, link: link});
+  }
+});
+
+function updateActiveLink() {
+  var scrollTop = window.scrollY || document.documentElement.scrollTop;
+  var current = null;
+  sections.forEach(function(s) {
+    if (s.el.offsetTop - 100 <= scrollTop) current = s;
+  });
+  sidebarLinks.forEach(function(l) { l.classList.remove('active'); });
+  if (current) current.link.classList.add('active');
+}
+
+window.addEventListener('scroll', updateActiveLink);
+updateActiveLink();
+</script>
+
+</body>
+</html>

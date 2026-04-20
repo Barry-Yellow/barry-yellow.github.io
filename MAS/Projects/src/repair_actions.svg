@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 850" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1b5e20"/>
+      <stop offset="100%" style="stop-color:#43a047"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#455a64"/>
+    </marker>
+    <marker id="arr-up" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c62828"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="850" rx="16" fill="#f5f7fa"/>
+
+  <!-- Title -->
+  <rect width="1100" height="60" rx="16" fill="url(#headerGrad)"/>
+  <rect y="30" width="1100" height="30" fill="url(#headerGrad)"/>
+  <text x="550" y="40" text-anchor="middle" fill="white" font-size="22" font-weight="700">修复动作生成 — 节点分类 → 动作选择 → 增量重执行</text>
+
+  <!-- ========== SECTION 1: Node Classification ========== -->
+  <text x="60" y="105" font-size="16" font-weight="700" fill="#1b5e20">节点分类与修复动作映射</text>
+
+  <!-- Sample trajectory with classified nodes -->
+  <line x1="80" y1="190" x2="1040" y2="190" stroke="#cfd8dc" stroke-width="2"/>
+
+  <!-- e1: Clean - PRESERVE -->
+  <rect x="60" y="140" width="120" height="100" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">e₁ Planner</text>
+  <rect x="72" y="175" width="96" height="22" rx="6" fill="#2e7d32"/>
+  <text x="120" y="191" text-anchor="middle" font-size="11" font-weight="700" fill="white">Clean</text>
+  <text x="120" y="215" text-anchor="middle" font-size="10" fill="#2e7d32">S_reuse = 92</text>
+  <rect x="72" y="222" width="96" height="16" rx="4" fill="#c8e6c9"/>
+  <text x="120" y="234" text-anchor="middle" font-size="10" font-weight="700" fill="#2e7d32">PRESERVE</text>
+
+  <!-- e2: Clean - PRESERVE -->
+  <rect x="210" y="140" width="120" height="100" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="270" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">e₂ Search</text>
+  <rect x="222" y="175" width="96" height="22" rx="6" fill="#2e7d32"/>
+  <text x="270" y="191" text-anchor="middle" font-size="11" font-weight="700" fill="white">Clean</text>
+  <text x="270" y="215" text-anchor="middle" font-size="10" fill="#2e7d32">S_reuse = 88</text>
+  <rect x="222" y="222" width="96" height="16" rx="4" fill="#c8e6c9"/>
+  <text x="270" y="234" text-anchor="middle" font-size="10" font-weight="700" fill="#2e7d32">PRESERVE</text>
+
+  <!-- e3: Invalid - REPLAY_TOOL -->
+  <rect x="360" y="130" width="140" height="120" rx="10" fill="#fce4ec" stroke="#c62828" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="430" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="#c62828">e₃ Tool失败</text>
+  <rect x="375" y="165" width="110" height="22" rx="6" fill="#c62828"/>
+  <text x="430" y="181" text-anchor="middle" font-size="11" font-weight="700" fill="white">Invalid</text>
+  <text x="430" y="205" text-anchor="middle" font-size="10" fill="#c62828">S_reuse = 25</text>
+  <rect x="375" y="212" width="110" height="16" rx="4" fill="#e3f2fd"/>
+  <text x="430" y="224" text-anchor="middle" font-size="10" font-weight="700" fill="#1565c0">REPLAY_TOOL</text>
+  <text x="430" y="244" text-anchor="middle" font-size="9" fill="#c62828">← 根因节点</text>
+
+  <!-- e4: Partial - PATCH -->
+  <rect x="530" y="135" width="130" height="110" rx="10" fill="#fff3e0" stroke="#e65100" stroke-width="2" filter="url(#shadow)"/>
+  <text x="595" y="160" text-anchor="middle" font-size="13" font-weight="700" fill="#e65100">e₄ 推理</text>
+  <rect x="545" y="170" width="100" height="22" rx="6" fill="#e65100"/>
+  <text x="595" y="186" text-anchor="middle" font-size="11" font-weight="700" fill="white">Partial</text>
+  <text x="595" y="210" text-anchor="middle" font-size="10" fill="#e65100">S_reuse = 68</text>
+  <rect x="545" y="217" width="100" height="16" rx="4" fill="#e3f2fd"/>
+  <text x="595" y="229" text-anchor="middle" font-size="10" font-weight="700" fill="#1565c0">PATCH</text>
+
+  <!-- e5: Invalid - RERUN_NODE -->
+  <rect x="690" y="130" width="140" height="120" rx="10" fill="#fce4ec" stroke="#c62828" stroke-width="2" filter="url(#shadow)"/>
+  <text x="760" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="#c62828">e₅ 编码</text>
+  <rect x="705" y="165" width="110" height="22" rx="6" fill="#c62828"/>
+  <text x="760" y="181" text-anchor="middle" font-size="11" font-weight="700" fill="white">Invalid</text>
+  <text x="760" y="205" text-anchor="middle" font-size="10" fill="#c62828">S_reuse = 35</text>
+  <rect x="705" y="212" width="110" height="16" rx="4" fill="#fff3e0"/>
+  <text x="760" y="224" text-anchor="middle" font-size="10" font-weight="700" fill="#e65100">RERUN_NODE</text>
+
+  <!-- e6: Clean - PRESERVE -->
+  <rect x="860" y="140" width="120" height="100" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="920" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">e₆ 验证</text>
+  <rect x="872" y="175" width="96" height="22" rx="6" fill="#2e7d32"/>
+  <text x="920" y="191" text-anchor="middle" font-size="11" font-weight="700" fill="white">Clean</text>
+  <text x="920" y="215" text-anchor="middle" font-size="10" fill="#2e7d32">S_reuse = 85</text>
+  <rect x="872" y="222" width="96" height="16" rx="4" fill="#c8e6c9"/>
+  <text x="920" y="234" text-anchor="middle" font-size="10" font-weight="700" fill="#2e7d32">PRESERVE</text>
+
+  <!-- Arrows between nodes -->
+  <line x1="180" y1="190" x2="208" y2="190" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="330" y1="190" x2="358" y2="190" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="500" y1="190" x2="528" y2="190" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="660" y1="190" x2="688" y2="190" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="830" y1="190" x2="858" y2="190" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ========== SECTION 2: Cost Gradient ========== -->
+  <text x="60" y="300" font-size="16" font-weight="700" fill="#1b5e20">修复动作代价梯度</text>
+
+  <rect x="60" y="315" width="980" height="70" rx="10" fill="white" stroke="#e0e4e8" filter="url(#shadow)"/>
+
+  <!-- Cost bar -->
+  <rect x="80" y="330" width="130" height="40" rx="8" fill="#2e7d32"/>
+  <text x="145" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="white">PRESERVE</text>
+
+  <rect x="220" y="330" width="130" height="40" rx="8" fill="#1565c0"/>
+  <text x="285" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="white">PATCH</text>
+
+  <rect x="360" y="330" width="150" height="40" rx="8" fill="#6a1b9a"/>
+  <text x="435" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="white">REPLAY_TOOL</text>
+
+  <rect x="520" y="330" width="150" height="40" rx="8" fill="#e65100"/>
+  <text x="595" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="white">RERUN_NODE</text>
+
+  <rect x="680" y="330" width="170" height="40" rx="8" fill="#d32f2f"/>
+  <text x="765" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="white">RERUN_BRANCH</text>
+
+  <rect x="860" y="330" width="170" height="40" rx="8" fill="#880e4f"/>
+  <text x="945" y="355" text-anchor="middle" font-size="12" font-weight="700" fill="white">REWRITE_BRANCH</text>
+
+  <text x="80" y="385" font-size="11" fill="#2e7d32" font-weight="600">← 代价最低 (零开销)</text>
+  <text x="1040" y="385" text-anchor="end" font-size="11" fill="#880e4f" font-weight="600">代价最高 (完全重写) →</text>
+
+  <!-- ========== SECTION 3: Upgrade Mechanism ========== -->
+  <text x="60" y="430" font-size="16" font-weight="700" fill="#1b5e20">局部失败自动升级机制</text>
+
+  <rect x="60" y="445" width="980" height="150" rx="12" fill="white" stroke="#e0e4e8" filter="url(#shadow)"/>
+
+  <!-- Upgrade flow -->
+  <rect x="100" y="475" width="130" height="50" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="165" y="497" text-anchor="middle" font-size="13" font-weight="700" fill="#1565c0">PATCH</text>
+  <text x="165" y="515" text-anchor="middle" font-size="10" fill="#5f6368">局部修补</text>
+
+  <!-- Arrow with "fail" label -->
+  <line x1="230" y1="500" x2="290" y2="500" stroke="#c62828" stroke-width="2" marker-end="url(#arr-up)"/>
+  <text x="260" y="492" text-anchor="middle" font-size="10" font-weight="600" fill="#c62828">失败</text>
+
+  <rect x="290" y="475" width="150" height="50" rx="10" fill="#e8eaf6" stroke="#283593" stroke-width="2"/>
+  <text x="365" y="497" text-anchor="middle" font-size="13" font-weight="700" fill="#283593">REPLAY_TOOL</text>
+  <text x="365" y="515" text-anchor="middle" font-size="10" fill="#5f6368">重放工具</text>
+
+  <line x1="440" y1="500" x2="500" y2="500" stroke="#c62828" stroke-width="2" marker-end="url(#arr-up)"/>
+  <text x="470" y="492" text-anchor="middle" font-size="10" font-weight="600" fill="#c62828">失败</text>
+
+  <rect x="500" y="475" width="150" height="50" rx="10" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="575" y="497" text-anchor="middle" font-size="13" font-weight="700" fill="#e65100">RERUN_NODE</text>
+  <text x="575" y="515" text-anchor="middle" font-size="10" fill="#5f6368">重跑节点</text>
+
+  <line x1="650" y1="500" x2="710" y2="500" stroke="#c62828" stroke-width="2" marker-end="url(#arr-up)"/>
+  <text x="680" y="492" text-anchor="middle" font-size="10" font-weight="600" fill="#c62828">失败</text>
+
+  <rect x="710" y="475" width="170" height="50" rx="10" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="795" y="497" text-anchor="middle" font-size="13" font-weight="700" fill="#c62828">RERUN_BRANCH</text>
+  <text x="795" y="515" text-anchor="middle" font-size="10" fill="#5f6368">重跑分支</text>
+
+  <text x="550" y="575" text-anchor="middle" font-size="12" fill="#5f6368">最多允许两轮升级，避免无限重试。每次升级扩大修复范围，直到通过一致性校验。</text>
+
+  <!-- ========== SECTION 4: Incremental Re-execution Example ========== -->
+  <text x="60" y="625" font-size="16" font-weight="700" fill="#1b5e20">增量重执行示意 — 只重跑必要子图</text>
+
+  <rect x="60" y="640" width="980" height="190" rx="12" fill="white" stroke="#e0e4e8" filter="url(#shadow)"/>
+
+  <!-- Original trajectory -->
+  <text x="80" y="670" font-size="12" font-weight="700" fill="#5f6368">原始轨迹：</text>
+
+  <rect x="170" y="655" width="80" height="32" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="210" y="676" text-anchor="middle" font-size="11" font-weight="600" fill="#2e7d32">e₁ ✓</text>
+
+  <rect x="265" y="655" width="80" height="32" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="305" y="676" text-anchor="middle" font-size="11" font-weight="600" fill="#2e7d32">e₂ ✓</text>
+
+  <rect x="360" y="655" width="80" height="32" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="400" y="676" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">e₃ ✗</text>
+
+  <rect x="455" y="655" width="80" height="32" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="495" y="676" text-anchor="middle" font-size="11" font-weight="600" fill="#e65100">e₄ ~</text>
+
+  <rect x="550" y="655" width="80" height="32" rx="6" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+  <text x="590" y="676" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">e₅ ✗</text>
+
+  <rect x="645" y="655" width="80" height="32" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="685" y="676" text-anchor="middle" font-size="11" font-weight="600" fill="#2e7d32">e₆ ✓</text>
+
+  <!-- Arrow down -->
+  <text x="440" y="710" text-anchor="middle" font-size="20" fill="#455a64">↓ AG-Repair</text>
+
+  <!-- Repaired trajectory -->
+  <text x="80" y="745" font-size="12" font-weight="700" fill="#1b5e20">修复后：</text>
+
+  <rect x="170" y="730" width="80" height="32" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="210" y="751" text-anchor="middle" font-size="11" font-weight="600" fill="#2e7d32">e₁ 保留</text>
+
+  <rect x="265" y="730" width="80" height="32" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="305" y="751" text-anchor="middle" font-size="11" font-weight="600" fill="#2e7d32">e₂ 保留</text>
+
+  <rect x="360" y="725" width="80" height="42" rx="6" fill="#bbdefb" stroke="#1565c0" stroke-width="2.5"/>
+  <text x="400" y="746" text-anchor="middle" font-size="10" font-weight="700" fill="#1565c0">e₃' 重放</text>
+  <text x="400" y="760" text-anchor="middle" font-size="8" fill="#1565c0">REPLAY_TOOL</text>
+
+  <rect x="455" y="725" width="80" height="42" rx="6" fill="#e1f5fe" stroke="#0288d1" stroke-width="2"/>
+  <text x="495" y="746" text-anchor="middle" font-size="10" font-weight="700" fill="#0288d1">e₄' 修补</text>
+  <text x="495" y="760" text-anchor="middle" font-size="8" fill="#0288d1">PATCH</text>
+
+  <rect x="550" y="725" width="80" height="42" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2.5"/>
+  <text x="590" y="746" text-anchor="middle" font-size="10" font-weight="700" fill="#e65100">e₅' 重跑</text>
+  <text x="590" y="760" text-anchor="middle" font-size="8" fill="#e65100">RERUN_NODE</text>
+
+  <rect x="645" y="730" width="80" height="32" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="685" y="751" text-anchor="middle" font-size="11" font-weight="600" fill="#2e7d32">e₆ 保留</text>
+
+  <!-- Summary box -->
+  <rect x="760" y="720" width="260" height="50" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="890" y="742" text-anchor="middle" font-size="12" font-weight="700" fill="#2e7d32">修复 3 个节点，保留 3 个节点</text>
+  <text x="890" y="758" text-anchor="middle" font-size="11" fill="#5f6368">节省 50% 重执行开销</text>
+
+  <!-- Bottom note -->
+  <text x="550" y="820" text-anchor="middle" font-size="12" fill="#78909c">核心原则：不丢弃整条失败轨迹，定位最小修复范围，增量恢复</text>
+</svg>
