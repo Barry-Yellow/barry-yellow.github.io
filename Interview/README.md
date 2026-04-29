@@ -8,15 +8,15 @@
 
 | 文档 | 主题 | 核心板块 |
 |------|------|----------|
-| [01_LLM_Basics.md](./01_LLM_Basics.md) | 大模型基础 | Transformer架构、位置编码、注意力变体、MoE、分布式训练、LoRA、FlashAttention、KV Cache、词元化、Self/Cross-Attention、Encoding全览、词表生成、Token向量化、多模态Transformer设计、GLM架构、Prompt工程 |
-| [02_VLM.md](./02_VLM.md) | 多模态大模型 | 模态对齐与融合、CLIP、LLaVA、视觉指令微调、视频理解、视觉定位、VLM幻觉问题、VLA模型、Embedding相似度、多模态GRPO |
-| [03_RLHF.md](./03_RLHF.md) | 强化学习与对齐 | RLHF流程、奖励模型、PPO/DPO/GRPO全面对比、偏好学习、KL惩罚、信用分配、熵崩问题、CoT必要性与质量评估、持续学习、Human-in-the-loop标注、RL落地 |
-| [04_Agent.md](./04_Agent.md) | Agent智能体 | ReAct框架、规划能力(CoT/ToT/GoT)、记忆设计、工具调用、多智能体系统、Agent安全、MCP协议、任务拆分、长上下文、模型能力vs框架设计 |
-| [05_RAG.md](./05_RAG.md) | 检索增强生成 | RAG原理、检索流水线、切块策略、嵌入模型、Hybrid Search、重排、知识图谱增强 |
-| [06_Evaluation.md](./06_Evaluation.md) | 模型评估 | 传统NLP指标局限、基准测试(MMLU/GSM8K等)、LLM-as-Judge、Agent评估、红队测试 |
-| [07_LLM_Future.md](./07_LLM_Future.md) | LLM前沿展望 | AGI差距、多模态融合、世界模型、合成数据、具身智能、新架构(Mamba)、应用预测 |
-| [08_AIGC.md](./08_AIGC.md) | AIGC生成式AI | 扩散模型原理、文生图架构(UNet/DiT)、物理规律问题、多模态理解、质量评估(FID/CLIP Score)、指令理解优化、美感建模、模糊意图处理、主流方案对比、视频生成 |
-| [09_Infra.md](./09_Infra.md) | 训练基础设施 | 训练加速总览、DeepSpeed详解、多机多卡分布式训练、训练效率优化、收敛速度优化、通信问题、梯度累加、GPU推理优化、量化方法(GPTQ/AWQ/FP8)、Loss震荡分析 |
+| [01_LLM_Basics.md](Interview/01_LLM_Basics.md) | 大模型基础 | Transformer架构、位置编码、注意力变体、MoE、分布式训练、LoRA、FlashAttention、KV Cache、词元化、Self/Cross-Attention、Encoding全览、词表生成、Token向量化、多模态Transformer设计、GLM架构、Prompt工程 |
+| [02_VLM.md](Interview/02_VLM.md) | 多模态大模型 | 模态对齐与融合、CLIP、LLaVA、视觉指令微调、视频理解、视觉定位、VLM幻觉问题、VLA模型、Embedding相似度、多模态GRPO |
+| [03_RLHF.md](Interview/03_RLHF.md) | 强化学习与对齐 | RLHF流程、奖励模型、PPO/DPO/GRPO全面对比、偏好学习、KL惩罚、信用分配、熵崩问题、CoT必要性与质量评估、持续学习、Human-in-the-loop标注、RL落地 |
+| [04_Agent.md](Interview/04_Agent.md) | Agent智能体 | ReAct框架、规划能力(CoT/ToT/GoT)、记忆设计、工具调用、多智能体系统、Agent安全、MCP协议、任务拆分、长上下文、模型能力vs框架设计 |
+| [05_RAG.md](Interview/05_RAG.md) | 检索增强生成 | RAG原理、检索流水线、切块策略、嵌入模型、Hybrid Search、重排、知识图谱增强 |
+| [06_Evaluation.md](Interview/06_Evaluation.md) | 模型评估 | 传统NLP指标局限、基准测试(MMLU/GSM8K等)、LLM-as-Judge、Agent评估、红队测试 |
+| [07_LLM_Future.md](Interview/07_LLM_Future.md) | LLM前沿展望 | AGI差距、多模态融合、世界模型、合成数据、具身智能、新架构(Mamba)、应用预测 |
+| [08_AIGC.md](Interview/08_AIGC.md) | AIGC生成式AI | 扩散模型原理、文生图架构(UNet/DiT)、物理规律问题、多模态理解、质量评估(FID/CLIP Score)、指令理解优化、美感建模、模糊意图处理、主流方案对比、视频生成 |
+| [09_Infra.md](Interview/09_Infra.md) | 训练基础设施 | 训练加速总览、DeepSpeed详解、多机多卡分布式训练、训练效率优化、收敛速度优化、通信问题、梯度累加、GPU推理优化、量化方法(GPTQ/AWQ/FP8)、Loss震荡分析 |
 
 ---
 

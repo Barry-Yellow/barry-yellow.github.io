@@ -870,3 +870,702 @@ svg text { font-family: var(--mono), monospace; }
     </div>
   </div>
 </div>
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 3 — AG-Repair: 核心算法
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="agrepair">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-agrepair">AG-Repair · 03</span>
+      <div class="slide-title">核心算法：根因定位 · 污染传播 · 修复动作</div>
+    </div>
+    <div class="slide-num">03 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title red">根因评分算法</div>
+        <div class="formula">S_root(v) = α·A(v) + β·I(v) + γ·D(v) + δ·R(v)</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;">
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--red);min-width:28px">A(v)</span><span style="color:var(--text2)">异常强度 — 节点上观测到的错误证据强弱</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--amber);min-width:28px">I(v)</span><span style="color:var(--text2)">影响强度 — 向后能到达多少潜在受影响节点</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--purple);min-width:28px">D(v)</span><span style="color:var(--text2)">偏离程度 — 与任务目标/约束之间的偏差</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--green);min-width:28px">R(v)</span><span style="color:var(--text2)">修复收益 — 修复该节点的潜在恢复价值</span></div>
+        </div>
+        <div style="margin-top:10px;font-size:11.5px;color:var(--text3);font-family:var(--mono)">策略：硬信号优先（A,I权重高）→ 软信号补充</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title amber">污染传播 & 复用评分</div>
+        <div class="formula amber">P(v) = max_{u∈Pred(v)} P(u) · w(u,v) · λ</div>
+        <div style="font-size:11.5px;color:var(--text3);margin:4px 0 8px;font-family:var(--mono)">λ=0.85 衰减系数，前向传播</div>
+        <div class="formula green">S_reuse = 0.5·S_correct + 0.3·(1-P) + 0.2·S_compat</div>
+        <div style="font-size:11.5px;color:var(--text3);margin-top:4px;font-family:var(--mono)">节点分类阈值：Clean≥80 / Partial 60-80 / Invalid&lt;60</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">5类错误模式</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">
+          <span class="tag tag-r">evidence_fabrication</span>
+          <span class="tag tag-a">tool_call_error</span>
+          <span class="tag tag-p">context_drop</span>
+          <span class="tag tag-c">reasoning_bug</span>
+          <span class="tag tag-g">plan_bug</span>
+        </div>
+      </div>
+    </div>
+    <div class="col" style="flex:1.6">
+      <div class="panel" style="flex:1">
+        <div class="panel-title purple">修复动作空间（代价梯度）</div>
+        <svg viewBox="0 0 440 260" width="100%" style="max-height:240px">
+          <defs>
+            <marker id="ca1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#8b9ab5" opacity="0.6"/>
+            </marker>
+          </defs>
+          <rect x="40" y="190" width="52" height="30" rx="4" fill="rgba(0,229,160,0.2)" stroke="rgba(0,229,160,0.5)" stroke-width="1.5"/>
+          <text x="66" y="205" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">PRESERVE</text>
+          <text x="66" y="216" text-anchor="middle" fill="#8b9ab5" font-size="8">完全保留</text>
+          <rect x="100" y="175" width="52" height="45" rx="4" fill="rgba(0,229,160,0.15)" stroke="rgba(0,229,160,0.4)" stroke-width="1.5"/>
+          <text x="126" y="195" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">PATCH</text>
+          <text x="126" y="207" text-anchor="middle" fill="#8b9ab5" font-size="8">原位修补</text>
+          <rect x="160" y="155" width="52" height="65" rx="4" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="186" y="178" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">REPLAY_TOOL</text>
+          <text x="186" y="192" text-anchor="middle" fill="#8b9ab5" font-size="8">重放工具</text>
+          <rect x="220" y="130" width="52" height="90" rx="4" fill="rgba(255,184,0,0.15)" stroke="rgba(255,184,0,0.5)" stroke-width="1.5"/>
+          <text x="246" y="153" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">RERUN_NODE</text>
+          <text x="246" y="167" text-anchor="middle" fill="#8b9ab5" font-size="8">重跑单节点</text>
+          <rect x="280" y="100" width="52" height="120" rx="4" fill="rgba(255,77,106,0.12)" stroke="rgba(255,77,106,0.4)" stroke-width="1.5"/>
+          <text x="306" y="123" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">RERUN</text>
+          <text x="306" y="135" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">_BRANCH</text>
+          <text x="306" y="152" text-anchor="middle" fill="#8b9ab5" font-size="8">重跑分支</text>
+          <rect x="340" y="60" width="80" height="160" rx="4" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="2"/>
+          <text x="380" y="82" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">REWRITE</text>
+          <text x="380" y="94" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">_BRANCH</text>
+          <text x="380" y="112" text-anchor="middle" fill="#8b9ab5" font-size="8">重写分支</text>
+          <text x="380" y="124" text-anchor="middle" fill="#8b9ab5" font-size="8">Invalid&gt;40%</text>
+          <line x1="40" y1="240" x2="430" y2="240" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#ca1)"/>
+          <text x="235" y="255" text-anchor="middle" fill="#5a6a85" font-size="9">代价递增 →</text>
+          <path d="M 66 168 Q 66 148 126 148 Q 186 148 186 153" fill="none" stroke="rgba(255,77,106,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="126" y="144" text-anchor="middle" fill="#ff4d6a" font-size="8" opacity="0.7">局部失败自动升级（最多2轮）</text>
+          <rect x="20" y="8" width="410" height="18" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="225" y="21" text-anchor="middle" fill="#5a6a85" font-size="8.5" font-family="monospace">Clean→PRESERVE · Partial→PATCH · Invalid工具→REPLAY · Invalid节点→RERUN · 规划错→RERUN_BRANCH</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 4 — AG-Repair: 数据构造 & 工程实现
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="agrepair">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-agrepair">AG-Repair · 04</span>
+      <div class="slide-title">数据构造 · 增量重执行 · 工程实现</div>
+    </div>
+    <div class="slide-num">04 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title green">合成数据 & 故障注入</div>
+        <div class="body-text" style="margin-bottom:10px;">早期阶段真实失败日志稀缺，采用<span class="highlight-g">合成数据优先</span>策略，通过可控错误注入生成训练样本。</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:12px;color:var(--text2)">任务类型：<span class="tag tag-c">web_research</span> <span class="tag tag-a">tool_chain</span> <span class="tag tag-p">code_repair</span></div>
+          <div style="font-size:12px;color:var(--text2)">注入器：5类错误模式，精确标注根因/污染/安全节点</div>
+        </div>
+        <div style="display:flex;height:28px;border-radius:4px;overflow:hidden;margin-top:10px;gap:2px;">
+          <div style="flex:60;background:rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--cyan);font-weight:700">Train 60%</div>
+          <div style="flex:20;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--cyan)">Dev 20%</div>
+          <div style="flex:20;background:rgba(0,212,255,0.08);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--text3)">Test 20%</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title cyan">增量重执行三要素</div>
+        <ul class="bullet-list">
+          <li><span class="highlight">Checkpoint 恢复</span> — 从最靠近根因的 checkpoint 恢复，避免污染状态</li>
+          <li><span class="highlight-a">Journal Replay</span> — 未修改节点优先回放旧结果，不重调外部环境</li>
+          <li><span class="highlight-g">依赖注入</span> — 只注入 Active Dependency Frontier，减少长上下文干扰</li>
+        </ul>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text3)">局部失败 → 动作升级（最多2轮），避免无限重试</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">一致性验证输出</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--green)">local_consistency</span><span style="color:var(--text3)">接口/artifact/矛盾检测</span></div>
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--cyan)">global_success</span><span style="color:var(--text3)">任务成功标准</span></div>
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--amber)">milestone_forward</span><span style="color:var(--text3)">里程碑是否推进</span></div>
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--red)">new_error_rate</span><span style="color:var(--text3)">是否引入新错误</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col" style="flex:1.5">
+      <div class="panel" style="flex:1">
+        <div class="panel-title cyan">完整执行示例（web_research 任务）</div>
+        <svg viewBox="0 0 420 310" width="100%" style="max-height:290px">
+          <line x1="30" y1="20" x2="30" y2="290" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+          <circle cx="30" cy="35" r="10" fill="rgba(0,212,255,0.2)" stroke="rgba(0,212,255,0.6)" stroke-width="1.5"/>
+          <text x="30" y="39" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="700">1</text>
+          <text x="50" y="32" fill="#e8edf5" font-size="11" font-weight="600">采集轨迹</text>
+          <text x="50" y="44" fill="#8b9ab5" font-size="10">planner→search_call→search_result→writer</text>
+          <circle cx="30" cy="75" r="10" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="1.5"/>
+          <text x="30" y="79" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">2</text>
+          <text x="50" y="72" fill="#e8edf5" font-size="11" font-weight="600">注入错误</text>
+          <text x="50" y="84" fill="#8b9ab5" font-size="10">writer节点替换为"伪造证据直接总结"版本</text>
+          <circle cx="30" cy="115" r="10" fill="rgba(0,212,255,0.2)" stroke="rgba(0,212,255,0.6)" stroke-width="1.5"/>
+          <text x="30" y="119" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="700">3</text>
+          <text x="50" y="112" fill="#e8edf5" font-size="11" font-weight="600">构建 MAICG</text>
+          <text x="50" y="124" fill="#8b9ab5" font-size="10">plan/data/tool/artifact/context 边完整建图</text>
+          <circle cx="30" cy="155" r="10" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="1.5"/>
+          <text x="30" y="159" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">4</text>
+          <text x="50" y="152" fill="#e8edf5" font-size="11" font-weight="600">根因定位</text>
+          <text x="50" y="164" fill="#8b9ab5" font-size="10">writer: protocol_violation=true, deviation=0.8</text>
+          <circle cx="30" cy="195" r="10" fill="rgba(255,184,0,0.2)" stroke="rgba(255,184,0,0.6)" stroke-width="1.5"/>
+          <text x="30" y="199" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">5</text>
+          <text x="50" y="192" fill="#e8edf5" font-size="11" font-weight="600">边界传播</text>
+          <text x="50" y="204" fill="#8b9ab5" font-size="10">前3节点 Clean，writer节点 Invalid</text>
+          <circle cx="30" cy="235" r="10" fill="rgba(167,139,250,0.2)" stroke="rgba(167,139,250,0.6)" stroke-width="1.5"/>
+          <text x="30" y="239" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">6</text>
+          <text x="50" y="232" fill="#e8edf5" font-size="11" font-weight="600">修复 + 增量重放</text>
+          <text x="50" y="244" fill="#8b9ab5" font-size="10">前3步PRESERVE，writer→RERUN_NODE</text>
+          <circle cx="30" cy="275" r="10" fill="rgba(0,229,160,0.3)" stroke="rgba(0,229,160,0.7)" stroke-width="1.5"/>
+          <text x="30" y="279" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">7</text>
+          <text x="50" y="272" fill="#e8edf5" font-size="11" font-weight="600">一致性验证 → ✓ Repaired</text>
+          <text x="50" y="284" fill="#00e5a0" font-size="10">新摘要有真实证据，里程碑前进</text>
+          <rect x="200" y="100" width="210" height="60" rx="6" fill="rgba(0,229,160,0.06)" stroke="rgba(0,229,160,0.2)" stroke-width="1"/>
+          <text x="305" y="120" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">核心结论</text>
+          <text x="305" y="136" text-anchor="middle" fill="#8b9ab5" font-size="9">只对真正受污染的最小区域进行恢复</text>
+          <text x="305" y="148" text-anchor="middle" fill="#8b9ab5" font-size="9">3/4 节点复用，仅重跑1节点</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 5 — FinAgent: 项目概述 & 整体架构
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="finagent">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-finagent">FinAgent · 01</span>
+      <div class="slide-title">项目概述 & 整体架构</div>
+    </div>
+    <div class="slide-num">05 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title green">项目定位</div>
+        <div class="body-text" style="margin-bottom:10px;">
+          构建一个能<span class="highlight-g">理解金融分析需求</span>、自动采集数据、进行多维分析的智能助手。用户用自然语言提问，系统自动路由到对应专业 Agent 执行。
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="tag tag-g">Python</span>
+          <span class="tag tag-g">LangGraph</span>
+          <span class="tag tag-c">Playwright</span>
+          <span class="tag tag-c">ChromaDB</span>
+          <span class="tag tag-a">BM25</span>
+          <span class="tag tag-p">LLM API</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title green">GlobalState（TypedDict）</div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:6px;padding:10px;font-family:var(--mono);font-size:11px;line-height:1.8;">
+          <span style="color:#a78bfa">messages</span><span style="color:#5a6a85">: list[dict]</span><br>
+          <span style="color:#00d4ff">user_input</span><span style="color:#5a6a85">: str</span><br>
+          <span style="color:#ffb800">intent</span><span style="color:#5a6a85">: str</span> <span style="color:#5a6a85">// crawl/summarize/analyze/chat/multi</span><br>
+          <span style="color:#ffb800">intent_detail</span><span style="color:#5a6a85">: dict</span><br>
+          <span style="color:#00e5a0">crawler_output</span><span style="color:#5a6a85">: dict | None</span><br>
+          <span style="color:#00e5a0">summary_output</span><span style="color:#5a6a85">: dict | None</span><br>
+          <span style="color:#00e5a0">analysis_output</span><span style="color:#5a6a85">: dict | None</span><br>
+          <span style="color:#e8edf5">final_response</span><span style="color:#5a6a85">: str | None</span>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text3)">每个 Agent 只修改自己负责的字段，TypedDict 约束不可变性</div>
+      </div>
+    </div>
+    <div class="col" style="flex:1.8">
+      <div class="panel" style="flex:1">
+        <div class="panel-title green">四层架构 & LangGraph 执行流</div>
+        <svg viewBox="0 0 520 330" width="100%" style="max-height:310px">
+          <defs>
+            <marker id="fg1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#00e5a0" opacity="0.7"/>
+            </marker>
+            <marker id="fg2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#8b9ab5" opacity="0.5"/>
+            </marker>
+          </defs>
+
+          <!-- Layer 1: CLI -->
+          <rect x="160" y="10" width="200" height="34" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+          <text x="260" y="24" text-anchor="middle" fill="#e8edf5" font-size="10" font-weight="700">CLI 交互层</text>
+          <text x="260" y="36" text-anchor="middle" fill="#8b9ab5" font-size="9">Click + Rich · asyncio.run()</text>
+          <line x1="260" y1="44" x2="260" y2="58" stroke="rgba(0,229,160,0.4)" stroke-width="1.5" marker-end="url(#fg1)"/>
+
+          <!-- Layer 2: Chat Agent -->
+          <rect x="100" y="61" width="320" height="40" rx="6" fill="rgba(0,229,160,0.12)" stroke="rgba(0,229,160,0.5)" stroke-width="2"/>
+          <text x="260" y="77" text-anchor="middle" fill="#00e5a0" font-size="11" font-weight="700">对话 Agent（总指挥）</text>
+          <text x="260" y="91" text-anchor="middle" fill="#8b9ab5" font-size="9">意图识别 · 路由分发 · 结果整合 · 多轮对话</text>
+          <line x1="260" y1="101" x2="260" y2="115" stroke="rgba(0,229,160,0.4)" stroke-width="1.5" marker-end="url(#fg1)"/>
+
+          <!-- Conditional routing label -->
+          <text x="260" y="128" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="600">条件路由 add_conditional_edges</text>
+
+          <!-- Layer 3: Specialist Agents -->
+          <line x1="260" y1="132" x2="100" y2="148" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="260" y1="132" x2="260" y2="148" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="260" y1="132" x2="420" y2="148" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+          <!-- Crawler Agent -->
+          <rect x="20" y="151" width="150" height="50" rx="6" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.4)" stroke-width="1.5"/>
+          <text x="95" y="170" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="700">数据采集 Agent</text>
+          <text x="95" y="183" text-anchor="middle" fill="#8b9ab5" font-size="9">Playwright + 反爬</text>
+          <text x="95" y="194" text-anchor="middle" fill="#8b9ab5" font-size="9">→ crawler_output</text>
+
+          <!-- Summary Agent -->
+          <rect x="185" y="151" width="150" height="50" rx="6" fill="rgba(167,139,250,0.12)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+          <text x="260" y="170" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">文本摘要 Agent</text>
+          <text x="260" y="183" text-anchor="middle" fill="#8b9ab5" font-size="9">Agentic RAG</text>
+          <text x="260" y="194" text-anchor="middle" fill="#8b9ab5" font-size="9">→ summary_output</text>
+
+          <!-- Analysis Agent -->
+          <rect x="350" y="151" width="150" height="50" rx="6" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="425" y="170" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">数据分析 Agent</text>
+          <text x="425" y="183" text-anchor="middle" fill="#8b9ab5" font-size="9">9大技能 · 渐进链</text>
+          <text x="425" y="194" text-anchor="middle" fill="#8b9ab5" font-size="9">→ analysis_output</text>
+
+          <!-- Merge back -->
+          <line x1="95" y1="201" x2="95" y2="218" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <line x1="260" y1="201" x2="260" y2="218" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <line x1="425" y1="201" x2="425" y2="218" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <line x1="95" y1="218" x2="425" y2="218" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <line x1="260" y1="218" x2="260" y2="232" stroke="rgba(0,229,160,0.4)" stroke-width="1.5" marker-end="url(#fg1)"/>
+
+          <!-- Layer 4: Infrastructure -->
+          <rect x="100" y="235" width="320" height="34" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+          <text x="260" y="250" text-anchor="middle" fill="#8b9ab5" font-size="10" font-weight="600">基础设施层</text>
+          <text x="260" y="262" text-anchor="middle" fill="#5a6a85" font-size="9">LLM抽象 · 向量存储 · 配置管理 · 日志系统</text>
+
+          <!-- LangGraph flow at bottom -->
+          <rect x="10" y="285" width="500" height="36" rx="6" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="260" y="298" text-anchor="middle" fill="#5a6a85" font-size="8.5" font-weight="600" letter-spacing="1">LANGGRAPH FLOW</text>
+          <text x="260" y="313" text-anchor="middle" fill="#8b9ab5" font-size="9" font-family="monospace">START → 接收输入 → 对话Agent → 条件路由 → 各Agent执行 → 结果整合 → END</text>
+
+          <!-- Intent route tags -->
+          <text x="95" y="220" text-anchor="middle" fill="#3b82f6" font-size="8">crawl_data</text>
+          <text x="260" y="220" text-anchor="middle" fill="#a78bfa" font-size="8">summarize</text>
+          <text x="425" y="220" text-anchor="middle" fill="#ffb800" font-size="8">analyze</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 6 — FinAgent: 意图识别 & Agentic RAG
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="finagent">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-finagent">FinAgent · 02</span>
+      <div class="slide-title">意图识别 · Agentic RAG · 三层记忆</div>
+    </div>
+    <div class="slide-num">06 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title green">两阶段意图识别</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:4px;padding:4px 8px;font-family:var(--mono);font-size:10px;color:var(--green);white-space:nowrap">阶段1</div>
+            <div style="font-size:12.5px;color:var(--text2)"><span class="highlight-g">关键词预筛选</span> — 基于规则快速排除明显意图，降低 LLM 调用成本</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:4px;padding:4px 8px;font-family:var(--mono);font-size:10px;color:var(--green);white-space:nowrap">阶段2</div>
+            <div style="font-size:12.5px;color:var(--text2)"><span class="highlight-g">LLM 精确分类</span> — 结构化 Prompt 输出 JSON，含 intent + intent_detail</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;">
+          <span class="tag tag-c">crawl_data</span>
+          <span class="tag tag-p">summarize</span>
+          <span class="tag tag-a">analyze</span>
+          <span class="tag tag-g">chat</span>
+          <span class="tag" style="background:rgba(236,72,153,0.1);color:#ec4899;border:1px solid rgba(236,72,153,0.2)">multi（串行）</span>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text3)">多意图：sub_intents 列表，按依赖顺序串行执行，前序输出注入后续 context</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title amber">三层记忆架构</div>
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1;background:rgba(255,184,0,0.06);border:1px solid rgba(255,184,0,0.2);border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">⚡</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--amber);font-weight:700;margin-bottom:4px">短期记忆</div>
+            <div style="font-size:10.5px;color:var(--text3)">内存 dict<br>TTL 过期</div>
+          </div>
+          <div style="flex:1;background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">💾</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--blue);font-weight:700;margin-bottom:4px">长期记忆</div>
+            <div style="font-size:10.5px;color:var(--text3)">JSON 文件<br>FIFO 淘汰</div>
+          </div>
+          <div style="flex:1;background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:6px;padding:10px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">🗄️</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--purple);font-weight:700;margin-bottom:4px">RAG 记忆</div>
+            <div style="font-size:10.5px;color:var(--text3)">向量数据库<br>语义检索</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text3)">优先级：短期 &gt; 长期 &gt; RAG，高优先级覆盖低优先级</div>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1.5">
+      <div class="panel" style="flex:1">
+        <div class="panel-title green">Agentic RAG — 混合检索 + RRF 融合</div>
+        <svg viewBox="0 0 420 290" width="100%" style="max-height:270px">
+          <defs>
+            <marker id="rrf1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#00e5a0" opacity="0.7"/>
+            </marker>
+          </defs>
+
+          <!-- Query -->
+          <rect x="150" y="10" width="120" height="32" rx="6" fill="rgba(0,229,160,0.12)" stroke="rgba(0,229,160,0.4)" stroke-width="1.5"/>
+          <text x="210" y="24" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">用户查询</text>
+          <text x="210" y="35" text-anchor="middle" fill="#8b9ab5" font-size="9">LLM 改写 + 实体提取</text>
+
+          <!-- Split -->
+          <line x1="210" y1="42" x2="210" y2="58" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="100" y1="58" x2="320" y2="58" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="100" y1="58" x2="100" y2="72" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="320" y1="58" x2="320" y2="72" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+          <!-- Vector search -->
+          <rect x="30" y="75" width="140" height="50" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+          <text x="100" y="95" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">向量检索</text>
+          <text x="100" y="108" text-anchor="middle" fill="#8b9ab5" font-size="9">Embedding 相似度</text>
+          <text x="100" y="119" text-anchor="middle" fill="#8b9ab5" font-size="9">语义相关性</text>
+
+          <!-- BM25 search -->
+          <rect x="250" y="75" width="140" height="50" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.4)" stroke-width="1.5"/>
+          <text x="320" y="95" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="700">BM25 检索</text>
+          <text x="320" y="108" text-anchor="middle" fill="#8b9ab5" font-size="9">关键词精确匹配</text>
+          <text x="320" y="119" text-anchor="middle" fill="#8b9ab5" font-size="9">术语 & 实体名</text>
+
+          <!-- Merge to RRF -->
+          <line x1="100" y1="125" x2="100" y2="145" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="320" y1="125" x2="320" y2="145" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="100" y1="145" x2="320" y2="145" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="210" y1="145" x2="210" y2="159" stroke="rgba(0,229,160,0.4)" stroke-width="1.5" marker-end="url(#rrf1)"/>
+
+          <!-- RRF -->
+          <rect x="130" y="162" width="160" height="44" rx="6" fill="rgba(0,229,160,0.12)" stroke="rgba(0,229,160,0.5)" stroke-width="2"/>
+          <text x="210" y="180" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">RRF 融合</text>
+          <text x="210" y="193" text-anchor="middle" fill="#8b9ab5" font-size="9">score(d) = Σ 1/(k+rank_i(d))</text>
+          <text x="210" y="204" text-anchor="middle" fill="#8b9ab5" font-size="8">k=60，按融合得分取 Top-K</text>
+          <line x1="210" y1="206" x2="210" y2="220" stroke="rgba(0,229,160,0.4)" stroke-width="1.5" marker-end="url(#rrf1)"/>
+
+          <!-- LLM eval -->
+          <rect x="130" y="223" width="160" height="34" rx="6" fill="rgba(255,184,0,0.1)" stroke="rgba(255,184,0,0.3)" stroke-width="1.5"/>
+          <text x="210" y="238" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">LLM 相关性评估</text>
+          <text x="210" y="250" text-anchor="middle" fill="#8b9ab5" font-size="9">不足时重检索（Agentic）</text>
+          <line x1="210" y1="257" x2="210" y2="271" stroke="rgba(0,229,160,0.4)" stroke-width="1.5" marker-end="url(#rrf1)"/>
+
+          <!-- Generate -->
+          <rect x="130" y="274" width="160" height="14" rx="4" fill="rgba(0,229,160,0.15)" stroke="rgba(0,229,160,0.4)" stroke-width="1"/>
+          <text x="210" y="284" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">生成最终回答</text>
+
+          <!-- vs Traditional RAG -->
+          <rect x="10" y="162" width="110" height="80" rx="6" fill="rgba(255,77,106,0.06)" stroke="rgba(255,77,106,0.15)" stroke-width="1"/>
+          <text x="65" y="178" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">传统 RAG</text>
+          <text x="65" y="192" text-anchor="middle" fill="#8b9ab5" font-size="8">单次向量检索</text>
+          <text x="65" y="204" text-anchor="middle" fill="#8b9ab5" font-size="8">直接使用原始查询</text>
+          <text x="65" y="216" text-anchor="middle" fill="#8b9ab5" font-size="8">无评估机制</text>
+          <text x="65" y="228" text-anchor="middle" fill="#8b9ab5" font-size="8">全量注入上下文</text>
+          <text x="65" y="240" text-anchor="middle" fill="#8b9ab5" font-size="8">静态 Pipeline</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 7 — FinAgent: 反爬 & 分析技能
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="finagent">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-finagent">FinAgent · 03</span>
+      <div class="slide-title">反爬策略 · 渐进式分析链 · 容错机制</div>
+    </div>
+    <div class="slide-num">07 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title" style="color:var(--blue)">三层反检测防御体系</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:6px;padding:10px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--blue);font-weight:700;margin-bottom:6px">行为层</div>
+            <div style="font-size:11.5px;color:var(--text2)">随机页面停留时间 · 模拟人类滚动 · 随机鼠标轨迹 · 交互延迟抖动</div>
+          </div>
+          <div style="background:rgba(236,72,153,0.06);border:1px solid rgba(236,72,153,0.2);border-radius:6px;padding:10px;">
+            <div style="font-family:var(--mono);font-size:10px;color:#ec4899;font-weight:700;margin-bottom:6px">特征层</div>
+            <div style="font-size:11.5px;color:var(--text2)">stealth 插件隐藏 WebDriver · Canvas 指纹随机化 · UA 轮换池 · WebGL 伪装</div>
+          </div>
+          <div style="background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:6px;padding:10px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--green);font-weight:700;margin-bottom:6px">频率层</div>
+            <div style="font-size:11.5px;color:var(--text2)">请求间隔随机化 · 指数退避重试 · 并发数动态控制 · IP 代理池轮换</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title red">四层容错机制</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;gap:8px;align-items:center;font-size:12px;">
+            <span style="background:rgba(0,229,160,0.15);color:var(--green);font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;white-space:nowrap">L1 重试</span>
+            <span style="color:var(--text2)">指数退避 1s→2s→4s，最多3次</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;font-size:12px;">
+            <span style="background:rgba(255,184,0,0.15);color:var(--amber);font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;white-space:nowrap">L2 降级</span>
+            <span style="color:var(--text2)">LLM切换 / Playwright→requests / 详细→简要</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;font-size:12px;">
+            <span style="background:rgba(59,130,246,0.15);color:var(--blue);font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;white-space:nowrap">L3 回滚</span>
+            <span style="color:var(--text2)">深拷贝 State 快照，异常时整体回滚</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;font-size:12px;">
+            <span style="background:rgba(167,139,250,0.15);color:var(--purple);font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;white-space:nowrap">L4 兜底</span>
+            <span style="color:var(--text2)">友好错误提示，逐项标注执行状态</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1.5">
+      <div class="panel" style="flex:1">
+        <div class="panel-title amber">渐进式分析链（9大技能 · 模板方法模式）</div>
+        <svg viewBox="0 0 420 290" width="100%" style="max-height:270px">
+          <defs>
+            <marker id="pa1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#ffb800" opacity="0.7"/>
+            </marker>
+          </defs>
+
+          <!-- BaseSkill -->
+          <rect x="130" y="10" width="160" height="36" rx="6" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.5)" stroke-width="2"/>
+          <text x="210" y="26" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">BaseSkill（抽象基类）</text>
+          <text x="210" y="38" text-anchor="middle" fill="#8b9ab5" font-size="9">validate → prepare_prompt → call_llm → parse → format</text>
+
+          <!-- 4-step chain -->
+          <line x1="210" y1="46" x2="210" y2="60" stroke="rgba(255,184,0,0.4)" stroke-width="1.5" marker-end="url(#pa1)"/>
+
+          <rect x="20" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.08)" stroke="rgba(255,184,0,0.3)" stroke-width="1.5"/>
+          <text x="64" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S1 数据理解</text>
+          <text x="64" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">结构/字段/质量</text>
+          <line x1="108" y1="83" x2="118" y2="83" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
+
+          <rect x="121" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.1)" stroke="rgba(255,184,0,0.35)" stroke-width="1.5"/>
+          <text x="165" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S2 指标计算</text>
+          <text x="165" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">关键财务指标</text>
+          <line x1="209" y1="83" x2="219" y2="83" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
+
+          <rect x="222" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="266" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S3 深度分析</text>
+          <text x="266" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">行业背景多维解读</text>
+          <line x1="310" y1="83" x2="320" y2="83" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
+
+          <rect x="323" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.15)" stroke="rgba(255,184,0,0.5)" stroke-width="1.5"/>
+          <text x="367" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S4 结论输出</text>
+          <text x="367" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">结构化结论建议</text>
+
+          <!-- 9 skills grid -->
+          <line x1="10" y1="118" x2="410" y2="118" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="210" y="132" text-anchor="middle" fill="#5a6a85" font-size="9" font-weight="600" letter-spacing="1">9 大分析技能</text>
+
+          <rect x="10" y="140" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="68" y="155" text-anchor="middle" fill="#ffb800" font-size="9">财务分析</text>
+          <rect x="132" y="140" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="190" y="155" text-anchor="middle" fill="#ffb800" font-size="9">估值分析 PE/PB/DCF</text>
+          <rect x="254" y="140" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="312" y="155" text-anchor="middle" fill="#ffb800" font-size="9">技术分析</text>
+
+          <rect x="10" y="168" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="68" y="183" text-anchor="middle" fill="#ffb800" font-size="9">行业对比</text>
+          <rect x="132" y="168" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="190" y="183" text-anchor="middle" fill="#ffb800" font-size="9">风险分析</text>
+          <rect x="254" y="168" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="312" y="183" text-anchor="middle" fill="#ffb800" font-size="9">竞争力分析</text>
+
+          <rect x="10" y="196" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="68" y="211" text-anchor="middle" fill="#ffb800" font-size="9">成长性分析</text>
+          <rect x="132" y="196" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="190" y="211" text-anchor="middle" fill="#ffb800" font-size="9">现金流分析</text>
+          <rect x="254" y="196" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="312" y="211" text-anchor="middle" fill="#ffb800" font-size="9">综合评分</text>
+
+          <!-- Prompt engineering tips -->
+          <rect x="10" y="230" width="400" height="52" rx="6" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="210" y="244" text-anchor="middle" fill="#5a6a85" font-size="9" font-weight="600" letter-spacing="1">PROMPT ENGINEERING</text>
+          <text x="210" y="258" text-anchor="middle" fill="#8b9ab5" font-size="9">① JSON Schema 约束输出格式  ② Few-shot 示例引导  ③ 专业金融分析师角色设定</text>
+          <text x="210" y="272" text-anchor="middle" fill="#8b9ab5" font-size="9">④ 上下文窗口裁剪（保留最近N轮+关键摘要）  ⑤ 中间步骤格式校验+重试</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 8 — FinAgent: 技术难点 & 总结
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="finagent">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-finagent">FinAgent · 04</span>
+      <div class="slide-title">技术难点 & 项目总结</div>
+    </div>
+    <div class="slide-num">08 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title red">核心技术难点</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(255,77,106,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 4px 4px 0;">
+            <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:3px">LLM 输出格式不稳定</div>
+            <div style="font-size:11.5px;color:var(--text2)">strip() + 正则提取 JSON + json.loads() + fallback 关键词匹配</div>
+          </div>
+          <div style="background:rgba(255,77,106,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 4px 4px 0;">
+            <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:3px">动态渲染页面采集</div>
+            <div style="font-size:11.5px;color:var(--text2)">Playwright 智能等待（networkidle），BrowserManager 单例管理生命周期</div>
+          </div>
+          <div style="background:rgba(255,77,106,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 4px 4px 0;">
+            <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:3px">多意图依赖顺序</div>
+            <div style="font-size:11.5px;color:var(--text2)">sub_intents 按依赖排序串行执行，前序输出自动注入后续 context</div>
+          </div>
+          <div style="background:rgba(255,77,106,0.06);border-left:3px solid var(--red);padding:8px 12px;border-radius:0 4px 4px 0;">
+            <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:3px">记忆一致性冲突</div>
+            <div style="font-size:11.5px;color:var(--text2)">优先级：短期 &gt; 长期 &gt; RAG，LFU+FIFO 混合淘汰策略</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title green">项目亮点总结</div>
+        <ul class="bullet-list green">
+          <li>LangGraph <span class="highlight-g">声明式编排</span>，StateGraph 管理复杂多 Agent 流转</li>
+          <li><span class="highlight-g">两阶段意图识别</span>降低 LLM 调用成本，支持多意图串行</li>
+          <li><span class="highlight-g">Agentic RAG</span> 混合检索 + RRF 融合，优于传统单路向量检索</li>
+          <li><span class="highlight-g">三层记忆</span>实现跨会话知识积累，优先级覆盖保证一致性</li>
+          <li><span class="highlight-g">三层反爬</span>（行为/特征/频率）应对金融网站反检测</li>
+          <li><span class="highlight-g">四层容错</span>保证系统鲁棒性，部分降级而非全量失败</li>
+          <li>9大分析技能 + <span class="highlight-g">渐进式 Prompt 链</span>，模板方法保证输出一致性</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title amber">安全设计</div>
+        <ul class="bullet-list amber">
+          <li>域名白名单防 SSRF，跟随重定向后二次校验</li>
+          <li>API Key 环境变量注入，日志自动脱敏</li>
+          <li>LLM 输出后处理过滤，防止泄露系统 Prompt</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1">
+      <div class="panel" style="flex:1">
+        <div class="panel-title cyan">两项目对比</div>
+        <svg viewBox="0 0 280 280" width="100%" style="max-height:260px">
+          <text x="140" y="20" text-anchor="middle" fill="#5a6a85" font-size="9" font-weight="600" letter-spacing="1">COMPARISON</text>
+
+          <rect x="10" y="30" width="120" height="220" rx="8" fill="rgba(0,212,255,0.04)" stroke="rgba(0,212,255,0.2)" stroke-width="1.5"/>
+          <text x="70" y="50" text-anchor="middle" fill="#00d4ff" font-size="11" font-weight="700">AG-Repair</text>
+          <line x1="20" y1="56" x2="120" y2="56" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+          <text x="70" y="72" text-anchor="middle" fill="#8b9ab5" font-size="9">研究型框架</text>
+          <text x="70" y="86" text-anchor="middle" fill="#8b9ab5" font-size="9">图算法 + LLM</text>
+          <text x="70" y="100" text-anchor="middle" fill="#8b9ab5" font-size="9">因果推理</text>
+          <text x="70" y="114" text-anchor="middle" fill="#8b9ab5" font-size="9">合成数据驱动</text>
+          <text x="70" y="128" text-anchor="middle" fill="#8b9ab5" font-size="9">增量修复</text>
+          <text x="70" y="142" text-anchor="middle" fill="#8b9ab5" font-size="9">多智能体修复</text>
+          <text x="70" y="160" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="600">核心贡献</text>
+          <text x="70" y="174" text-anchor="middle" fill="#8b9ab5" font-size="8">MAICG 图建模</text>
+          <text x="70" y="186" text-anchor="middle" fill="#8b9ab5" font-size="8">污染传播量化</text>
+          <text x="70" y="198" text-anchor="middle" fill="#8b9ab5" font-size="8">成本感知修复</text>
+
+          <rect x="150" y="30" width="120" height="220" rx="8" fill="rgba(0,229,160,0.04)" stroke="rgba(0,229,160,0.2)" stroke-width="1.5"/>
+          <text x="210" y="50" text-anchor="middle" fill="#00e5a0" font-size="11" font-weight="700">FinAgent</text>
+          <line x1="160" y1="56" x2="260" y2="56" stroke="rgba(0,229,160,0.15)" stroke-width="1"/>
+          <text x="210" y="72" text-anchor="middle" fill="#8b9ab5" font-size="9">工程型系统</text>
+          <text x="210" y="86" text-anchor="middle" fill="#8b9ab5" font-size="9">LangGraph 编排</text>
+          <text x="210" y="100" text-anchor="middle" fill="#8b9ab5" font-size="9">意图路由</text>
+          <text x="210" y="114" text-anchor="middle" fill="#8b9ab5" font-size="9">真实数据采集</text>
+          <text x="210" y="128" text-anchor="middle" fill="#8b9ab5" font-size="9">RAG 增强</text>
+          <text x="210" y="142" text-anchor="middle" fill="#8b9ab5" font-size="9">金融分析应用</text>
+          <text x="210" y="160" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="600">核心贡献</text>
+          <text x="210" y="174" text-anchor="middle" fill="#8b9ab5" font-size="8">混合检索 RRF</text>
+          <text x="210" y="186" text-anchor="middle" fill="#8b9ab5" font-size="8">三层记忆管理</text>
+          <text x="210" y="198" text-anchor="middle" fill="#8b9ab5" font-size="8">三层反爬体系</text>
+
+          <text x="140" y="240" text-anchor="middle" fill="#5a6a85" font-size="8">共同点：Python · Multi-Agent · LLM · 容错设计</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVIGATION BAR
+═══════════════════════════════════════════════════════ -->
+<div class="nav" id="nav">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">&#8592;</button>
+  <div class="nav-dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">&#8594;</button>
+  <div class="nav-label" id="navLabel"></div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+const sectionNames = ['封面', 'AG-01', 'AG-02', 'AG-03', 'AG-04', 'FIN-01', 'FIN-02', 'FIN-03', 'FIN-04'];
+
+function goToSlide(n) {
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(n, slides.length - 1));
+  slides[current].classList.add('active');
+  updateNav();
+}
+
+function navigate(dir) {
+  goToSlide(current + dir);
+}
+
+function updateNav() {
+  const dots = document.getElementById('dots');
+  dots.innerHTML = '';
+  slides.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot section-' + (s.dataset.section || 'cover');
+    if (i === current) d.classList.add('active');
+    d.onclick = () => goToSlide(i);
+    dots.appendChild(d);
+  });
+  document.getElementById('navLabel').textContent = sectionNames[current] || '';
+  document.getElementById('prevBtn').style.opacity = current === 0 ? '0.3' : '1';
+  document.getElementById('nextBtn').style.opacity = current === slides.length - 1 ? '0.3' : '1';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
+});
+
+updateNav();
+</script>
+</body>
+</html>
