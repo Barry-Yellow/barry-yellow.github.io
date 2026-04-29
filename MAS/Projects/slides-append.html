@@ -1,0 +1,172 @@
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 3 — AG-Repair: 核心算法
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="agrepair">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-agrepair">AG-Repair · 03</span>
+      <div class="slide-title">核心算法：根因定位 · 污染传播 · 修复动作</div>
+    </div>
+    <div class="slide-num">03 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title red">根因评分算法</div>
+        <div class="formula">S_root(v) = α·A(v) + β·I(v) + γ·D(v) + δ·R(v)</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;">
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--red);min-width:28px">A(v)</span><span style="color:var(--text2)">异常强度 — 节点上观测到的错误证据强弱</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--amber);min-width:28px">I(v)</span><span style="color:var(--text2)">影响强度 — 向后能到达多少潜在受影响节点</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--purple);min-width:28px">D(v)</span><span style="color:var(--text2)">偏离程度 — 与任务目标/约束之间的偏差</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="font-family:var(--mono);color:var(--green);min-width:28px">R(v)</span><span style="color:var(--text2)">修复收益 — 修复该节点的潜在恢复价值</span></div>
+        </div>
+        <div style="margin-top:10px;font-size:11.5px;color:var(--text3);font-family:var(--mono)">策略：硬信号优先（A,I权重高）→ 软信号补充</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title amber">污染传播 & 复用评分</div>
+        <div class="formula amber">P(v) = max_{u∈Pred(v)} P(u) · w(u,v) · λ</div>
+        <div style="font-size:11.5px;color:var(--text3);margin:4px 0 8px;font-family:var(--mono)">λ=0.85 衰减系数，前向传播</div>
+        <div class="formula green">S_reuse = 0.5·S_correct + 0.3·(1-P) + 0.2·S_compat</div>
+        <div style="font-size:11.5px;color:var(--text3);margin-top:4px;font-family:var(--mono)">节点分类阈值：Clean≥80 / Partial 60-80 / Invalid&lt;60</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">5类错误模式</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">
+          <span class="tag tag-r">evidence_fabrication</span>
+          <span class="tag tag-a">tool_call_error</span>
+          <span class="tag tag-p">context_drop</span>
+          <span class="tag tag-c">reasoning_bug</span>
+          <span class="tag tag-g">plan_bug</span>
+        </div>
+      </div>
+    </div>
+    <div class="col" style="flex:1.6">
+      <div class="panel" style="flex:1">
+        <div class="panel-title purple">修复动作空间（代价梯度）</div>
+        <svg viewBox="0 0 440 260" width="100%" style="max-height:240px">
+          <defs>
+            <marker id="ca1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#8b9ab5" opacity="0.6"/>
+            </marker>
+          </defs>
+          <rect x="40" y="190" width="52" height="30" rx="4" fill="rgba(0,229,160,0.2)" stroke="rgba(0,229,160,0.5)" stroke-width="1.5"/>
+          <text x="66" y="205" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">PRESERVE</text>
+          <text x="66" y="216" text-anchor="middle" fill="#8b9ab5" font-size="8">完全保留</text>
+          <rect x="100" y="175" width="52" height="45" rx="4" fill="rgba(0,229,160,0.15)" stroke="rgba(0,229,160,0.4)" stroke-width="1.5"/>
+          <text x="126" y="195" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">PATCH</text>
+          <text x="126" y="207" text-anchor="middle" fill="#8b9ab5" font-size="8">原位修补</text>
+          <rect x="160" y="155" width="52" height="65" rx="4" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="186" y="178" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">REPLAY_TOOL</text>
+          <text x="186" y="192" text-anchor="middle" fill="#8b9ab5" font-size="8">重放工具</text>
+          <rect x="220" y="130" width="52" height="90" rx="4" fill="rgba(255,184,0,0.15)" stroke="rgba(255,184,0,0.5)" stroke-width="1.5"/>
+          <text x="246" y="153" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">RERUN_NODE</text>
+          <text x="246" y="167" text-anchor="middle" fill="#8b9ab5" font-size="8">重跑单节点</text>
+          <rect x="280" y="100" width="52" height="120" rx="4" fill="rgba(255,77,106,0.12)" stroke="rgba(255,77,106,0.4)" stroke-width="1.5"/>
+          <text x="306" y="123" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">RERUN</text>
+          <text x="306" y="135" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">_BRANCH</text>
+          <text x="306" y="152" text-anchor="middle" fill="#8b9ab5" font-size="8">重跑分支</text>
+          <rect x="340" y="60" width="80" height="160" rx="4" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="2"/>
+          <text x="380" y="82" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">REWRITE</text>
+          <text x="380" y="94" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">_BRANCH</text>
+          <text x="380" y="112" text-anchor="middle" fill="#8b9ab5" font-size="8">重写分支</text>
+          <text x="380" y="124" text-anchor="middle" fill="#8b9ab5" font-size="8">Invalid&gt;40%</text>
+          <line x1="40" y1="240" x2="430" y2="240" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#ca1)"/>
+          <text x="235" y="255" text-anchor="middle" fill="#5a6a85" font-size="9">代价递增 →</text>
+          <path d="M 66 168 Q 66 148 126 148 Q 186 148 186 153" fill="none" stroke="rgba(255,77,106,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="126" y="144" text-anchor="middle" fill="#ff4d6a" font-size="8" opacity="0.7">局部失败自动升级（最多2轮）</text>
+          <rect x="20" y="8" width="410" height="18" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="225" y="21" text-anchor="middle" fill="#5a6a85" font-size="8.5" font-family="monospace">Clean→PRESERVE · Partial→PATCH · Invalid工具→REPLAY · Invalid节点→RERUN · 规划错→RERUN_BRANCH</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 4 — AG-Repair: 数据构造 & 工程实现
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="agrepair">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-agrepair">AG-Repair · 04</span>
+      <div class="slide-title">数据构造 · 增量重执行 · 工程实现</div>
+    </div>
+    <div class="slide-num">04 <span>/ 09</span></div>
+  </div>
+  <div class="content">
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title green">合成数据 & 故障注入</div>
+        <div class="body-text" style="margin-bottom:10px;">早期阶段真实失败日志稀缺，采用<span class="highlight-g">合成数据优先</span>策略，通过可控错误注入生成训练样本。</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:12px;color:var(--text2)">任务类型：<span class="tag tag-c">web_research</span> <span class="tag tag-a">tool_chain</span> <span class="tag tag-p">code_repair</span></div>
+          <div style="font-size:12px;color:var(--text2)">注入器：5类错误模式，精确标注根因/污染/安全节点</div>
+        </div>
+        <div style="display:flex;height:28px;border-radius:4px;overflow:hidden;margin-top:10px;gap:2px;">
+          <div style="flex:60;background:rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--cyan);font-weight:700">Train 60%</div>
+          <div style="flex:20;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--cyan)">Dev 20%</div>
+          <div style="flex:20;background:rgba(0,212,255,0.08);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--text3)">Test 20%</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title cyan">增量重执行三要素</div>
+        <ul class="bullet-list">
+          <li><span class="highlight">Checkpoint 恢复</span> — 从最靠近根因的 checkpoint 恢复，避免污染状态</li>
+          <li><span class="highlight-a">Journal Replay</span> — 未修改节点优先回放旧结果，不重调外部环境</li>
+          <li><span class="highlight-g">依赖注入</span> — 只注入 Active Dependency Frontier，减少长上下文干扰</li>
+        </ul>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text3)">局部失败 → 动作升级（最多2轮），避免无限重试</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">一致性验证输出</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--green)">local_consistency</span><span style="color:var(--text3)">接口/artifact/矛盾检测</span></div>
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--cyan)">global_success</span><span style="color:var(--text3)">任务成功标准</span></div>
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--amber)">milestone_forward</span><span style="color:var(--text3)">里程碑是否推进</span></div>
+          <div style="display:flex;gap:6px;font-size:12px;font-family:var(--mono);"><span style="color:var(--red)">new_error_rate</span><span style="color:var(--text3)">是否引入新错误</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col" style="flex:1.5">
+      <div class="panel" style="flex:1">
+        <div class="panel-title cyan">完整执行示例（web_research 任务）</div>
+        <svg viewBox="0 0 420 310" width="100%" style="max-height:290px">
+          <line x1="30" y1="20" x2="30" y2="290" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+          <circle cx="30" cy="35" r="10" fill="rgba(0,212,255,0.2)" stroke="rgba(0,212,255,0.6)" stroke-width="1.5"/>
+          <text x="30" y="39" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="700">1</text>
+          <text x="50" y="32" fill="#e8edf5" font-size="11" font-weight="600">采集轨迹</text>
+          <text x="50" y="44" fill="#8b9ab5" font-size="10">planner→search_call→search_result→writer</text>
+          <circle cx="30" cy="75" r="10" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="1.5"/>
+          <text x="30" y="79" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">2</text>
+          <text x="50" y="72" fill="#e8edf5" font-size="11" font-weight="600">注入错误</text>
+          <text x="50" y="84" fill="#8b9ab5" font-size="10">writer节点替换为"伪造证据直接总结"版本</text>
+          <circle cx="30" cy="115" r="10" fill="rgba(0,212,255,0.2)" stroke="rgba(0,212,255,0.6)" stroke-width="1.5"/>
+          <text x="30" y="119" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="700">3</text>
+          <text x="50" y="112" fill="#e8edf5" font-size="11" font-weight="600">构建 MAICG</text>
+          <text x="50" y="124" fill="#8b9ab5" font-size="10">plan/data/tool/artifact/context 边完整建图</text>
+          <circle cx="30" cy="155" r="10" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="1.5"/>
+          <text x="30" y="159" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">4</text>
+          <text x="50" y="152" fill="#e8edf5" font-size="11" font-weight="600">根因定位</text>
+          <text x="50" y="164" fill="#8b9ab5" font-size="10">writer: protocol_violation=true, deviation=0.8</text>
+          <circle cx="30" cy="195" r="10" fill="rgba(255,184,0,0.2)" stroke="rgba(255,184,0,0.6)" stroke-width="1.5"/>
+          <text x="30" y="199" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">5</text>
+          <text x="50" y="192" fill="#e8edf5" font-size="11" font-weight="600">边界传播</text>
+          <text x="50" y="204" fill="#8b9ab5" font-size="10">前3节点 Clean，writer节点 Invalid</text>
+          <circle cx="30" cy="235" r="10" fill="rgba(167,139,250,0.2)" stroke="rgba(167,139,250,0.6)" stroke-width="1.5"/>
+          <text x="30" y="239" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">6</text>
+          <text x="50" y="232" fill="#e8edf5" font-size="11" font-weight="600">修复 + 增量重放</text>
+          <text x="50" y="244" fill="#8b9ab5" font-size="10">前3步PRESERVE，writer→RERUN_NODE</text>
+          <circle cx="30" cy="275" r="10" fill="rgba(0,229,160,0.3)" stroke="rgba(0,229,160,0.7)" stroke-width="1.5"/>
+          <text x="30" y="279" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">7</text>
+          <text x="50" y="272" fill="#e8edf5" font-size="11" font-weight="600">一致性验证 → ✓ Repaired</text>
+          <text x="50" y="284" fill="#00e5a0" font-size="10">新摘要有真实证据，里程碑前进</text>
+          <rect x="200" y="100" width="210" height="60" rx="6" fill="rgba(0,229,160,0.06)" stroke="rgba(0,229,160,0.2)" stroke-width="1"/>
+          <text x="305" y="120" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">核心结论</text>
+          <text x="305" y="136" text-anchor="middle" fill="#8b9ab5" font-size="9">只对真正受污染的最小区域进行恢复</text>
+          <text x="305" y="148" text-anchor="middle" fill="#8b9ab5" font-size="9">3/4 节点复用，仅重跑1节点</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

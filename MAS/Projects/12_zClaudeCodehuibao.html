@@ -100,14 +100,70 @@
   .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin: 20px 0; }
   .vs-divider { font-size: 1.6em; font-weight: 800; color: var(--accent); }
 
+  /* ===== TOC Sidebar ===== */
+  :root { --toc-w: 220px; }
+  #toc {
+    position: fixed; top: 0; left: 0;
+    width: var(--toc-w); height: 100vh;
+    background: #0d47a1; color: #fff;
+    overflow-y: auto; z-index: 200;
+    padding: 24px 0; display: flex; flex-direction: column;
+  }
+  #toc .toc-title {
+    font-size: 13px; font-weight: 700; letter-spacing: 1px;
+    padding: 0 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    margin-bottom: 8px; opacity: 0.85;
+  }
+  #toc a {
+    display: block; color: rgba(255,255,255,0.7);
+    text-decoration: none; padding: 7px 18px;
+    font-size: 12.5px; line-height: 1.4;
+    border-left: 3px solid transparent;
+    transition: all .18s;
+  }
+  #toc a:hover, #toc a.active {
+    color: #fff; background: rgba(255,255,255,0.1);
+    border-left-color: #4fc3f7;
+  }
+  #toc a .pg { font-size: 10px; opacity: 0.55; margin-left: 4px; }
+  body { padding-left: var(--toc-w); }
   /* Print */
-  @media print { .slide { page-break-after: always; min-height: auto; padding: 40px; } }
-  @media (max-width: 768px) { .slide { padding: 30px 20px; } .grid-2, .grid-3 { grid-template-columns: 1fr; } h2 { font-size: 1.5em; } .slide-title h1 { font-size: 2em; } }
+  @media print {
+    #toc { display: none; }
+    body { padding-left: 0; }
+    .slide { page-break-after: always; min-height: auto; padding: 40px; }
+  }
+  @media (max-width: 900px) {
+    #toc { display: none; }
+    body { padding-left: 0; }
+    .slide { padding: 30px 20px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    h2 { font-size: 1.5em; }
+    .slide-title h1 { font-size: 2em; }
+  }
 </style>
 </head>
 <body>
+
+<nav id="toc">
+  <div class="toc-title">AG-Repair 目录</div>
+  <a href="#s1">封面<span class="pg">p.1</span></a>
+  <a href="#s2">① 问题定义与动机<span class="pg">p.2</span></a>
+  <a href="#s3">② 因果图构建<span class="pg">p.3</span></a>
+  <a href="#s3d">　 MAICG 示意图<span class="pg">p.3.1</span></a>
+  <a href="#s4">　 两阶段构建过程<span class="pg">p.4</span></a>
+  <a href="#s5">③ 根因定位<span class="pg">p.5</span></a>
+  <a href="#s5d">　 根因定位示意图<span class="pg">p.5.1</span></a>
+  <a href="#s6">④ 边界识别<span class="pg">p.6</span></a>
+  <a href="#s7">⑤ 修复规划<span class="pg">p.7</span></a>
+  <a href="#s8">⑥ 增量重执行<span class="pg">p.8</span></a>
+  <a href="#s8d">　 修复动作示意图<span class="pg">p.8.1</span></a>
+  <a href="#s9">⑦ 一致性验证<span class="pg">p.9</span></a>
+  <a href="#s10">∑ 方法总结<span class="pg">p.10</span></a>
+</nav>
+
 <!-- ==================== SLIDE 1: Title ==================== -->
-<div class="slide slide-title">
+<div id="s1" class="slide slide-title">
   <h1>AG-Repair 方法论</h1>
   <div class="subtitle">面向多智能体系统长错误轨迹的自动化修复框架</div>
   <div class="pipeline">
@@ -124,12 +180,12 @@
 </div>
 
 <!-- ==================== SLIDE 2: Problem & Motivation ==================== -->
-<div class="slide">
+<div id="s2" class="slide">
   <h2><span class="section-num">1</span>问题定义与动机</h2>
 
   <!-- Motivation diagram -->
   <div style="display:flex;justify-content:center;margin-bottom:24px;">
-    <img src="src/motivation_diagram.svg" alt="传统方法 vs AG-Repair 对比示意" style="max-width:100%;max-height:340px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);"/>
+    <img src="src/motivation_diagram.svg" alt="传统方法 vs AG-Repair 对比示意" style="max-width:100%;max-height:88vh;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);"/>
   </div>
 
   <div class="vs">
@@ -173,7 +229,7 @@
 </div>
 
 <!-- ==================== SLIDE 3: MAICG Graph Construction ==================== -->
-<div class="slide">
+<div id="s3" class="slide">
   <h2><span class="section-num">2</span>因果图构建 — 从线性日志到 MAICG 图结构</h2>
 
   <div class="card accent">
@@ -207,16 +263,16 @@
 </div>
 
 <!-- ==================== SLIDE 3.5: MAICG Diagram ==================== -->
-<div class="slide" style="align-items:center;">
+<div id="s3d" class="slide" style="align-items:center;">
   <h2><span class="section-num">2</span>因果图构建 — MAICG 节点与边类型示意</h2>
   <div style="flex:1;display:flex;align-items:center;justify-content:center;width:100%;">
-    <img src="src/causal_graph.svg" alt="MAICG 因果图" style="max-width:100%;max-height:75vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
+    <img src="src/causal_graph.svg" alt="MAICG 因果图" style="max-width:100%;max-height:88vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
   </div>
   <div class="page-num">3.1</div>
 </div>
 
 <!-- ==================== SLIDE 4: Graph Construction Process ==================== -->
-<div class="slide">
+<div id="s4" class="slide">
   <h2><span class="section-num">2</span>因果图构建 — 两阶段构建过程</h2>
 
   <div class="grid-2">
@@ -281,7 +337,7 @@
 </div>
 
 <!-- ==================== SLIDE 5: Root Cause Localization ==================== -->
-<div class="slide">
+<div id="s5" class="slide">
   <h2><span class="section-num">3</span>根因定位 — 找最早、最关键、最值得修的节点</h2>
 
   <div class="card accent">
@@ -353,16 +409,16 @@
 </div>
 
 <!-- ==================== SLIDE 5.5: Error Identification Diagram ==================== -->
-<div class="slide" style="align-items:center;">
+<div id="s5d" class="slide" style="align-items:center;">
   <h2><span class="section-num">3</span>根因定位 — 候选发现·评分·排序示意</h2>
   <div style="flex:1;display:flex;align-items:center;justify-content:center;width:100%;">
-    <img src="src/error_identification.svg" alt="错误识别与根因定位" style="max-width:100%;max-height:75vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
+    <img src="src/error_identification.svg" alt="错误识别与根因定位" style="max-width:100%;max-height:88vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
   </div>
   <div class="page-num">5.1</div>
 </div>
 
 <!-- ==================== SLIDE 6: Boundary Identification ==================== -->
-<div class="slide">
+<div id="s6" class="slide">
   <h2><span class="section-num">4</span>边界识别 — 区分 Clean / Partial / Invalid</h2>
 
   <div class="card red">
@@ -426,7 +482,7 @@
 </div>
 
 <!-- ==================== SLIDE 7: Repair Action Generation ==================== -->
-<div class="slide">
+<div id="s7" class="slide">
   <h2><span class="section-num">5</span>修复规划 — 从受限动作空间选择最低代价动作</h2>
 
   <div class="card accent">
@@ -489,7 +545,7 @@
 </div>
 
 <!-- ==================== SLIDE 8: Incremental Re-execution ==================== -->
-<div class="slide">
+<div id="s8" class="slide">
   <h2><span class="section-num">6</span>增量重执行 — 只重跑必要子图，不动安全区域</h2>
 
   <div class="card accent">
@@ -563,16 +619,16 @@
 </div>
 
 <!-- ==================== SLIDE 8.5: Repair Actions Diagram ==================== -->
-<div class="slide" style="align-items:center;">
+<div id="s8d" class="slide" style="align-items:center;">
   <h2><span class="section-num">5</span>修复动作 — 分类·选择·增量重执行示意</h2>
   <div style="flex:1;display:flex;align-items:center;justify-content:center;width:100%;">
-    <img src="src/repair_actions.svg" alt="修复动作生成" style="max-width:100%;max-height:75vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
+    <img src="src/repair_actions.svg" alt="修复动作生成" style="max-width:100%;max-height:88vh;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);"/>
   </div>
   <div class="page-num">8.1</div>
 </div>
 
 <!-- ==================== SLIDE 9: Consistency Verification ==================== -->
-<div class="slide">
+<div id="s9" class="slide">
   <h2><span class="section-num">7</span>一致性验证与完整流程示例</h2>
 
   <div class="grid-2">
@@ -630,7 +686,7 @@
 </div>
 
 <!-- ==================== SLIDE 10: Summary ==================== -->
-<div class="slide" style="background:linear-gradient(135deg, #0d47a1 0%, #1a73e8 50%, #4fc3f7 100%);color:#fff;">
+<div id="s10" class="slide" style="background:linear-gradient(135deg, #0d47a1 0%, #1a73e8 50%, #4fc3f7 100%);color:#fff;">
   <h2 style="color:#fff;"><span class="section-num" style="background:rgba(255,255,255,0.25);color:#fff;">∑</span>方法总结 — 三层核心创新</h2>
 
   <div style="display:flex;flex-direction:column;gap:24px;margin-top:20px;">
@@ -655,5 +711,25 @@
   <div class="page-num" style="color:rgba(255,255,255,0.6)">10</div>
 </div>
 
+<script>
+(function(){
+  var ids = ['s1','s2','s3','s3d','s4','s5','s5d','s6','s7','s8','s8d','s9','s10'];
+  var links = {};
+  ids.forEach(function(id){ links[id] = document.querySelector('#toc a[href="#'+id+'"]'); });
+  function update(){
+    var scrollY = window.scrollY + window.innerHeight * 0.3;
+    var current = ids[0];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= scrollY) current = id;
+    });
+    ids.forEach(function(id){
+      if(links[id]) links[id].classList.toggle('active', id === current);
+    });
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+</script>
 </body>
 </html>

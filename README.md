@@ -14,6 +14,7 @@ Here are some notes mainly for myself to review. I would be glad if you can lear
 - [多智能体强化学习 (MARL)](/MARL/README.md) - QMIX、MAPPO、CTDE 范式、信用分配、安全 MARL
 - [语言模型 (LM)](/LM/README.md) - BERT、Transformer、MoE、Prompt Engineering、RAG、RLHF
 - [模型量化 (Quantization)](/Quantization/README.md) - 旋转量化、KV 缓存量化、KIVI、QuaRot
+- [面试知识库 (Interview)](/Interview/README.md) - LLM基础、VLM、RLHF、Agent、RAG、评估、AIGC、训练基础设施
 
 ---
 

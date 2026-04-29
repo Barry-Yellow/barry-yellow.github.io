@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目汇报 — AG-Repair & FinAgent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14;
+  --bg2: #0d1420;
+  --bg3: #111827;
+  --panel: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #e8edf5;
+  --text2: #8b9ab5;
+  --text3: #5a6a85;
+  --cyan: #00d4ff;
+  --cyan2: #0099cc;
+  --green: #00e5a0;
+  --green2: #00a870;
+  --amber: #ffb800;
+  --red: #ff4d6a;
+  --purple: #a78bfa;
+  --blue: #3b82f6;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans SC', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── SLIDE CONTAINER ── */
+.deck {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  padding: 48px 64px 40px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.slide.active { display: flex; }
+
+/* animated grid bg */
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* ── HEADER ── */
+.slide-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.slide-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.project-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.tag-agrepair { background: rgba(0,212,255,0.12); color: var(--cyan); border: 1px solid rgba(0,212,255,0.25); }
+.tag-finagent { background: rgba(0,229,160,0.12); color: var(--green); border: 1px solid rgba(0,229,160,0.25); }
+.tag-cover { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
+
+.slide-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  margin-top: 8px;
+  letter-spacing: -0.5px;
+}
+
+.slide-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text3);
+  text-align: right;
+  line-height: 1.8;
+}
+
+.slide-num span { color: var(--text2); }
+
+/* ── CONTENT AREA ── */
+.content {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  min-height: 0;
+}
+
+.col { display: flex; flex-direction: column; gap: 16px; }
+.col-1 { flex: 1; }
+.col-2 { flex: 2; }
+.col-3 { flex: 3; }
+.col-half { flex: 0 0 48%; }
+
+/* ── PANELS ── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+
+.panel-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-title::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  background: currentColor;
+  display: block;
+}
+
+.panel-title.cyan { color: var(--cyan); }
+.panel-title.green { color: var(--green); }
+.panel-title.amber { color: var(--amber); }
+.panel-title.red { color: var(--red); }
+.panel-title.purple { color: var(--purple); }
+
+/* ── TYPOGRAPHY ── */
+.body-text {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.highlight { color: var(--cyan); font-weight: 600; }
+.highlight-g { color: var(--green); font-weight: 600; }
+.highlight-a { color: var(--amber); font-weight: 600; }
+.highlight-r { color: var(--red); font-weight: 600; }
+.highlight-p { color: var(--purple); font-weight: 600; }
+
+.mono { font-family: var(--mono); font-size: 12px; }
+
+/* ── TAGS ── */
+.tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.tag-c { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
+.tag-g { background: rgba(0,229,160,0.1); color: var(--green); border: 1px solid rgba(0,229,160,0.2); }
+.tag-a { background: rgba(255,184,0,0.1); color: var(--amber); border: 1px solid rgba(255,184,0,0.2); }
+.tag-r { background: rgba(255,77,106,0.1); color: var(--red); border: 1px solid rgba(255,77,106,0.2); }
+.tag-p { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+
+/* ── FORMULA ── */
+.formula {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--cyan);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  color: var(--text);
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+.formula.green { border-left-color: var(--green); }
+.formula.amber { border-left-color: var(--amber); }
+
+/* ── BULLET LIST ── */
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.bullet-list li {
+  font-size: 13px;
+  color: var(--text2);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.bullet-list li::before {
+  content: '▸';
+  color: var(--cyan);
+  font-size: 10px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.bullet-list.green li::before { color: var(--green); }
+.bullet-list.amber li::before { color: var(--amber); }
+
+/* ── NAVIGATION ── */
+.nav {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+  background: rgba(8,12,20,0.9);
+  border: 1px solid var(--border2);
+  border-radius: 40px;
+  padding: 8px 20px;
+  backdrop-filter: blur(12px);
+}
+
+.nav-btn {
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover { background: var(--panel); color: var(--text); border-color: var(--cyan); }
+
+.nav-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dot.active { background: var(--cyan); width: 18px; border-radius: 3px; }
+.dot.section-finagent.active { background: var(--green); }
+.dot.section-cover.active { background: var(--purple); }
+
+.nav-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  min-width: 80px;
+  text-align: center;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+/* ── COMPARISON ROW ── */
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.compare-cell {
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.compare-cell.old {
+  background: rgba(255,77,106,0.06);
+  border: 1px solid rgba(255,77,106,0.2);
+  color: #ff8fa0;
+}
+
+.compare-cell.new {
+  background: rgba(0,229,160,0.06);
+  border: 1px solid rgba(0,229,160,0.2);
+  color: #5eefc0;
+}
+
+.compare-cell .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+
+/* ── METRIC CARDS ── */
+.metric-row {
+  display: flex;
+  gap: 10px;
+}
+
+.metric {
+  flex: 1;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+}
+
+.metric .val {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.metric .val.green { color: var(--green); }
+.metric .val.amber { color: var(--amber); }
+
+.metric .lbl {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--cyan);
+}
+
+/* ── SLIDE-SPECIFIC STYLES ── */
+
+/* Cover */
+.cover-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 32px;
+}
+
+.cover-title {
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.cover-title .ag { color: var(--cyan); }
+.cover-title .fin { color: var(--green); }
+.cover-title .sep { color: var(--text3); margin: 0 16px; }
+
+.cover-subtitle {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.cover-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cover-nav {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.cover-nav-btn {
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.cover-nav-btn.primary {
+  background: var(--cyan);
+  color: var(--bg);
+}
+
+.cover-nav-btn.secondary {
+  background: rgba(0,229,160,0.12);
+  color: var(--green);
+  border: 1px solid rgba(0,229,160,0.3);
+}
+
+.cover-nav-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* ── SVG DIAGRAMS ── */
+svg text { font-family: var(--mono), monospace; }
+
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 0 — COVER
+═══════════════════════════════════════════════════════ -->
+<div class="slide active" data-section="cover">
+  <div class="cover-content">
+    <div>
+      <div class="project-tag tag-cover" style="margin: 0 auto 20px;">面试项目汇报 · 2024</div>
+      <div class="cover-title">
+        <span class="ag">AG-Repair</span>
+        <span class="sep">&</span>
+        <span class="fin">FinAgent</span>
+      </div>
+    </div>
+    <div class="cover-subtitle">
+      多智能体系统长轨迹失效自动化修复框架<br>
+      <span style="color:var(--text3)">×</span><br>
+      基于 LangGraph 的多智能体金融分析系统
+    </div>
+    <div class="cover-tags">
+      <span class="tag tag-c">Multi-Agent</span>
+      <span class="tag tag-c">Causal Graph</span>
+      <span class="tag tag-g">LangGraph</span>
+      <span class="tag tag-g">Agentic RAG</span>
+      <span class="tag tag-a">Python</span>
+      <span class="tag tag-p">LLM</span>
+    </div>
+    <div class="cover-nav">
+      <button class="cover-nav-btn primary" onclick="goToSlide(1)">AG-Repair →</button>
+      <button class="cover-nav-btn secondary" onclick="goToSlide(5)">FinAgent →</button>
+    </div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--text3)">← → 键盘导航 · 共 9 页</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 1 — AG-Repair: 项目概述 & 核心问题
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="agrepair">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-agrepair">AG-Repair · 01</span>
+      <div class="slide-title">项目概述 & 核心问题</div>
+    </div>
+    <div class="slide-num">01 <span>/ 09</span></div>
+  </div>
+
+  <div class="content">
+    <div class="col" style="flex:1.1">
+      <div class="panel">
+        <div class="panel-title cyan">项目定位</div>
+        <div class="body-text" style="margin-bottom:12px;">
+          解决<span class="highlight">多智能体系统</span>在长轨迹执行中出现的失效问题，在<span class="highlight">最小干预、最大复用</span>的前提下完成自动化修复与增量恢复。
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell old">
+            <div class="label">❌ 传统方法</div>
+            发现错误后<strong>全量重跑</strong>，假设错误点之后所有内容失效
+          </div>
+          <div class="compare-cell new">
+            <div class="label">✅ AG-Repair</div>
+            将失败轨迹视为<strong>可分析、可切分、可局部修补</strong>的结构化过程
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title amber">技术栈</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="tag tag-a">Python</span>
+          <span class="tag tag-c">LLM API</span>
+          <span class="tag tag-c">图算法</span>
+          <span class="tag tag-a">SQLite</span>
+          <span class="tag tag-a">JSONL</span>
+          <span class="tag tag-p">Checkpoint</span>
+          <span class="tag tag-g">合成数据</span>
+          <span class="tag tag-g">故障注入</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">四大设计目标</div>
+        <ul class="bullet-list">
+          <li><span class="highlight">精准定位</span> — 找出真正需要修复的关键错误点</li>
+          <li><span class="highlight-a">量化影响</span> — 区分可复用节点 vs 必须修补节点</li>
+          <li><span class="highlight-g">成本感知</span> — 优先选择代价最小的修复动作</li>
+          <li><span class="highlight-p">增量恢复</span> — 只重放必要部分，一致性校验</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1.9">
+      <div class="panel" style="flex:1">
+        <div class="panel-title cyan">整体修复流程（7步闭环）</div>
+        <svg viewBox="0 0 620 320" width="100%" style="max-height:290px">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#00d4ff" opacity="0.7"/>
+            </marker>
+            <marker id="arr2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#a78bfa" opacity="0.7"/>
+            </marker>
+            <marker id="arr3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#00e5a0" opacity="0.7"/>
+            </marker>
+            <marker id="arr4" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#ffb800" opacity="0.7"/>
+            </marker>
+          </defs>
+
+          <!-- Row 1 -->
+          <rect x="10" y="20" width="118" height="52" rx="6" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.4)" stroke-width="1.5"/>
+          <text x="69" y="42" text-anchor="middle" fill="#00d4ff" font-size="10" font-weight="700">① 轨迹采集</text>
+          <text x="69" y="57" text-anchor="middle" fill="#8b9ab5" font-size="9">JSONL + SQLite</text>
+          <text x="69" y="68" text-anchor="middle" fill="#8b9ab5" font-size="9">Checkpoint</text>
+          <line x1="128" y1="46" x2="148" y2="46" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arr)" opacity="0.6"/>
+
+          <rect x="151" y="20" width="118" height="52" rx="6" fill="rgba(0,212,255,0.12)" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/>
+          <text x="210" y="42" text-anchor="middle" fill="#00d4ff" font-size="10" font-weight="700">② MAICG构建</text>
+          <text x="210" y="57" text-anchor="middle" fill="#8b9ab5" font-size="9">多智能体交互</text>
+          <text x="210" y="68" text-anchor="middle" fill="#8b9ab5" font-size="9">因果图 G=(V,E)</text>
+          <line x1="269" y1="46" x2="289" y2="46" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arr)" opacity="0.6"/>
+
+          <rect x="292" y="20" width="118" height="52" rx="6" fill="rgba(255,77,106,0.1)" stroke="rgba(255,77,106,0.4)" stroke-width="1.5"/>
+          <text x="351" y="42" text-anchor="middle" fill="#ff4d6a" font-size="10" font-weight="700">③ 根因定位</text>
+          <text x="351" y="57" text-anchor="middle" fill="#8b9ab5" font-size="9">硬信号+软信号</text>
+          <text x="351" y="68" text-anchor="middle" fill="#8b9ab5" font-size="9">S_root 评分排序</text>
+          <line x1="410" y1="46" x2="430" y2="46" stroke="#ff4d6a" stroke-width="1.5" marker-end="url(#arr4)" opacity="0.6"/>
+
+          <rect x="433" y="20" width="118" height="52" rx="6" fill="rgba(255,184,0,0.1)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="492" y="42" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">④ 影响边界</text>
+          <text x="492" y="57" text-anchor="middle" fill="#8b9ab5" font-size="9">污染传播模型</text>
+          <text x="492" y="68" text-anchor="middle" fill="#8b9ab5" font-size="9">Clean/Partial/Invalid</text>
+
+          <!-- Down connector -->
+          <line x1="492" y1="72" x2="492" y2="96" stroke="#ffb800" stroke-width="1.5" opacity="0.5"/>
+          <line x1="492" y1="96" x2="433" y2="96" stroke="#ffb800" stroke-width="1.5" opacity="0.5"/>
+          <line x1="433" y1="96" x2="433" y2="116" stroke="#ffb800" stroke-width="1.5" marker-end="url(#arr4)" opacity="0.5"/>
+
+          <!-- Row 2 (right to left) -->
+          <rect x="292" y="119" width="118" height="52" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+          <text x="351" y="141" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">⑤ 修复动作生成</text>
+          <text x="351" y="156" text-anchor="middle" fill="#8b9ab5" font-size="9">RepairPlan</text>
+          <text x="351" y="167" text-anchor="middle" fill="#8b9ab5" font-size="9">6种动作空间</text>
+          <line x1="292" y1="145" x2="272" y2="145" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr2)" opacity="0.6"/>
+
+          <rect x="151" y="119" width="118" height="52" rx="6" fill="rgba(0,229,160,0.1)" stroke="rgba(0,229,160,0.4)" stroke-width="1.5"/>
+          <text x="210" y="141" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">⑥ 增量重执行</text>
+          <text x="210" y="156" text-anchor="middle" fill="#8b9ab5" font-size="9">Checkpoint恢复</text>
+          <text x="210" y="167" text-anchor="middle" fill="#8b9ab5" font-size="9">Journal Replay</text>
+          <line x1="151" y1="145" x2="131" y2="145" stroke="#00e5a0" stroke-width="1.5" marker-end="url(#arr3)" opacity="0.6"/>
+
+          <rect x="10" y="119" width="118" height="52" rx="6" fill="rgba(0,229,160,0.15)" stroke="rgba(0,229,160,0.6)" stroke-width="1.5"/>
+          <text x="69" y="141" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">⑦ 一致性验证</text>
+          <text x="69" y="156" text-anchor="middle" fill="#8b9ab5" font-size="9">局部+全局一致</text>
+          <text x="69" y="167" text-anchor="middle" fill="#8b9ab5" font-size="9">Milestone Forward</text>
+
+          <!-- Upgrade loop -->
+          <path d="M 69 171 Q 69 200 210 200 Q 351 200 351 171" fill="none" stroke="rgba(255,77,106,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="210" y="197" text-anchor="middle" fill="#ff4d6a" font-size="8" opacity="0.6">局部失败 → 动作升级</text>
+
+          <!-- Modules -->
+          <line x1="10" y1="218" x2="610" y2="218" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="10" y="232" fill="#5a6a85" font-size="9" font-weight="600" letter-spacing="1">MODULES</text>
+
+          <rect x="10" y="238" width="66" height="20" rx="3" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+          <text x="43" y="252" text-anchor="middle" fill="#00d4ff" font-size="9">collector/</text>
+          <rect x="82" y="238" width="56" height="20" rx="3" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+          <text x="110" y="252" text-anchor="middle" fill="#00d4ff" font-size="9">graph/</text>
+          <rect x="144" y="238" width="78" height="20" rx="3" fill="rgba(255,77,106,0.06)" stroke="rgba(255,77,106,0.15)" stroke-width="1"/>
+          <text x="183" y="252" text-anchor="middle" fill="#ff4d6a" font-size="9">localization/</text>
+          <rect x="228" y="238" width="68" height="20" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="262" y="252" text-anchor="middle" fill="#ffb800" font-size="9">boundary/</text>
+          <rect x="302" y="238" width="64" height="20" rx="3" fill="rgba(167,139,250,0.06)" stroke="rgba(167,139,250,0.15)" stroke-width="1"/>
+          <text x="334" y="252" text-anchor="middle" fill="#a78bfa" font-size="9">planner/</text>
+          <rect x="372" y="238" width="56" height="20" rx="3" fill="rgba(0,229,160,0.06)" stroke="rgba(0,229,160,0.15)" stroke-width="1"/>
+          <text x="400" y="252" text-anchor="middle" fill="#00e5a0" font-size="9">replay/</text>
+          <rect x="434" y="238" width="54" height="20" rx="3" fill="rgba(0,229,160,0.06)" stroke="rgba(0,229,160,0.15)" stroke-width="1"/>
+          <text x="461" y="252" text-anchor="middle" fill="#00e5a0" font-size="9">verify/</text>
+          <rect x="494" y="238" width="50" height="20" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="519" y="252" text-anchor="middle" fill="#8b9ab5" font-size="9">bench/</text>
+
+          <!-- Output bar -->
+          <rect x="10" y="272" width="600" height="26" rx="4" fill="rgba(0,229,160,0.06)" stroke="rgba(0,229,160,0.2)" stroke-width="1"/>
+          <text x="310" y="289" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="600">✓ Repaired Trajectory T' — 最小干预 · 最大复用 · 一致性保证</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 2 — AG-Repair: MAICG 核心数据结构
+═══════════════════════════════════════════════════════ -->
+<div class="slide" data-section="agrepair">
+  <div class="slide-header">
+    <div class="slide-meta">
+      <span class="project-tag tag-agrepair">AG-Repair · 02</span>
+      <div class="slide-title">核心数据结构：MAICG 多智能体交互因果图</div>
+    </div>
+    <div class="slide-num">02 <span>/ 09</span></div>
+  </div>
+
+  <div class="content">
+    <!-- LEFT: node & edge types -->
+    <div class="col" style="flex:1">
+      <div class="panel">
+        <div class="panel-title cyan">节点类型 V</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;">
+            <span class="tag tag-c" style="min-width:90px;text-align:center">agent_step</span>
+            <span style="color:var(--text2)">Agent 推理输出步骤</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;">
+            <span class="tag tag-a" style="min-width:90px;text-align:center">tool_call</span>
+            <span style="color:var(--text2)">工具调用请求</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;">
+            <span class="tag tag-a" style="min-width:90px;text-align:center">tool_result</span>
+            <span style="color:var(--text2)">工具执行返回</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;">
+            <span class="tag tag-p" style="min-width:90px;text-align:center">artifact</span>
+            <span style="color:var(--text2)">共享对象（代码/结果）</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;">
+            <span class="tag tag-g" style="min-width:90px;text-align:center">checkpoint</span>
+            <span style="color:var(--text2)">可恢复状态快照</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;">
+            <span class="tag tag-r" style="min-width:90px;text-align:center">verifier_signal</span>
+            <span style="color:var(--text2)">验证器失败信号</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title amber">边类型 E（含传播权重）</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+            <span style="font-family:var(--mono);color:var(--text2)">data</span>
+            <div style="flex:1;height:3px;background:var(--border);margin:0 8px;border-radius:2px;overflow:hidden">
+              <div style="width:100%;height:100%;background:var(--red)"></div>
+            </div>
+            <span style="font-family:var(--mono);color:var(--red);font-size:11px">1.00</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+            <span style="font-family:var(--mono);color:var(--text2)">tool</span>
+            <div style="flex:1;height:3px;background:var(--border);margin:0 8px;border-radius:2px;overflow:hidden">
+              <div style="width:95%;height:100%;background:var(--amber)"></div>
+            </div>
+            <span style="font-family:var(--mono);color:var(--amber);font-size:11px">0.95</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+            <span style="font-family:var(--mono);color:var(--text2)">artifact</span>
+            <div style="flex:1;height:3px;background:var(--border);margin:0 8px;border-radius:2px;overflow:hidden">
+              <div style="width:85%;height:100%;background:var(--purple)"></div>
+            </div>
+            <span style="font-family:var(--mono);color:var(--purple);font-size:11px">0.85</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+            <span style="font-family:var(--mono);color:var(--text2)">plan</span>
+            <div style="flex:1;height:3px;background:var(--border);margin:0 8px;border-radius:2px;overflow:hidden">
+              <div style="width:70%;height:100%;background:var(--blue)"></div>
+            </div>
+            <span style="font-family:var(--mono);color:var(--blue);font-size:11px">0.70</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+            <span style="font-family:var(--mono);color:var(--text2)">context</span>
+            <div style="flex:1;height:3px;background:var(--border);margin:0 8px;border-radius:2px;overflow:hidden">
+              <div style="width:50%;height:100%;background:var(--text3)"></div>
+            </div>
+            <span style="font-family:var(--mono);color:var(--text3);font-size:11px">0.50</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+            <span style="font-family:var(--mono);color:var(--text2)">temporal</span>
+            <div style="flex:1;height:3px;background:var(--border);margin:0 8px;border-radius:2px;overflow:hidden">
+              <div style="width:10%;height:100%;background:var(--text3)"></div>
+            </div>
+            <span style="font-family:var(--mono);color:var(--text3);font-size:11px">0.10</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: MAICG diagram -->
+    <div class="col" style="flex:2">
+      <div class="panel" style="flex:1">
+        <div class="panel-title cyan">MAICG 示例图（web_research 任务）</div>
+        <svg viewBox="0 0 560 310" width="100%" style="max-height:280px">
+          <defs>
+            <marker id="ma1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#ff4d6a" opacity="0.8"/>
+            </marker>
+            <marker id="ma2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#ffb800" opacity="0.8"/>
+            </marker>
+            <marker id="ma3" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#a78bfa" opacity="0.8"/>
+            </marker>
+            <marker id="ma4" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#8b9ab5" opacity="0.6"/>
+            </marker>
+            <marker id="ma5" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <polygon points="0 0, 7 2.5, 0 5" fill="#00d4ff" opacity="0.8"/>
+            </marker>
+          </defs>
+
+          <!-- Planner node -->
+          <rect x="20" y="20" width="110" height="44" rx="6" fill="rgba(0,212,255,0.12)" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/>
+          <text x="75" y="38" text-anchor="middle" fill="#00d4ff" font-size="10" font-weight="700">Planner</text>
+          <text x="75" y="52" text-anchor="middle" fill="#8b9ab5" font-size="9">agent_step</text>
+
+          <!-- Checkpoint -->
+          <rect x="20" y="100" width="110" height="36" rx="6" fill="rgba(0,229,160,0.1)" stroke="rgba(0,229,160,0.4)" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="75" y="118" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">checkpoint_1</text>
+          <text x="75" y="130" text-anchor="middle" fill="#8b9ab5" font-size="8">checkpoint</text>
+
+          <!-- Tool call -->
+          <rect x="180" y="20" width="110" height="44" rx="6" fill="rgba(255,184,0,0.1)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="235" y="38" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">search_call</text>
+          <text x="235" y="52" text-anchor="middle" fill="#8b9ab5" font-size="9">tool_call</text>
+
+          <!-- Tool result -->
+          <rect x="180" y="100" width="110" height="44" rx="6" fill="rgba(255,184,0,0.1)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="235" y="118" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">search_result</text>
+          <text x="235" y="132" text-anchor="middle" fill="#8b9ab5" font-size="9">tool_result</text>
+
+          <!-- Artifact -->
+          <rect x="340" y="60" width="110" height="44" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+          <text x="395" y="78" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">search_data</text>
+          <text x="395" y="92" text-anchor="middle" fill="#8b9ab5" font-size="9">artifact</text>
+
+          <!-- Writer (ERROR node) -->
+          <rect x="340" y="160" width="110" height="44" rx="6" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.7)" stroke-width="2"/>
+          <text x="395" y="178" text-anchor="middle" fill="#ff4d6a" font-size="10" font-weight="700">Writer ⚠</text>
+          <text x="395" y="192" text-anchor="middle" fill="#8b9ab5" font-size="9">agent_step [ERROR]</text>
+
+          <!-- Verifier signal -->
+          <rect x="460" y="160" width="90" height="44" rx="6" fill="rgba(255,77,106,0.1)" stroke="rgba(255,77,106,0.4)" stroke-width="1.5"/>
+          <text x="505" y="178" text-anchor="middle" fill="#ff4d6a" font-size="10" font-weight="700">verify_fail</text>
+          <text x="505" y="192" text-anchor="middle" fill="#8b9ab5" font-size="9">verifier_signal</text>
+
+          <!-- Edges -->
+          <!-- planner -> tool_call (plan edge) -->
+          <line x1="130" y1="35" x2="180" y2="35" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#ma5)" opacity="0.7"/>
+          <text x="155" y="30" text-anchor="middle" fill="#3b82f6" font-size="8">plan</text>
+
+          <!-- planner -> checkpoint (temporal) -->
+          <line x1="75" y1="64" x2="75" y2="100" stroke="#5a6a85" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#ma4)" opacity="0.5"/>
+
+          <!-- tool_call -> tool_result (tool edge) -->
+          <line x1="235" y1="64" x2="235" y2="100" stroke="#ffb800" stroke-width="1.5" marker-end="url(#ma2)" opacity="0.7"/>
+          <text x="248" y="86" fill="#ffb800" font-size="8">tool</text>
+
+          <!-- tool_result -> artifact (artifact edge) -->
+          <line x1="290" y1="122" x2="340" y2="95" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#ma3)" opacity="0.7"/>
+          <text x="318" y="103" fill="#a78bfa" font-size="8">artifact</text>
+
+          <!-- artifact -> writer (data edge) -->
+          <line x1="395" y1="104" x2="395" y2="160" stroke="#ff4d6a" stroke-width="2" marker-end="url(#ma1)" opacity="0.8"/>
+          <text x="408" y="136" fill="#ff4d6a" font-size="8">data</text>
+
+          <!-- writer -> verifier -->
+          <line x1="450" y1="182" x2="460" y2="182" stroke="#ff4d6a" stroke-width="1.5" marker-end="url(#ma1)" opacity="0.7"/>
+
+          <!-- Pollution propagation indicator -->
+          <circle cx="395" cy="182" r="22" fill="none" stroke="rgba(255,77,106,0.4)" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="395" y="230" text-anchor="middle" fill="#ff4d6a" font-size="9" opacity="0.8">根因节点 r</text>
+          <text x="395" y="242" text-anchor="middle" fill="#ff4d6a" font-size="8" opacity="0.6">P(r) = 1.0</text>
+
+          <!-- Clean nodes indicator -->
+          <text x="75" y="165" text-anchor="middle" fill="#00e5a0" font-size="9">✓ Clean</text>
+          <text x="235" y="165" text-anchor="middle" fill="#00e5a0" font-size="9">✓ Clean</text>
+
+          <!-- Legend -->
+          <line x1="20" y1="270" x2="50" y2="270" stroke="#ff4d6a" stroke-width="2"/>
+          <text x="55" y="274" fill="#8b9ab5" font-size="9">data(1.0)</text>
+          <line x1="110" y1="270" x2="140" y2="270" stroke="#ffb800" stroke-width="1.5"/>
+          <text x="145" y="274" fill="#8b9ab5" font-size="9">tool(0.95)</text>
+          <line x1="210" y1="270" x2="240" y2="270" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="245" y="274" fill="#8b9ab5" font-size="9">artifact(0.85)</text>
+          <line x1="320" y1="270" x2="350" y2="270" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="355" y="274" fill="#8b9ab5" font-size="9">plan(0.7)</text>
+          <line x1="410" y1="270" x2="440" y2="270" stroke="#5a6a85" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="445" y="274" fill="#8b9ab5" font-size="9">temporal(0.1)</text>
+
+          <!-- Pollution decay formula -->
+          <rect x="20" y="285" width="520" height="22" rx="3" fill="rgba(255,77,106,0.06)" stroke="rgba(255,77,106,0.15)" stroke-width="1"/>
+          <text x="280" y="300" text-anchor="middle" fill="#ff8fa0" font-size="9" font-family="monospace">P(v) = max P(u) · w(u,v) · λ(0.85)  →  Clean(≥0.8) / Partial(0.6-0.8) / Invalid(&lt;0.6)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

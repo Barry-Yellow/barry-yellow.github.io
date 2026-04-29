@@ -1,7 +1,7 @@
 # Project Guide — barry-yellow.github.io
 
 > AI 快速上手文档。新 session 读此文件即可了解整个项目结构，无需重新扫描所有文件。
-> 最后更新：2026-04-21
+> 最后更新：2026-04-30
 
 ---
 
@@ -14,7 +14,7 @@
 | 内容语言 | 中文为主，技术术语英文 |
 | 写作风格 | 学术笔记，含 LaTeX 公式、架构图、实验结果 |
 | Markdown 文件数 | ~100 篇 |
-| 主题文件夹 | 10 个（见下） |
+| 主题文件夹 | 11 个（见下） |
 
 ---
 
@@ -39,7 +39,7 @@
 
 - 每个文件夹有自己的 `_sidebar.md`，Docsify 会自动加载当前路径下最近的 `_sidebar.md`
 - 链接路径**从项目根目录开始**，如 `MAS/Topology/DyLAN.md`（不加前导 `/`）
-- 全局 `_sidebar.md` 列出 10 个主题入口，各子文件夹的 `_sidebar.md` 列出该主题的文章
+- 全局 `_sidebar.md` 列出 11 个主题入口，各子文件夹的 `_sidebar.md` 列出该主题的文章
 - 子文件夹 sidebar 末尾通常有 `[Back to Homepage](README.md)` 或 `[Back to MAS](MAS/README.md)`
 
 ---
@@ -217,6 +217,27 @@
 ### 4.11 temp/ — 未归档暂存区
 
 存放尚未归档的草稿和参考资料，内容确认后应移入对应主题文件夹。当前为空。
+
+---
+
+### 4.12 Interview/ — 面试知识库
+
+**`Interview/_sidebar.md`**：大模型基础、多模态大模型、强化学习与对齐、Agent智能体、检索增强生成、模型评估、LLM前沿展望、AIGC生成式AI、训练基础设施
+
+| 文件 | 说明 |
+|------|------|
+| `README.md` | 面试知识库目录与各文档概览 |
+| `01_LLM_Basics.md` | 大模型基础：Transformer架构、位置编码、注意力变体、MoE、分布式训练、LoRA、FlashAttention、KV Cache ✅ |
+| `02_VLM.md` | 多模态大模型：CLIP、LLaVA、视觉指令微调、VLM幻觉、VLA模型 ✅ |
+| `03_RLHF.md` | 强化学习与对齐：RLHF流程、PPO/DPO/GRPO对比、偏好学习、信用分配 ✅ |
+| `04_Agent.md` | Agent智能体：ReAct框架、规划能力、记忆设计、工具调用、多智能体系统、MCP协议 ✅ |
+| `05_RAG.md` | 检索增强生成：RAG原理、检索流水线、切块策略、Hybrid Search、重排、知识图谱增强 ✅ |
+| `06_Evaluation.md` | 模型评估：基准测试、LLM-as-Judge、Agent评估、红队测试 ✅ |
+| `07_LLM_Future.md` | LLM前沿展望：AGI差距、多模态融合、世界模型、合成数据、具身智能 ✅ |
+| `08_AIGC.md` | AIGC生成式AI：扩散模型、文生图架构、质量评估、视频生成 ✅ |
+| `09_Infra.md` | 训练基础设施：DeepSpeed、分布式训练、量化方法、GPU推理优化 ✅ |
+
+**注意：** `Interview/` 下每个 `.md` 文件都有对应的 `_rewritten.md` 版本（改写后的版本），sidebar 中链接指向原版文件。
 
 ---
 
