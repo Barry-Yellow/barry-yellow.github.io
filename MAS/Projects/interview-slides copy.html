@@ -1002,40 +1002,38 @@ svg text { font-family: var(--mono), monospace; }
     <div class="col" style="flex:1.5">
       <div class="panel" style="flex:1">
         <div class="panel-title cyan">完整执行示例（web_research 任务）</div>
-        <svg viewBox="0 0 460 310" width="100%" style="max-height:290px">
+        <svg viewBox="0 0 420 340" width="100%" style="max-height:320px">
           <line x1="30" y1="20" x2="30" y2="290" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
           <circle cx="30" cy="35" r="10" fill="rgba(0,212,255,0.2)" stroke="rgba(0,212,255,0.6)" stroke-width="1.5"/>
-          <text x="30" y="39" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="700">1</text>
-          <text x="50" y="32" fill="#e8edf5" font-size="11" font-weight="600">采集轨迹</text>
-          <text x="50" y="44" fill="#8b9ab5" font-size="10">planner→search_call→search_result→writer</text>
+          <text x="30" y="39" text-anchor="middle" fill="#00d4ff" font-size="10" font-weight="700">1</text>
+          <text x="50" y="32" fill="#e8edf5" font-size="12" font-weight="600">采集轨迹</text>
+          <text x="50" y="45" fill="#8b9ab5" font-size="11">planner→search_call→search_result→writer</text>
           <circle cx="30" cy="75" r="10" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="1.5"/>
-          <text x="30" y="79" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">2</text>
-          <text x="50" y="72" fill="#e8edf5" font-size="11" font-weight="600">注入错误</text>
-          <text x="50" y="84" fill="#8b9ab5" font-size="10">writer节点替换为"伪造证据直接总结"版本</text>
+          <text x="30" y="79" text-anchor="middle" fill="#ff4d6a" font-size="10" font-weight="700">2</text>
+          <text x="50" y="72" fill="#e8edf5" font-size="12" font-weight="600">注入错误</text>
+          <text x="50" y="85" fill="#8b9ab5" font-size="11">writer节点替换为"伪造证据直接总结"版本</text>
           <circle cx="30" cy="115" r="10" fill="rgba(0,212,255,0.2)" stroke="rgba(0,212,255,0.6)" stroke-width="1.5"/>
-          <text x="30" y="119" text-anchor="middle" fill="#00d4ff" font-size="9" font-weight="700">3</text>
-          <text x="50" y="112" fill="#e8edf5" font-size="11" font-weight="600">构建 MAICG</text>
-          <text x="50" y="124" fill="#8b9ab5" font-size="10">plan/data/tool/artifact/context 边完整建图</text>
+          <text x="30" y="119" text-anchor="middle" fill="#00d4ff" font-size="10" font-weight="700">3</text>
+          <text x="50" y="112" fill="#e8edf5" font-size="12" font-weight="600">构建 MAICG</text>
+          <text x="50" y="125" fill="#8b9ab5" font-size="11">plan/data/tool/artifact/context 边完整建图</text>
           <circle cx="30" cy="155" r="10" fill="rgba(255,77,106,0.2)" stroke="rgba(255,77,106,0.6)" stroke-width="1.5"/>
-          <text x="30" y="159" text-anchor="middle" fill="#ff4d6a" font-size="9" font-weight="700">4</text>
-          <text x="50" y="152" fill="#e8edf5" font-size="11" font-weight="600">根因定位</text>
-          <text x="50" y="164" fill="#8b9ab5" font-size="10">writer: protocol_violation=true, deviation=0.8</text>
+          <text x="30" y="159" text-anchor="middle" fill="#ff4d6a" font-size="10" font-weight="700">4</text>
+          <text x="50" y="152" fill="#e8edf5" font-size="12" font-weight="600">根因定位</text>
+          <text x="50" y="165" fill="#8b9ab5" font-size="11">writer: protocol_violation=true, deviation=0.8</text>
           <circle cx="30" cy="195" r="10" fill="rgba(255,184,0,0.2)" stroke="rgba(255,184,0,0.6)" stroke-width="1.5"/>
-          <text x="30" y="199" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">5</text>
-          <text x="50" y="192" fill="#e8edf5" font-size="11" font-weight="600">边界传播</text>
-          <text x="50" y="204" fill="#8b9ab5" font-size="10">前3节点 Clean，writer节点 Invalid</text>
+          <text x="30" y="199" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">5</text>
+          <text x="50" y="192" fill="#e8edf5" font-size="12" font-weight="600">边界传播</text>
+          <text x="50" y="205" fill="#8b9ab5" font-size="11">前3节点 Clean，writer节点 Invalid</text>
           <circle cx="30" cy="235" r="10" fill="rgba(167,139,250,0.2)" stroke="rgba(167,139,250,0.6)" stroke-width="1.5"/>
-          <text x="30" y="239" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">6</text>
-          <text x="50" y="232" fill="#e8edf5" font-size="11" font-weight="600">修复 + 增量重放</text>
-          <text x="50" y="244" fill="#8b9ab5" font-size="10">前3步PRESERVE，writer→RERUN_NODE</text>
+          <text x="30" y="239" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">6</text>
+          <text x="50" y="232" fill="#e8edf5" font-size="12" font-weight="600">修复 + 增量重放</text>
+          <text x="50" y="245" fill="#8b9ab5" font-size="11">前3步PRESERVE，writer→RERUN_NODE</text>
           <circle cx="30" cy="275" r="10" fill="rgba(0,229,160,0.3)" stroke="rgba(0,229,160,0.7)" stroke-width="1.5"/>
-          <text x="30" y="279" text-anchor="middle" fill="#00e5a0" font-size="9" font-weight="700">7</text>
-          <text x="50" y="272" fill="#e8edf5" font-size="11" font-weight="600">一致性验证 → ✓ Repaired</text>
-          <text x="50" y="284" fill="#00e5a0" font-size="10">新摘要有真实证据，里程碑前进</text>
-          <rect x="300" y="160" width="150" height="60" rx="6" fill="rgba(0,229,160,0.06)" stroke="rgba(0,229,160,0.2)" stroke-width="1"/>
-          <text x="375" y="180" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">核心结论</text>
-          <text x="375" y="196" text-anchor="middle" fill="#8b9ab5" font-size="9">只对真正受污染的最小区域进行恢复</text>
-          <text x="375" y="208" text-anchor="middle" fill="#8b9ab5" font-size="9">3/4 节点复用，仅重跑1节点</text>
+          <text x="30" y="279" text-anchor="middle" fill="#00e5a0" font-size="10" font-weight="700">7</text>
+          <text x="50" y="272" fill="#e8edf5" font-size="12" font-weight="600">一致性验证 → ✓ Repaired</text>
+          <text x="50" y="285" fill="#00e5a0" font-size="11">新摘要有真实证据，里程碑前进</text>
+          <rect x="180" y="305" width="240" height="28" rx="6" fill="rgba(0,229,160,0.08)" stroke="rgba(0,229,160,0.25)" stroke-width="1.5"/>
+          <text x="300" y="318" text-anchor="middle" fill="#00e5a0" font-size="11" font-weight="700">✓ 核心结论：只对真正受污染的最小区域进行恢复（3/4 节点复用）</text>
         </svg>
       </div>
     </div>
@@ -1347,7 +1345,7 @@ svg text { font-family: var(--mono), monospace; }
     <div class="col" style="flex:1.5">
       <div class="panel" style="flex:1">
         <div class="panel-title amber">渐进式分析链（9大技能 · 模板方法模式）</div>
-        <svg viewBox="0 0 420 290" width="100%" style="max-height:270px">
+        <svg viewBox="0 0 440 310" width="100%" style="max-height:290px">
           <defs>
             <marker id="pa1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
               <polygon points="0 0, 7 2.5, 0 5" fill="#ffb800" opacity="0.7"/>
@@ -1355,62 +1353,62 @@ svg text { font-family: var(--mono), monospace; }
           </defs>
 
           <!-- BaseSkill -->
-          <rect x="130" y="10" width="160" height="36" rx="6" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.5)" stroke-width="2"/>
-          <text x="210" y="26" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">BaseSkill（抽象基类）</text>
-          <text x="210" y="38" text-anchor="middle" fill="#8b9ab5" font-size="9">validate → prepare_prompt → call_llm → parse → format</text>
+          <rect x="80" y="8" width="280" height="42" rx="6" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.5)" stroke-width="2"/>
+          <text x="220" y="26" text-anchor="middle" fill="#ffb800" font-size="11" font-weight="700">BaseSkill（抽象基类）</text>
+          <text x="220" y="40" text-anchor="middle" fill="#8b9ab5" font-size="10">validate → prepare_prompt → call_llm → parse → format</text>
 
           <!-- 4-step chain -->
-          <line x1="210" y1="46" x2="210" y2="60" stroke="rgba(255,184,0,0.4)" stroke-width="1.5" marker-end="url(#pa1)"/>
+          <line x1="220" y1="50" x2="220" y2="64" stroke="rgba(255,184,0,0.4)" stroke-width="1.5" marker-end="url(#pa1)"/>
 
-          <rect x="20" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.08)" stroke="rgba(255,184,0,0.3)" stroke-width="1.5"/>
-          <text x="64" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S1 数据理解</text>
-          <text x="64" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">结构/字段/质量</text>
-          <line x1="108" y1="83" x2="118" y2="83" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
+          <rect x="10" y="67" width="100" height="44" rx="5" fill="rgba(255,184,0,0.08)" stroke="rgba(255,184,0,0.3)" stroke-width="1.5"/>
+          <text x="60" y="85" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">S1 数据理解</text>
+          <text x="60" y="99" text-anchor="middle" fill="#8b9ab5" font-size="9">结构/字段/质量</text>
+          <line x1="110" y1="89" x2="125" y2="89" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
 
-          <rect x="121" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.1)" stroke="rgba(255,184,0,0.35)" stroke-width="1.5"/>
-          <text x="165" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S2 指标计算</text>
-          <text x="165" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">关键财务指标</text>
-          <line x1="209" y1="83" x2="219" y2="83" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
+          <rect x="130" y="67" width="100" height="44" rx="5" fill="rgba(255,184,0,0.1)" stroke="rgba(255,184,0,0.35)" stroke-width="1.5"/>
+          <text x="180" y="85" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">S2 指标计算</text>
+          <text x="180" y="99" text-anchor="middle" fill="#8b9ab5" font-size="9">关键财务指标</text>
+          <line x1="230" y1="89" x2="245" y2="89" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
 
-          <rect x="222" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
-          <text x="266" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S3 深度分析</text>
-          <text x="266" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">行业背景多维解读</text>
-          <line x1="310" y1="83" x2="320" y2="83" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
+          <rect x="250" y="67" width="100" height="44" rx="5" fill="rgba(255,184,0,0.12)" stroke="rgba(255,184,0,0.4)" stroke-width="1.5"/>
+          <text x="300" y="85" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">S3 深度分析</text>
+          <text x="300" y="99" text-anchor="middle" fill="#8b9ab5" font-size="9">行业背景多维解读</text>
+          <line x1="350" y1="89" x2="365" y2="89" stroke="#ffb800" stroke-width="1.5" marker-end="url(#pa1)" opacity="0.6"/>
 
-          <rect x="323" y="63" width="88" height="40" rx="5" fill="rgba(255,184,0,0.15)" stroke="rgba(255,184,0,0.5)" stroke-width="1.5"/>
-          <text x="367" y="79" text-anchor="middle" fill="#ffb800" font-size="9" font-weight="700">S4 结论输出</text>
-          <text x="367" y="91" text-anchor="middle" fill="#8b9ab5" font-size="8">结构化结论建议</text>
+          <rect x="370" y="67" width="100" height="44" rx="5" fill="rgba(255,184,0,0.15)" stroke="rgba(255,184,0,0.5)" stroke-width="1.5"/>
+          <text x="420" y="85" text-anchor="middle" fill="#ffb800" font-size="10" font-weight="700">S4 结论输出</text>
+          <text x="420" y="99" text-anchor="middle" fill="#8b9ab5" font-size="9">结构化结论建议</text>
 
           <!-- 9 skills grid -->
-          <line x1="10" y1="118" x2="410" y2="118" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <text x="210" y="132" text-anchor="middle" fill="#5a6a85" font-size="9" font-weight="600" letter-spacing="1">9 大分析技能</text>
+          <line x1="10" y1="125" x2="430" y2="125" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="220" y="141" text-anchor="middle" fill="#5a6a85" font-size="10" font-weight="600" letter-spacing="1">9 大分析技能</text>
 
-          <rect x="10" y="140" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="68" y="155" text-anchor="middle" fill="#ffb800" font-size="9">财务分析</text>
-          <rect x="132" y="140" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="190" y="155" text-anchor="middle" fill="#ffb800" font-size="9">估值分析 PE/PB/DCF</text>
-          <rect x="254" y="140" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="312" y="155" text-anchor="middle" fill="#ffb800" font-size="9">技术分析</text>
+          <rect x="10" y="150" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="75" y="168" text-anchor="middle" fill="#ffb800" font-size="10">财务分析</text>
+          <rect x="150" y="150" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="215" y="168" text-anchor="middle" fill="#ffb800" font-size="10">估值分析 PE/PB/DCF</text>
+          <rect x="290" y="150" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="355" y="168" text-anchor="middle" fill="#ffb800" font-size="10">技术分析</text>
 
-          <rect x="10" y="168" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="68" y="183" text-anchor="middle" fill="#ffb800" font-size="9">行业对比</text>
-          <rect x="132" y="168" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="190" y="183" text-anchor="middle" fill="#ffb800" font-size="9">风险分析</text>
-          <rect x="254" y="168" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="312" y="183" text-anchor="middle" fill="#ffb800" font-size="9">竞争力分析</text>
+          <rect x="10" y="182" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="75" y="200" text-anchor="middle" fill="#ffb800" font-size="10">行业对比</text>
+          <rect x="150" y="182" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="215" y="200" text-anchor="middle" fill="#ffb800" font-size="10">风险分析</text>
+          <rect x="290" y="182" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="355" y="200" text-anchor="middle" fill="#ffb800" font-size="10">竞争力分析</text>
 
-          <rect x="10" y="196" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="68" y="211" text-anchor="middle" fill="#ffb800" font-size="9">成长性分析</text>
-          <rect x="132" y="196" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="190" y="211" text-anchor="middle" fill="#ffb800" font-size="9">现金流分析</text>
-          <rect x="254" y="196" width="116" height="22" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
-          <text x="312" y="211" text-anchor="middle" fill="#ffb800" font-size="9">综合评分</text>
+          <rect x="10" y="214" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="75" y="232" text-anchor="middle" fill="#ffb800" font-size="10">成长性分析</text>
+          <rect x="150" y="214" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="215" y="232" text-anchor="middle" fill="#ffb800" font-size="10">现金流分析</text>
+          <rect x="290" y="214" width="130" height="26" rx="3" fill="rgba(255,184,0,0.06)" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+          <text x="355" y="232" text-anchor="middle" fill="#ffb800" font-size="10">综合评分</text>
 
           <!-- Prompt engineering tips -->
-          <rect x="10" y="230" width="400" height="52" rx="6" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <text x="210" y="244" text-anchor="middle" fill="#5a6a85" font-size="9" font-weight="600" letter-spacing="1">PROMPT ENGINEERING</text>
-          <text x="210" y="258" text-anchor="middle" fill="#8b9ab5" font-size="9">① JSON Schema 约束输出格式  ② Few-shot 示例引导  ③ 专业金融分析师角色设定</text>
-          <text x="210" y="272" text-anchor="middle" fill="#8b9ab5" font-size="9">④ 上下文窗口裁剪（保留最近N轮+关键摘要）  ⑤ 中间步骤格式校验+重试</text>
+          <rect x="10" y="250" width="420" height="56" rx="6" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <text x="220" y="266" text-anchor="middle" fill="#5a6a85" font-size="10" font-weight="600" letter-spacing="1">PROMPT ENGINEERING</text>
+          <text x="220" y="281" text-anchor="middle" fill="#8b9ab5" font-size="10">① JSON Schema 约束输出格式  ② Few-shot 示例引导  ③ 专业金融分析师角色设定</text>
+          <text x="220" y="296" text-anchor="middle" fill="#8b9ab5" font-size="10">④ 上下文窗口裁剪（保留最近N轮+关键摘要）  ⑤ 中间步骤格式校验+重试</text>
         </svg>
       </div>
     </div>
