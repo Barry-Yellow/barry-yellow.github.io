@@ -1,7 +1,10 @@
+- **个人面板**
+  - [黄宇航 — 个人面板](MAS/Projects/个人面板.md)
 - **项目汇报**
-  - [AG-Repair 方法论](MAS/Projects/AG-Repair-Methodology.html ':ignore')
+  - [AG-Repair 方法论](MAS/Projects/agrepair.html ':ignore')
   - [AG-Repair 汇报（Z版）](MAS/Projects/12_zClaudeCodehuibao.html ':ignore')
   - [FinAgent 面试汇报](MAS/Projects/FinAgent面试汇报.html ':ignore')
+  - [项目汇报PPT](MAS/Projects/项目汇报PPT.html ':ignore')
 - **面试准备**
   - [Agent 面试高频考点](MAS/Projects/Agent面试高频考点.md)
 - **学习笔记**

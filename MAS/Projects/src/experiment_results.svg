@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 820" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="sh" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.11"/>
+    </filter>
+    <linearGradient id="hdr" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0d47a1"/>
+      <stop offset="100%" style="stop-color:#1976d2"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1100" height="820" rx="16" fill="#f5f7fa"/>
+  <rect width="1100" height="58" rx="16" fill="url(#hdr)"/>
+  <rect y="30" width="1100" height="28" fill="url(#hdr)"/>
+  <text x="550" y="38" text-anchor="middle" fill="white" font-size="21" font-weight="700">实验结果对比分析 — WW-GAIA + WW-AB（58 条）</text>
+
+  <!-- ===== TABLE ===== -->
+  <rect x="30" y="76" width="1040" height="310" rx="12" fill="white" stroke="#e0e4e8" filter="url(#sh)"/>
+
+  <!-- Table header -->
+  <rect x="30" y="76" width="1040" height="38" rx="12" fill="#1565c0"/>
+  <rect x="30" y="98" width="1040" height="16" fill="#1565c0"/>
+  <text x="130" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="white">指标</text>
+  <text x="280" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="white">全量重执行</text>
+  <text x="400" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="white">DoVer</text>
+  <text x="510" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="white">self-refine</text>
+  <text x="620" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="white">CriTic</text>
+  <text x="760" y="100" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd54f">AG-Repair (GPT-5.2)</text>
+  <text x="960" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="white">detector-4B</text>
+
+  <!-- Row 1 -->
+  <rect x="30" y="114" width="1040" height="38" fill="#f8fafc"/>
+  <text x="130" y="138" text-anchor="middle" font-size="11" fill="#1a1a2e">平均重新执行步数 ↓</text>
+  <text x="280" y="138" text-anchor="middle" font-size="12" fill="#c62828" font-weight="600">8.3</text>
+  <text x="400" y="138" text-anchor="middle" font-size="12" fill="#e65100">5.7</text>
+  <text x="510" y="138" text-anchor="middle" font-size="12" fill="#e65100">6.1</text>
+  <text x="620" y="138" text-anchor="middle" font-size="12" fill="#f57f17">4.8</text>
+  <rect x="690" y="120" width="140" height="26" rx="5" fill="#e8f5e9"/>
+  <text x="760" y="138" text-anchor="middle" font-size="13" fill="#2e7d32" font-weight="800">3.2 ★</text>
+  <text x="960" y="138" text-anchor="middle" font-size="12" fill="#5f6368">3.8</text>
+
+  <!-- Row 2 -->
+  <rect x="30" y="152" width="1040" height="38" fill="white"/>
+  <text x="130" y="176" text-anchor="middle" font-size="11" fill="#1a1a2e">平均 Token 消耗 ↓</text>
+  <text x="280" y="176" text-anchor="middle" font-size="12" fill="#c62828" font-weight="600">15420</text>
+  <text x="400" y="176" text-anchor="middle" font-size="12" fill="#e65100">11850</text>
+  <text x="510" y="176" text-anchor="middle" font-size="12" fill="#e65100">13200</text>
+  <text x="620" y="176" text-anchor="middle" font-size="12" fill="#f57f17">9800</text>
+  <rect x="690" y="158" width="140" height="26" rx="5" fill="#e8f5e9"/>
+  <text x="760" y="176" text-anchor="middle" font-size="13" fill="#2e7d32" font-weight="800">8230 ★</text>
+  <text x="960" y="176" text-anchor="middle" font-size="12" fill="#5f6368">8960</text>
+
+  <!-- Row 3 -->
+  <rect x="30" y="190" width="1040" height="38" fill="#f8fafc"/>
+  <text x="130" y="214" text-anchor="middle" font-size="11" fill="#1a1a2e">平均 API 调用次数 ↓</text>
+  <text x="280" y="214" text-anchor="middle" font-size="12" fill="#c62828" font-weight="600">12.5</text>
+  <text x="400" y="214" text-anchor="middle" font-size="12" fill="#e65100">8.3/12</text>
+  <text x="510" y="214" text-anchor="middle" font-size="12" fill="#e65100">10.2/12</text>
+  <text x="620" y="214" text-anchor="middle" font-size="12" fill="#f57f17">7.1/12</text>
+  <rect x="690" y="196" width="140" height="26" rx="5" fill="#e8f5e9"/>
+  <text x="760" y="214" text-anchor="middle" font-size="13" fill="#2e7d32" font-weight="800">5.6/12 ★</text>
+  <text x="960" y="214" text-anchor="middle" font-size="12" fill="#5f6368">6.2/12</text>
+
+  <!-- Row 4: Success rate — KEY metric -->
+  <rect x="30" y="228" width="1040" height="42" fill="#e8f5e9"/>
+  <text x="130" y="254" text-anchor="middle" font-size="12" fill="#1a1a2e" font-weight="700">修复成功率 ↑</text>
+  <text x="280" y="254" text-anchor="middle" font-size="12" fill="#c62828" font-weight="600">8.0%</text>
+  <text x="400" y="254" text-anchor="middle" font-size="12" fill="#e65100">15.2%</text>
+  <text x="510" y="254" text-anchor="middle" font-size="12" fill="#e65100">1.8%</text>
+  <text x="620" y="254" text-anchor="middle" font-size="12" fill="#f57f17">0%</text>
+  <rect x="686" y="232" width="148" height="34" rx="6" fill="#2e7d32"/>
+  <text x="760" y="254" text-anchor="middle" font-size="15" fill="white" font-weight="800">23.5% ★</text>
+  <text x="960" y="254" text-anchor="middle" font-size="12" fill="#5f6368">21.3%</text>
+
+  <!-- Row 5 -->
+  <rect x="30" y="270" width="1040" height="38" fill="white"/>
+  <text x="130" y="294" text-anchor="middle" font-size="11" fill="#1a1a2e">端到端延迟 (s) ↓</text>
+  <text x="280" y="294" text-anchor="middle" font-size="12" fill="#e65100">52.8</text>
+  <text x="400" y="294" text-anchor="middle" font-size="12" fill="#f57f17">45.3</text>
+  <text x="510" y="294" text-anchor="middle" font-size="12" fill="#e65100">49.6</text>
+  <rect x="570" y="276" width="100" height="26" rx="5" fill="#e8f5e9"/>
+  <text x="620" y="294" text-anchor="middle" font-size="13" fill="#2e7d32" font-weight="800">38.2 ★</text>
+  <text x="760" y="294" text-anchor="middle" font-size="12" fill="#c62828" font-weight="600">104.0</text>
+  <text x="960" y="294" text-anchor="middle" font-size="12" fill="#5f6368">42.5</text>
+  <text x="760" y="310" text-anchor="middle" font-size="9" fill="#c62828">（推理成本高）</text>
+  <text x="960" y="310" text-anchor="middle" font-size="9" fill="#5f6368">（小模型优势）</text>
+
+  <!-- ===== BAR CHARTS ===== -->
+  <!-- Success Rate Bar -->
+  <rect x="30" y="402" width="500" height="260" rx="12" fill="white" stroke="#e0e4e8" filter="url(#sh)"/>
+  <text x="280" y="428" text-anchor="middle" font-size="13" font-weight="700" fill="#0d47a1">修复成功率对比（↑ 越高越好）</text>
+
+  <!-- bars -->
+  <!-- max = 23.5, scale: 1% = 7px, bar width 50 -->
+  <!-- 全量 8.0% -->
+  <rect x="65" y="560" width="50" height="56" rx="4" fill="#ef9a9a"/>
+  <text x="90" y="555" text-anchor="middle" font-size="11" font-weight="600" fill="#c62828">8.0%</text>
+  <text x="90" y="630" text-anchor="middle" font-size="10" fill="#5f6368">全量</text>
+  <!-- DoVer 15.2% -->
+  <rect x="145" y="453" width="50" height="163" rx="4" fill="#ffcc80"/>
+  <text x="170" y="448" text-anchor="middle" font-size="11" font-weight="600" fill="#e65100">15.2%</text>
+  <text x="170" y="630" text-anchor="middle" font-size="10" fill="#5f6368">DoVer</text>
+  <!-- self-refine 1.8% -->
+  <rect x="225" y="603" width="50" height="13" rx="4" fill="#ef9a9a"/>
+  <text x="250" y="598" text-anchor="middle" font-size="11" font-weight="600" fill="#c62828">1.8%</text>
+  <text x="250" y="630" text-anchor="middle" font-size="10" fill="#5f6368">self-refine</text>
+  <!-- CriTic 0% -->
+  <rect x="305" y="615" width="50" height="1" rx="2" fill="#bdbdbd"/>
+  <text x="330" y="610" text-anchor="middle" font-size="11" font-weight="600" fill="#9e9e9e">0%</text>
+  <text x="330" y="630" text-anchor="middle" font-size="10" fill="#5f6368">CriTic</text>
+  <!-- AG-Repair GPT 23.5% -->
+  <rect x="385" y="451" width="50" height="165" rx="4" fill="#2e7d32"/>
+  <text x="410" y="446" text-anchor="middle" font-size="12" font-weight="800" fill="#2e7d32">23.5%</text>
+  <text x="410" y="630" text-anchor="middle" font-size="10" fill="#2e7d32" font-weight="700">AG-Repair</text>
+  <!-- baseline -->
+  <line x1="50" y1="616" x2="490" y2="616" stroke="#e0e4e8" stroke-width="1"/>
+
+  <!-- ===== Token Cost Bar ===== -->
+  <rect x="560" y="402" width="510" height="260" rx="12" fill="white" stroke="#e0e4e8" filter="url(#sh)"/>
+  <text x="815" y="428" text-anchor="middle" font-size="13" font-weight="700" fill="#0d47a1">Token 消耗对比（↓ 越低越好）</text>
+
+  <!-- max 15420, scale: 1000 = 10px -->
+  <!-- 全量 15420 -->
+  <rect x="590" y="444" width="55" height="154" rx="4" fill="#ef9a9a"/>
+  <text x="617" y="440" text-anchor="middle" font-size="10" font-weight="600" fill="#c62828">15420</text>
+  <text x="617" y="616" text-anchor="middle" font-size="10" fill="#5f6368">全量</text>
+  <!-- DoVer 11850 -->
+  <rect x="665" y="480" width="55" height="118" rx="4" fill="#ffcc80"/>
+  <text x="692" y="476" text-anchor="middle" font-size="10" font-weight="600" fill="#e65100">11850</text>
+  <text x="692" y="616" text-anchor="middle" font-size="10" fill="#5f6368">DoVer</text>
+  <!-- self-refine 13200 -->
+  <rect x="740" y="466" width="55" height="132" rx="4" fill="#ef9a9a"/>
+  <text x="767" y="462" text-anchor="middle" font-size="10" font-weight="600" fill="#c62828">13200</text>
+  <text x="767" y="616" text-anchor="middle" font-size="10" fill="#5f6368">self-refine</text>
+  <!-- CriTic 9800 -->
+  <rect x="815" y="500" width="55" height="98" rx="4" fill="#fff176"/>
+  <text x="842" y="496" text-anchor="middle" font-size="10" font-weight="600" fill="#f57f17">9800</text>
+  <text x="842" y="616" text-anchor="middle" font-size="10" fill="#5f6368">CriTic</text>
+  <!-- AG-Repair 8230 -->
+  <rect x="890" y="516" width="55" height="82" rx="4" fill="#2e7d32"/>
+  <text x="917" y="512" text-anchor="middle" font-size="11" font-weight="800" fill="#2e7d32">8230</text>
+  <text x="917" y="616" text-anchor="middle" font-size="10" fill="#2e7d32" font-weight="700">AG-Repair</text>
+  <!-- detector 8960 -->
+  <rect x="965" y="508" width="55" height="90" rx="4" fill="#80cbc4"/>
+  <text x="992" y="504" text-anchor="middle" font-size="10" font-weight="600" fill="#00695c">8960</text>
+  <text x="992" y="616" text-anchor="middle" font-size="10" fill="#5f6368">detector</text>
+  <line x1="575" y1="598" x2="1055" y2="598" stroke="#e0e4e8" stroke-width="1"/>
+
+  <!-- ===== Analysis Cards ===== -->
+  <rect x="30" y="676" width="330" height="128" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="195" y="700" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">AG-Repair (GPT-5.2) 核心优势</text>
+  <text x="50" y="722" font-size="11" fill="#1a1a2e">· 修复成功率最高：23.5%，比全量重执行 +194%</text>
+  <text x="50" y="740" font-size="11" fill="#1a1a2e">· Token 消耗最低：8230，节省 46.6%</text>
+  <text x="50" y="758" font-size="11" fill="#1a1a2e">· API 调用最少：5.6/12，精准定位减少冗余</text>
+  <text x="50" y="776" font-size="11" fill="#c62828">· 延迟较高 104s（大模型推理成本）</text>
+  <text x="50" y="794" font-size="11" fill="#1a1a2e">· 因果图构建 + 精确边界识别是关键</text>
+
+  <rect x="380" y="676" width="330" height="128" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="545" y="700" text-anchor="middle" font-size="13" font-weight="700" fill="#1565c0">detector-4B 小模型分析</text>
+  <text x="400" y="722" font-size="11" fill="#1a1a2e">· 成功率 21.3%，仅比 GPT-5.2 低 2.2%</text>
+  <text x="400" y="740" font-size="11" fill="#1a1a2e">· 延迟仅 42.5s，比 GPT-5.2 快 59%</text>
+  <text x="400" y="758" font-size="11" fill="#1a1a2e">· Token 消耗 8960，接近 GPT-5.2 水平</text>
+  <text x="400" y="776" font-size="11" fill="#2e7d32">· 失效专属微调：以极小参数量逼近大模型</text>
+  <text x="400" y="794" font-size="11" fill="#2e7d32">· 工程部署友好，适合低延迟场景</text>
+
+  <rect x="730" y="676" width="340" height="128" rx="10" fill="#fff3e0" stroke="#e65100" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="900" y="700" text-anchor="middle" font-size="13" font-weight="700" fill="#e65100">基线方法局限性</text>
+  <text x="750" y="722" font-size="11" fill="#1a1a2e">· CriTic：成功率 0%，过度保守无法修复</text>
+  <text x="750" y="740" font-size="11" fill="#1a1a2e">· self-refine：1.8%，缺乏结构化依赖建模</text>
+  <text x="750" y="758" font-size="11" fill="#1a1a2e">· DoVer：15.2%，有效但边界识别不精确</text>
+  <text x="750" y="776" font-size="11" fill="#c62828">· 全量重执行：Token 浪费最严重，成功率低</text>
+  <text x="750" y="794" font-size="11" fill="#1a1a2e">· 共同缺陷：无法区分污染节点与干净节点</text>
+</svg>

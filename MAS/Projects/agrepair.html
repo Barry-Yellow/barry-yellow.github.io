@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AG-Repair 汇报</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #1a73e8;
+    --primary-dark: #0d47a1;
+    --accent: #ff6d00;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --text-light: #5f6368;
+    --border: #e0e4e8;
+    --green: #0d9488;
+    --yellow: #d97706;
+    --red: #dc2626;
+    --purple: #7c3aed;
+    --toc-w: 210px;
+  }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding-left: var(--toc-w);
+  }
+
+  /* ===== TOC ===== */
+  #toc {
+    position: fixed; top: 0; left: 0;
+    width: var(--toc-w); height: 100vh;
+    background: #0d47a1; color: #fff;
+    overflow-y: auto; z-index: 200;
+    padding: 24px 0; display: flex; flex-direction: column;
+  }
+  #toc .toc-title {
+    font-size: 13px; font-weight: 700; letter-spacing: 1px;
+    padding: 0 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    margin-bottom: 8px; opacity: 0.85;
+  }
+  #toc a {
+    display: block; color: rgba(255,255,255,0.7);
+    text-decoration: none; padding: 8px 18px;
+    font-size: 12.5px; line-height: 1.4;
+    border-left: 3px solid transparent;
+    transition: all .18s;
+  }
+  #toc a:hover, #toc a.active {
+    color: #fff; background: rgba(255,255,255,0.1);
+    border-left-color: #4fc3f7;
+  }
+  #toc a .pg { font-size: 10px; opacity: 0.5; margin-left: 4px; }
+  #toc .toc-stage {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    padding: 10px 18px 4px; color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+
+  /* ===== Slides ===== */
+  .slide {
+    min-height: 100vh; padding: 52px 72px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; border-bottom: 3px solid var(--primary);
+  }
+  .slide:last-child { border-bottom: none; }
+  /* SVG slides: header area keeps padding, SVG fills full width */
+  .slide-svg {
+    padding-left: 0; padding-right: 0; padding-bottom: 0;
+  }
+  .slide-svg .slide-header {
+    padding: 52px 72px 0;
+  }
+
+  /* Cover */
+  .slide-cover {
+    background: linear-gradient(135deg, #0d47a1 0%, #1a73e8 55%, #4fc3f7 100%);
+    color: #fff; text-align: center;
+  }
+  .slide-cover h1 { font-size: 3.4em; font-weight: 800; letter-spacing: 3px; margin-bottom: 14px; }
+  .slide-cover .subtitle { font-size: 1.35em; opacity: 0.88; margin-bottom: 44px; }
+  .pipeline {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 8px; margin: 0 auto 36px;
+  }
+  .pipeline .step {
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.38);
+    border-radius: 8px; padding: 10px 18px; font-size: 0.92em; font-weight: 600;
+    backdrop-filter: blur(4px);
+  }
+  .pipeline .arrow { font-size: 1.3em; opacity: 0.65; }
+  .cover-note { margin-top: 8px; opacity: 0.75; font-size: 0.95em; }
+
+  /* Stage header */
+  .stage-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--primary); color: #fff;
+    border-radius: 30px; padding: 6px 18px 6px 8px;
+    font-size: 0.88em; font-weight: 700; margin-bottom: 18px;
+    width: fit-content;
+  }
+  .stage-badge .num {
+    background: rgba(255,255,255,0.25); border-radius: 50%;
+    width: 28px; height: 28px; display: flex; align-items: center;
+    justify-content: center; font-size: 1em; font-weight: 800;
+  }
+  h2 { font-size: 1.85em; font-weight: 700; color: var(--primary-dark); margin-bottom: 10px; }
+
+  /* Key point strip */
+  .keypoints {
+    display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .kp {
+    background: #fff; border-radius: 8px; padding: 8px 16px;
+    font-size: 0.88em; font-weight: 600; color: var(--text);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+    border-left: 3px solid var(--primary);
+  }
+  .kp.green { border-left-color: var(--green); }
+  .kp.red { border-left-color: var(--red); }
+  .kp.orange { border-left-color: var(--accent); }
+  .kp.purple { border-left-color: var(--purple); }
+
+  /* SVG container — full bleed */
+  .svg-wrap {
+    width: 100%; margin-top: 16px;
+  }
+  .svg-wrap img {
+    display: block; width: 100%;
+    box-shadow: 0 -2px 16px rgba(0,0,0,0.07);
+  }
+
+  /* Page number */
+  .page-num {
+    position: absolute; bottom: 18px; right: 36px;
+    font-size: 0.82em; color: var(--text-light);
+    z-index: 10;
+  }
+
+  /* Summary slide */
+  .slide-summary {
+    background: linear-gradient(135deg, #0d47a1 0%, #1a73e8 55%, #4fc3f7 100%);
+    color: #fff;
+  }
+  .slide-summary h2 { color: #fff; font-size: 2em; margin-bottom: 28px; }
+  .summary-card {
+    background: rgba(255,255,255,0.14); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.22); border-radius: 14px;
+    padding: 22px 28px; margin-bottom: 18px;
+  }
+  .summary-card .title { font-size: 1.2em; font-weight: 800; margin-bottom: 6px; }
+  .summary-card p { font-size: 1em; opacity: 0.92; }
+
+  /* TOC toggle button */
+  #toc-toggle {
+    position: fixed; top: 14px; left: 14px; z-index: 300;
+    width: 34px; height: 34px; border-radius: 8px;
+    background: #0d47a1; border: none; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 5px; padding: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    transition: background .18s;
+  }
+  #toc-toggle:hover { background: #1a73e8; }
+  #toc-toggle span {
+    display: block; width: 18px; height: 2px;
+    background: #fff; border-radius: 2px;
+    transition: all .22s;
+  }
+  /* collapsed state */
+  body.toc-hidden { padding-left: 0; }
+  body.toc-hidden #toc { transform: translateX(-100%); }
+  #toc { transition: transform .25s ease; }
+  body.toc-hidden #toc-toggle { left: 14px; }
+  @media print {
+    #toc { display: none; }
+    body { padding-left: 0; }
+    .slide { page-break-after: always; min-height: auto; padding: 40px; }
+  }
+  @media (max-width: 860px) {
+    #toc { display: none; }
+    body { padding-left: 0; }
+    .slide { padding: 28px 18px; }
+    h2 { font-size: 1.4em; }
+    .slide-cover h1 { font-size: 2.2em; }
+  }
+</style>
+</head>
+<body>
+
+<button id="toc-toggle" title="展开/收起目录">
+  <span></span><span></span><span></span>
+</button>
+
+<nav id="toc">
+  <div class="toc-title">AG-Repair</div>
+  <a href="#s1">封面<span class="pg">p.1</span></a>
+  <div class="toc-stage">核心阶段</div>
+  <a href="#s2">① 问题动机<span class="pg">p.2</span></a>
+  <a href="#s3">② 因果图构建<span class="pg">p.3</span></a>
+  <a href="#s4">③ 根因定位<span class="pg">p.4</span></a>
+  <a href="#s5">④ 边界识别<span class="pg">p.5</span></a>
+  <a href="#s6">⑤ 修复规划<span class="pg">p.6</span></a>
+  <a href="#s7">⑥ 训练框架<span class="pg">p.7</span></a>
+  <a href="#s8">⑦ 实验结果<span class="pg">p.8</span></a>
+  <a href="#s9">∑ 总结<span class="pg">p.9</span></a>
+</nav>
+
+<!-- ==================== SLIDE 1: Cover ==================== -->
+<div id="s1" class="slide slide-cover">
+  <h1>AG-Repair</h1>
+  <div class="subtitle">面向多智能体系统长错误轨迹的自动化修复框架</div>
+  <div class="pipeline">
+    <div class="step">轨迹采集</div><div class="arrow">→</div>
+    <div class="step">因果图构建</div><div class="arrow">→</div>
+    <div class="step">根因定位</div><div class="arrow">→</div>
+    <div class="step">影响边界识别</div><div class="arrow">→</div>
+    <div class="step">修复规划</div><div class="arrow">→</div>
+    <div class="step">增量重执行</div><div class="arrow">→</div>
+    <div class="step">一致性验证</div>
+  </div>
+  <p class="cover-note">核心思想：不丢弃整条失败轨迹，而是定位最小修复范围，增量恢复</p>
+  <div class="page-num" style="color:rgba(255,255,255,0.55)">1 / 9</div>
+</div>
+
+<!-- ==================== SLIDE 2: Motivation ==================== -->
+<div id="s2" class="slide slide-svg">
+  <div class="slide-header">
+    <div class="stage-badge"><span class="num">1</span>问题定义与动机</div>
+    <h2>为什么不能全量重跑？</h2>
+    <div class="keypoints">
+      <div class="kp red">传统方法：失败点之后全量重跑，浪费大量计算</div>
+      <div class="kp green">AG-Repair：只修复根因 + 被污染节点，保留干净节点</div>
+      <div class="kp orange">目标：正确性 · 最小干预 · 最大复用 · 一致性</div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <img src="src/motivation_diagram.svg" alt="传统方法 vs AG-Repair 对比示意"/>
+  </div>
+  <div class="page-num">2 / 7</div>
+</div>
+
+<!-- ==================== SLIDE 3: Causal Graph ==================== -->
+<div id="s3" class="slide slide-svg">
+  <div class="slide-header">
+    <div class="stage-badge" style="background:#6a1b9a;"><span class="num">2</span>因果图构建 — MAICG</div>
+    <h2>从线性日志到结构化因果图</h2>
+    <div class="keypoints">
+      <div class="kp purple">6 种节点：agent_step · tool_call · tool_result · artifact · checkpoint · verifier_signal</div>
+      <div class="kp purple">6 类边：data(1.0) · tool(0.95) · artifact(0.85) · plan(0.7) · context(0.5) · temporal(0.1)</div>
+      <div class="kp">关键：区分"真实信息传播"与"仅时序相邻"，是精确边界识别的基础</div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <img src="src/causal_graph.svg" alt="MAICG 因果图节点与边类型示意"/>
+  </div>
+  <div class="page-num">3 / 7</div>
+</div>
+
+<!-- ==================== SLIDE 4: Error Identification ==================== -->
+<div id="s4" class="slide slide-svg">
+  <div class="slide-header">
+    <div class="stage-badge" style="background:#b71c1c;"><span class="num">3</span>根因定位</div>
+    <h2>找最早、最关键、最值得修的节点</h2>
+    <div class="keypoints">
+      <div class="kp red">硬信号优先：异常 / 工具失败 / 协议违规 / verifier 失败</div>
+      <div class="kp orange">评分公式：S_root = α·A(v) + β·I(v) + γ·D(v) + δ·R(v)</div>
+      <div class="kp green">策略：首选单根因 → 失败后升级多根因联合修复</div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <img src="src/error_identification.svg" alt="错误识别与根因定位示意"/>
+  </div>
+  <div class="page-num">4 / 7</div>
+</div>
+
+<!-- ==================== SLIDE 5: Boundary Identification ==================== -->
+<div id="s5" class="slide">
+  <div class="stage-badge" style="background:#0d9488;"><span class="num">4</span>影响边界识别</div>
+  <h2>区分 Clean / Partial / Invalid，精确划定修复范围</h2>
+  <div class="keypoints">
+    <div class="kp green">污染传播：P(v) = max<sub>u∈Pred(v)</sub> P(u) · w(u,v) · λ(0.85)，沿强依赖边扩散</div>
+    <div class="kp orange">复用评分：S_reuse = 0.5·S_correct + 0.3·(1−P) + 0.2·S_compat</div>
+    <div class="kp red">升级策略：分支 Invalid 占比 &gt; 40% 或含高层 planning 错误 → 整体 REWRITE_BRANCH</div>
+  </div>
+  <div style="display:flex;gap:16px;margin-bottom:20px;">
+    <div style="flex:1;background:#e8f5e9;border-radius:10px;padding:14px 18px;text-align:center;border:2px solid #2e7d32;">
+      <div style="font-size:1.6em;font-weight:800;color:#2e7d32;">Clean</div>
+      <div style="font-size:0.95em;font-weight:600;margin:4px 0;">S<sub>reuse</sub> ≥ 80</div>
+      <div style="font-size:0.85em;color:#5f6368;">完全可复用 → 保留</div>
+    </div>
+    <div style="flex:1;background:#fff3e0;border-radius:10px;padding:14px 18px;text-align:center;border:2px solid #e65100;">
+      <div style="font-size:1.6em;font-weight:800;color:#e65100;">Partial</div>
+      <div style="font-size:0.95em;font-weight:600;margin:4px 0;">60 ≤ S<sub>reuse</sub> &lt; 80</div>
+      <div style="font-size:0.85em;color:#5f6368;">部分可复用 → 局部修补</div>
+    </div>
+    <div style="flex:1;background:#fce4ec;border-radius:10px;padding:14px 18px;text-align:center;border:2px solid #c62828;">
+      <div style="font-size:1.6em;font-weight:800;color:#c62828;">Invalid</div>
+      <div style="font-size:0.95em;font-weight:600;margin:4px 0;">S<sub>reuse</sub> &lt; 60</div>
+      <div style="font-size:0.85em;color:#5f6368;">不可复用 → 重放或重写</div>
+    </div>
+  </div>
+  <div class="page-num">5 / 7</div>
+</div>
+
+<!-- ==================== SLIDE 6: Repair Planning ==================== -->
+<div id="s6" class="slide slide-svg">
+  <div class="slide-header">
+    <div class="stage-badge" style="background:#e65100;"><span class="num">5</span>修复规划</div>
+    <h2>受限动作空间中的成本感知决策</h2>
+    <div class="keypoints">
+      <div class="kp">5 类失效模式：evidence_fabrication · tool_call_error · context_drop · reasoning_bug · plan_bug</div>
+      <div class="kp orange">6 种动作（代价递增）：PRESERVE → PATCH → REPLAY_TOOL → RERUN_NODE → RERUN_BRANCH → REWRITE_BRANCH</div>
+      <div class="kp red">自动升级：局部失败 → 升级一级，最多两轮，避免无限重试</div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <img src="src/repair_planning.svg" alt="修复规划框架图"/>
+  </div>
+  <div class="page-num">6 / 7</div>
+</div>
+
+<!-- ==================== SLIDE 7: Training Framework ==================== -->
+<div id="s7" class="slide slide-svg">
+  <div class="slide-header">
+    <div class="stage-badge" style="background:#6a1b9a;"><span class="num">6</span>训练框架 — AgenTracer 改进版 GRPO</div>
+    <h2>数据集 · 公式 · 超参数</h2>
+    <div class="keypoints">
+      <div class="kp purple">TracerTraj-2.5K：2400 条多智能体失败轨迹，SFT 预训练 Qwen3-4B</div>
+      <div class="kp orange">3 项定制：移除 KL 约束 · 固定裁剪 ε=0.2 · 多粒度混合奖励（格式门控 + 智能体级 + 步骤级高斯）</div>
+      <div class="kp">评测：WW-GAIA + WW-AB 共 58 条样本</div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <img src="src/training_framework.svg" alt="训练框架与 GRPO 公式"/>
+  </div>
+  <div class="page-num">7 / 9</div>
+</div>
+
+<!-- ==================== SLIDE 8: Experiment Results ==================== -->
+<div id="s8" class="slide slide-svg">
+  <div class="slide-header">
+    <div class="stage-badge" style="background:#2e7d32;"><span class="num">7</span>实验结果分析</div>
+    <h2>AG-Repair vs 基线方法 — 5 项指标全面对比</h2>
+    <div class="keypoints">
+      <div class="kp green">修复成功率：AG-Repair (GPT-5.2) 23.5%，比全量重执行高 +194%，比 DoVer 高 +55%</div>
+      <div class="kp green">Token 消耗：8230，节省 46.6%；API 调用 5.6/12，精准定位减少冗余</div>
+      <div class="kp red">延迟权衡：GPT-5.2 版本 104s（推理成本）；detector-4B 仅 42.5s，成功率仅低 2.2%</div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <img src="src/experiment_results.svg" alt="实验结果对比分析"/>
+  </div>
+  <div class="page-num">8 / 9</div>
+</div>
+
+<!-- ==================== SLIDE 9: Summary ==================== -->
+<div id="s9" class="slide slide-summary">
+  <h2>∑ 三层核心创新</h2>
+  <div class="summary-card">
+    <div class="title">1. 错误边界识别</div>
+    <p>把错误传播范围从经验判断变成图上的量化问题 — MAICG 污染传播模型 + 复用评分，精确区分 Clean / Partial / Invalid</p>
+  </div>
+  <div class="summary-card">
+    <div class="title">2. 修复建议生成</div>
+    <p>把开放式"怎么修"变成受限动作空间中的成本感知决策 — 六种动作按代价梯度排列，层层升级，可解释可审计</p>
+  </div>
+  <div class="summary-card">
+    <div class="title">3. 增量重执行</div>
+    <p>把"从错误点之后全部重来"变成"从最近安全状态出发，仅重放必要子图" — 依赖 checkpoint + journal replay + Active Dependency Frontier</p>
+  </div>
+  <div style="margin-top:28px;text-align:center;padding:18px;background:rgba(255,255,255,0.1);border-radius:10px;border:1px solid rgba(255,255,255,0.2);">
+    <p style="font-size:1.1em;font-weight:600;">AG-Repair 不只是 failure attribution 框架</p>
+    <p style="font-size:1.3em;font-weight:800;margin-top:6px;">而是一套真正面向 failure recovery 的完整方法论</p>
+  </div>
+  <div class="page-num" style="color:rgba(255,255,255,0.5)">9 / 9</div>
+</div>
+
+<script>
+(function(){
+  // TOC toggle
+  var btn = document.getElementById('toc-toggle');
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('toc-hidden');
+  });
+
+  // Active TOC link on scroll
+  var ids = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+  var links = {};
+  ids.forEach(function(id){ links[id] = document.querySelector('#toc a[href="#'+id+'"]'); });
+  function update(){
+    var scrollY = window.scrollY + window.innerHeight * 0.3;
+    var current = ids[0];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= scrollY) current = id;
+    });
+    ids.forEach(function(id){
+      if(links[id]) links[id].classList.toggle('active', id === current);
+    });
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+</script>
+</body>
+</html>

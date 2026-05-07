@@ -3,671 +3,418 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>项目汇报 — AG-Repair & FinAgent</title>
+<title>FinAgent 项目汇报</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --blue:#1a73e8;--blue-d:#0d47a1;
-  --purple:#7c3aed;--green:#0d9488;--orange:#e65100;--red:#c62828;
-  --indigo:#4338ca;--pink:#be185d;
-  --dark:#1e293b;--gray:#94a3b8;--gray-l:#e2e8f0;
-  --text:#1a1a2e;--text-l:#64748b;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #4338ca; --primary-dark: #312e81;
+  --accent: #7c3aed; --bg: #f5f7fa;
+  --text: #1a1a2e; --text-l: #5f6368;
+  --green: #0d9488; --orange: #e65100;
+  --red: #c62828; --blue: #1a73e8; --pink: #be185d;
+  --toc-w: 210px;
 }
-body{font-family:-apple-system,"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;background:#f8fafc;color:var(--text);line-height:1.55;}
-
-.slide{min-height:100vh;padding:44px 64px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
-.slide::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--green));}
-
-.slide-dark{background:linear-gradient(135deg,#0d47a1,#1565c0 50%,#1e88e5);color:#fff;}
-.slide-dark2{background:linear-gradient(135deg,#0f172a,#1e293b 50%,#334155);color:#fff;}
-
-h1{font-size:2.6em;font-weight:800;letter-spacing:1px;margin-bottom:8px;}
-h2{font-size:1.7em;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
-h3{font-size:1.05em;font-weight:700;margin:12px 0 6px;}
-.subtitle{font-size:1.15em;opacity:.85;margin-bottom:24px;}
-
-.sec-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:1em;font-weight:700;flex-shrink:0;}
-.slide-dark .sec-num,.slide-dark2 .sec-num{background:rgba(255,255,255,.18);color:#fff;}
-.slide:not(.slide-dark):not(.slide-dark2) .sec-num{background:var(--blue);color:#fff;}
-
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75em;font-weight:600;margin:1px 2px;border:1px solid;}
-.tag-blue{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
-.tag-green{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;}
-.tag-orange{background:#fff7ed;color:#c2410c;border-color:#fed7aa;}
-.tag-red{background:#fef2f2;color:#b91c1c;border-color:#fecaca;}
-.tag-purple{background:#faf5ff;color:#7e22ce;border-color:#e9d5ff;}
-.tag-gray{background:#f8fafc;color:#475569;border-color:#e2e8f0;}
-
-.card{background:#fff;border-radius:8px;padding:16px 20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:3px solid var(--blue);}
-.card.accent{border-left-color:var(--orange);}
-.card.green{border-left-color:var(--green);}
-.card.red{border-left-color:var(--red);}
-.card.purple{border-left-color:var(--purple);}
-.slide-dark .card,.slide-dark2 .card{background:rgba(255,255,255,.07);border-left-color:rgba(255,255,255,.25);}
-.slide-dark .card h3,.slide-dark2 .card h3{color:#e2e8f0;}
-
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-
-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.85em;}
-th{background:var(--dark);color:#fff;padding:7px 12px;text-align:left;font-weight:600;font-size:.82em;}
-td{padding:6px 12px;border-bottom:1px solid var(--gray-l);}
-tr:nth-child(even){background:#f8fafc;}
-
-.formula{background:#f8fafc;border:1px solid var(--gray-l);border-radius:6px;padding:8px 16px;margin:8px 0;font-family:"Times New Roman",serif;font-size:1.05em;text-align:center;}
-
-.pipeline{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;margin:16px 0;}
-.pipeline .step{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:6px 14px;font-size:.85em;font-weight:600;}
-.pipeline .arrow{font-size:1.1em;opacity:.5;}
-.slide:not(.slide-dark):not(.slide-dark2) .pipeline .step{background:var(--blue);color:#fff;border-color:var(--blue);}
-.slide:not(.slide-dark):not(.slide-dark2) .pipeline .arrow{color:var(--blue);}
-
-.page-num{position:absolute;bottom:14px;right:32px;font-size:.78em;color:var(--text-l);}
-.slide-dark .page-num,.slide-dark2 .page-num{color:rgba(255,255,255,.4);}
-
-.highlight{background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:12px 16px;margin:10px 0;font-size:.9em;}
-.highlight strong{color:var(--orange);}
-
-.cost-bar{display:flex;align-items:stretch;border-radius:6px;overflow:hidden;margin:8px 0;height:38px;}
-.cost-bar .seg{flex:1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78em;color:#fff;}
-
-ul,ol{margin-left:16px;margin-bottom:8px;}
-li{margin-bottom:3px;font-size:.88em;}
-.slide-dark li,.slide-dark2 li{color:#cbd5e1;}
-
-.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:12px 0;}
-.vs-divider{font-size:1.4em;font-weight:800;color:var(--orange);}
-
-.project-divider{min-height:35vh;background:linear-gradient(135deg,var(--dark),#334155);display:flex;align-items:center;justify-content:center;position:relative;}
-.project-divider h1{font-size:2.8em;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.project-divider::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--indigo),var(--purple),var(--pink));}
-
-.tech-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;justify-content:center;}
-.tech-badge{padding:4px 12px;border-radius:6px;font-size:.78em;font-weight:600;border:1px solid;}
-.tech-badge.t-blue{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
-.tech-badge.t-green{background:#f0fdf4;color:#15803d;border-color:#bbf7d0;}
-.tech-badge.t-purple{background:#faf5ff;color:#7e22ce;border-color:#e9d5ff;}
-.tech-badge.t-orange{background:#fff7ed;color:#c2410c;border-color:#fed7aa;}
-.tech-badge.t-red{background:#fef2f2;color:#b91c1c;border-color:#fecaca;}
-.tech-badge.t-dark{background:#f1f5f9;color:#334155;border-color:#cbd5e1;}
-
-/* ===== SVG Architecture Diagram ===== */
-.fig-wrap{text-align:center;margin:10px 0;}
-.fig-caption{font-size:.82em;color:var(--text-l);margin-top:6px;font-style:italic;}
-.fig-caption b{color:var(--text);font-style:normal;}
-
-svg text{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
-
-@media print{.slide{page-break-after:always;min-height:auto;padding:28px;}}
-@media(max-width:900px){.slide{padding:20px 16px;}.grid-2,.grid-3{grid-template-columns:1fr;}h1{font-size:1.8em;}h2{font-size:1.3em;}}
+body {
+  font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.7; padding-left: var(--toc-w);
+}
+#toc {
+  position: fixed; top: 0; left: 0;
+  width: var(--toc-w); height: 100vh;
+  background: #312e81; color: #fff;
+  overflow-y: auto; z-index: 200;
+  padding: 24px 0; display: flex; flex-direction: column;
+  transition: transform .25s ease;
+}
+#toc .toc-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  padding: 0 18px 16px; border-bottom: 1px solid rgba(255,255,255,.15);
+  margin-bottom: 8px; opacity: .85;
+}
+#toc a {
+  display: block; color: rgba(255,255,255,.7);
+  text-decoration: none; padding: 8px 18px;
+  font-size: 12.5px; line-height: 1.4;
+  border-left: 3px solid transparent; transition: all .18s;
+}
+#toc a:hover, #toc a.active {
+  color: #fff; background: rgba(255,255,255,.1); border-left-color: #a5b4fc;
+}
+#toc a .pg { font-size: 10px; opacity: .5; margin-left: 4px; }
+#toc .toc-stage {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  padding: 10px 18px 4px; color: rgba(255,255,255,.4); text-transform: uppercase;
+}
+.slide {
+  min-height: 100vh; padding: 52px 72px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; border-bottom: 3px solid var(--primary);
+}
+.slide:last-child { border-bottom: none; }
+.slide-svg { padding-left: 0; padding-right: 0; padding-bottom: 0; }
+.slide-svg .slide-header { padding: 52px 72px 0; }
+.slide-cover {
+  background: linear-gradient(135deg,#312e81 0%,#4338ca 55%,#6366f1 100%);
+  color: #fff; text-align: center;
+}
+.slide-cover h1 { font-size: 3.4em; font-weight: 800; letter-spacing: 3px; margin-bottom: 14px; }
+.slide-cover .subtitle { font-size: 1.35em; opacity: .88; margin-bottom: 36px; }
+.pipeline {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 8px; margin: 0 auto 28px;
+}
+.pipeline .step {
+  background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.38);
+  border-radius: 8px; padding: 10px 18px; font-size: .92em; font-weight: 600;
+}
+.pipeline .arrow { font-size: 1.3em; opacity: .65; }
+.cover-note { margin-top: 8px; opacity: .75; font-size: .95em; }
+.stage-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--primary); color: #fff;
+  border-radius: 30px; padding: 6px 18px 6px 8px;
+  font-size: .88em; font-weight: 700; margin-bottom: 18px; width: fit-content;
+}
+.stage-badge .num {
+  background: rgba(255,255,255,.25); border-radius: 50%;
+  width: 28px; height: 28px; display: flex; align-items: center;
+  justify-content: center; font-size: 1em; font-weight: 800;
+}
+h2 { font-size: 1.85em; font-weight: 700; color: var(--primary-dark); margin-bottom: 10px; }
+.keypoints { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.kp {
+  background: #fff; border-radius: 8px; padding: 8px 16px;
+  font-size: .88em; font-weight: 600; color: var(--text);
+  box-shadow: 0 1px 6px rgba(0,0,0,.07); border-left: 3px solid var(--primary);
+}
+.kp.green { border-left-color: var(--green); }
+.kp.red { border-left-color: var(--red); }
+.kp.orange { border-left-color: var(--orange); }
+.kp.purple { border-left-color: var(--accent); }
+.kp.pink { border-left-color: var(--pink); }
+.svg-wrap { width: 100%; margin-top: 16px; }
+.svg-wrap svg { display: block; width: 100%; box-shadow: 0 -2px 16px rgba(0,0,0,.07); }
+.page-num {
+  position: absolute; bottom: 18px; right: 36px;
+  font-size: .82em; color: var(--text-l); z-index: 10;
+}
+.card {
+  background: #fff; border-radius: 10px; padding: 18px 22px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06); border-left: 3px solid var(--primary);
+  margin-bottom: 12px;
+}
+.card.green { border-left-color: var(--green); }
+.card.orange { border-left-color: var(--orange); }
+.card.red { border-left-color: var(--red); }
+.card.purple { border-left-color: var(--accent); }
+.card.pink { border-left-color: var(--pink); }
+.card h3 { font-size: 1em; font-weight: 700; margin-bottom: 8px; color: var(--primary-dark); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+table { width: 100%; border-collapse: collapse; font-size: .86em; margin: 8px 0; }
+th { background: #312e81; color: #fff; padding: 8px 12px; text-align: left; font-size: .82em; }
+td { padding: 7px 12px; border-bottom: 1px solid #e2e8f0; }
+tr:nth-child(even) td { background: #f8fafc; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: .75em; font-weight: 600; margin: 1px 2px; border: 1px solid; }
+.tag-blue { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.tag-green { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+.tag-orange { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.tag-purple { background: #faf5ff; color: #7e22ce; border-color: #e9d5ff; }
+.tag-red { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+.tag-pink { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
+.tech-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; justify-content: center; }
+.tech-badge { padding: 4px 12px; border-radius: 6px; font-size: .78em; font-weight: 600; border: 1px solid; }
+.t-blue { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.t-green { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+.t-purple { background: #faf5ff; color: #7e22ce; border-color: #e9d5ff; }
+.t-orange { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.t-red { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+.t-dark { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+.t-pink { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
+.slide-summary {
+  background: linear-gradient(135deg,#312e81 0%,#4338ca 55%,#6366f1 100%);
+  color: #fff;
+}
+.slide-summary h2 { color: #fff; font-size: 2em; margin-bottom: 24px; }
+.summary-card {
+  background: rgba(255,255,255,.14); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.22); border-radius: 14px;
+  padding: 18px 24px; margin-bottom: 14px;
+}
+.summary-card .title { font-size: 1.05em; font-weight: 800; margin-bottom: 5px; }
+.summary-card p { font-size: .92em; opacity: .92; }
+#toc-toggle {
+  position: fixed; top: 14px; left: 14px; z-index: 300;
+  width: 34px; height: 34px; border-radius: 8px;
+  background: #312e81; border: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 5px; padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25); transition: background .18s;
+}
+#toc-toggle:hover { background: #4338ca; }
+#toc-toggle span { display: block; width: 18px; height: 2px; background: #fff; border-radius: 2px; }
+body.toc-hidden { padding-left: 0; }
+body.toc-hidden #toc { transform: translateX(-100%); }
+.pipe-steps { display: flex; align-items: stretch; gap: 0; margin: 14px 0; }
+.pipe-step { flex: 1; background: #fff; border: 1px solid #e2e8f0; padding: 14px; position: relative; }
+.pipe-step:first-child { border-radius: 10px 0 0 10px; }
+.pipe-step:last-child { border-radius: 0 10px 10px 0; }
+.pipe-step .snum { font-size: 1.6em; font-weight: 800; color: #e2e8f0; line-height: 1; }
+.pipe-step h4 { color: var(--primary-dark); margin: 5px 0; font-size: .9em; }
+.pipe-step p { color: #5f6368; font-size: .8em; }
+.pipe-step .arr { position: absolute; right: -11px; top: 50%; transform: translateY(-50%); z-index: 2; color: var(--primary); font-size: 1.1em; }
+.mem-tier { border-radius: 12px; padding: 18px; }
+.mem-tier.short { background: linear-gradient(135deg,#fef3c7,#fffbeb); border: 2px solid #fcd34d; }
+.mem-tier.long { background: linear-gradient(135deg,#dbeafe,#eff6ff); border: 2px solid #93c5fd; }
+.mem-tier.rag { background: linear-gradient(135deg,#ede9fe,#f5f3ff); border: 2px solid #c4b5fd; }
+.mem-tier h4 { margin-bottom: 8px; color: var(--primary-dark); font-size: .95em; font-weight: 700; }
+.mem-tier p { font-size: .8em; color: #334155; margin: 2px 0; }
+.err-step { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 10px; padding: 12px 16px; border: 1px solid #e2e8f0; margin-bottom: 8px; }
+.err-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .8em; font-weight: 800; flex-shrink: 0; }
+.err-step h4 { color: var(--primary-dark); font-size: .88em; margin-bottom: 2px; }
+.err-step p { color: #5f6368; font-size: .8em; }
+.anti-layer { border-radius: 12px; padding: 18px; }
+.anti-layer.behavior { background: linear-gradient(135deg,#dbeafe,#eff6ff); border: 2px solid #93c5fd; }
+.anti-layer.feature { background: linear-gradient(135deg,#fce7f3,#fdf2f8); border: 2px solid #f9a8d4; }
+.anti-layer.frequency { background: linear-gradient(135deg,#d1fae5,#ecfdf5); border: 2px solid #6ee7b7; }
+.anti-layer h4 { margin-bottom: 8px; color: var(--primary-dark); font-size: .95em; font-weight: 700; }
+.anti-layer ul { list-style: none; }
+.anti-layer li { padding: 2px 0; font-size: .82em; color: #334155; }
+.anti-layer li::before { content: '•'; margin-right: 6px; font-weight: bold; }
+svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; }
+@media print {
+  #toc { display: none; } body { padding-left: 0; }
+  .slide { page-break-after: always; min-height: auto; padding: 40px; }
+}
+@media (max-width: 860px) {
+  #toc { display: none; } body { padding-left: 0; }
+  .slide { padding: 28px 18px; } h2 { font-size: 1.4em; }
+  .slide-cover h1 { font-size: 2.2em; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .pipe-steps { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 
-<!-- ===================== AG-REPAIR SLIDE 1: Title ===================== -->
-<div class="slide slide-dark">
-  <div style="text-align:center;">
-    <h1>AG-Repair</h1>
-    <div class="subtitle">面向多智能体系统长错误轨迹的自动化修复框架</div>
-    <div class="pipeline" style="margin-top:24px;">
-      <div class="step">轨迹采集</div><div class="arrow">→</div>
-      <div class="step">因果图构建</div><div class="arrow">→</div>
-      <div class="step">根因定位</div><div class="arrow">→</div>
-      <div class="step">边界识别</div><div class="arrow">→</div>
-      <div class="step">修复规划</div><div class="arrow">→</div>
-      <div class="step">增量重执行</div><div class="arrow">→</div>
-      <div class="step">一致性验证</div>
-    </div>
+<button id="toc-toggle" title="展开/收起目录">
+  <span></span><span></span><span></span>
+</button>
+
+<nav id="toc">
+  <div class="toc-title">FinAgent</div>
+  <a href="#s1">封面<span class="pg">p.1</span></a>
+  <div class="toc-stage">核心模块</div>
+  <a href="#s2">① 整体架构<span class="pg">p.2</span></a>
+  <a href="#s3">② 意图识别<span class="pg">p.3</span></a>
+  <a href="#s4">③ RAG &amp; 记忆<span class="pg">p.4</span></a>
+  <a href="#s5">④ 反爬 &amp; 容错<span class="pg">p.5</span></a>
+  <a href="#s6">∑ 总结<span class="pg">p.6</span></a>
+</nav>
+
+<!-- ==================== SLIDE 1: Cover ==================== -->
+<div id="s1" class="slide slide-cover">
+  <h1>FinAgent</h1>
+  <div class="subtitle">基于 LangGraph 的多智能体金融分析系统</div>
+  <div class="pipeline">
+    <div class="step">自然语言输入</div><div class="arrow">→</div>
+    <div class="step">意图识别</div><div class="arrow">→</div>
+    <div class="step">条件路由</div><div class="arrow">→</div>
+    <div class="step">专业 Agent 执行</div><div class="arrow">→</div>
+    <div class="step">结果整合输出</div>
   </div>
-  <div style="margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-    <div class="card" style="border-left-color:#fca5a5;">
-      <h3 style="color:#fca5a5;">❌ 传统方法</h3>
-      <p style="font-size:.88em;opacity:.88;">发现错误后从错误点<strong>全量重跑</strong>，假设"错误点之后全部失效"</p>
-    </div>
-    <div class="card" style="border-left-color:#6ee7b7;">
-      <h3 style="color:#6ee7b7;">✅ AG-Repair</h3>
-      <p style="font-size:.88em;opacity:.88;">将失败轨迹视为<strong>可分析、可切分、可局部修补</strong>的结构化过程，只修复最小子图</p>
-    </div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">
+    <span class="tag tag-blue">Multi-Agent</span>
+    <span class="tag tag-purple">LangGraph</span>
+    <span class="tag tag-green">Agentic RAG</span>
+    <span class="tag tag-orange">反爬策略</span>
+    <span class="tag tag-pink">三层记忆</span>
   </div>
-  <div style="margin-top:16px;text-align:center;">
-    <span class="tag tag-blue">正确性</span>
-    <span class="tag tag-green">最小干预</span>
-    <span class="tag tag-orange">最大复用</span>
-    <span class="tag tag-purple">一致性</span>
-  </div>
-  <div class="page-num">1 / 4</div>
+  <p class="cover-note">核心思想：意图驱动路由，专业 Agent 协同，多层容错保障</p>
+  <div class="page-num" style="color:rgba(255,255,255,.55)">1 / 6</div>
 </div>
 
-<!-- ===================== AG-REPAIR SLIDE 2: Architecture (SVG) ===================== -->
-<div class="slide">
-  <h2><span class="sec-num">1</span>AG-Repair 整体架构</h2>
-
-  <div class="fig-wrap">
-    <svg viewBox="0 0 960 580" width="960" height="580" style="max-width:100%;">
+<!-- ==================== SLIDE 2: Architecture ==================== -->
+<div id="s2" class="slide slide-svg">
+  <div class="slide-header">
+    <div class="stage-badge"><span class="num">1</span>整体架构设计</div>
+    <h2>四层分层架构 + LangGraph 有向图</h2>
+    <div class="keypoints">
+      <div class="kp purple">CLI → 对话 Agent（总指挥）→ 3 个专业 Agent → 基础设施层</div>
+      <div class="kp green">LangGraph StateGraph：声明式编排，GlobalState 统一状态流转</div>
+      <div class="kp orange">条件路由：5 种意图自动分发，多意图串行执行</div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 960 540" width="960" height="540" style="max-width:100%;">
       <defs>
         <marker id="ah" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#64748b"/></marker>
-        <marker id="ah-b" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a73e8"/></marker>
+        <marker id="ah-i" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4338ca"/></marker>
         <marker id="ah-g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#0d9488"/></marker>
         <marker id="ah-o" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#e65100"/></marker>
         <marker id="ah-p" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7c3aed"/></marker>
+        <marker id="ah-b" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a73e8"/></marker>
       </defs>
 
-      <!-- ===== Layer 0: Input ===== -->
-      <rect x="300" y="8" width="360" height="38" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
-      <text x="480" y="32" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Failed Trajectory  T = ⟨ e₁, e₂, …, eₙ ⟩</text>
+      <!-- Layer 0: User Input -->
+      <rect x="330" y="8" width="300" height="34" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <text x="480" y="30" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">User Natural Language Input</text>
+      <line x1="480" y1="42" x2="480" y2="58" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
 
-      <!-- Arrow 0→1 -->
-      <line x1="480" y1="46" x2="480" y2="62" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
+      <!-- Layer 1: CLI -->
+      <rect x="310" y="58" width="340" height="32" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>
+      <text x="480" y="79" text-anchor="middle" fill="#334155" font-size="11" font-weight="600">CLI Layer (Click + Rich · asyncio)</text>
+      <line x1="480" y1="90" x2="480" y2="108" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
 
-      <!-- ===== Layer 1: Collection (dashed boundary) ===== -->
-      <rect x="60" y="62" width="840" height="72" rx="6" fill="none" stroke="#1a73e8" stroke-width="1.2" stroke-dasharray="6,3"/>
-      <text x="76" y="80" fill="#1a73e8" font-size="10" font-weight="700">COLLECTION LAYER</text>
-
-      <rect x="100" y="88" width="220" height="36" rx="4" fill="#eff6ff" stroke="#1a73e8" stroke-width="1.2"/>
-      <text x="210" y="111" text-anchor="middle" fill="#1d4ed8" font-size="12" font-weight="600">Structured Event Stream</text>
-
-      <rect x="370" y="88" width="220" height="36" rx="4" fill="#eff6ff" stroke="#1a73e8" stroke-width="1.2"/>
-      <text x="480" y="111" text-anchor="middle" fill="#1d4ed8" font-size="12" font-weight="600">Checkpoint Snapshots</text>
-
-      <rect x="640" y="88" width="220" height="36" rx="4" fill="#eff6ff" stroke="#1a73e8" stroke-width="1.2"/>
-      <text x="750" y="111" text-anchor="middle" fill="#1d4ed8" font-size="12" font-weight="600">Tool Journal (Replay)</text>
-
-      <!-- Arrow 1→2 -->
-      <line x1="480" y1="134" x2="480" y2="156" stroke="#1a73e8" stroke-width="1.5" marker-end="url(#ah-b)"/>
-      <text x="498" y="150" fill="#1a73e8" font-size="9" font-weight="600">instantiate</text>
-
-      <!-- ===== Layer 2: MAICG (dashed boundary) ===== -->
-      <rect x="60" y="156" width="840" height="120" rx="6" fill="none" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="6,3"/>
-      <text x="76" y="174" fill="#7c3aed" font-size="10" font-weight="700">MAICG CONSTRUCTION</text>
-
-      <!-- Main graph box -->
-      <rect x="260" y="182" width="440" height="36" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
-      <text x="480" y="205" text-anchor="middle" fill="#7e22ce" font-size="13" font-weight="700">MAICG  G = (V, E)</text>
-
-      <!-- V nodes -->
-      <rect x="100" y="230" width="360" height="36" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
-      <text x="110" y="253" fill="#334155" font-size="10.5" font-weight="600">V (6 types):</text>
-      <text x="175" y="253" fill="#1d4ed8" font-size="10">agent_step</text>
-      <text x="252" y="253" fill="#c2410c" font-size="10">tool_call</text>
-      <text x="315" y="253" fill="#c2410c" font-size="10">tool_result</text>
-      <text x="385" y="253" fill="#7e22ce" font-size="10">artifact</text>
-      <text x="435" y="253" fill="#15803d" font-size="10">checkpoint</text>
-
-      <!-- E edges -->
-      <rect x="500" y="230" width="380" height="36" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
-      <text x="510" y="253" fill="#334155" font-size="10.5" font-weight="600">E (6 types):</text>
-      <text x="575" y="253" fill="#b91c1c" font-size="10">data(1.0)</text>
-      <text x="637" y="253" fill="#c2410c" font-size="10">tool(0.95)</text>
-      <text x="706" y="253" fill="#7e22ce" font-size="10">artifact(0.85)</text>
-      <text x="795" y="253" fill="#1d4ed8" font-size="10">plan(0.7)</text>
-
-      <!-- Arrow 2→3 -->
-      <line x1="480" y1="276" x2="480" y2="298" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#ah-p)"/>
-      <text x="498" y="292" fill="#7c3aed" font-size="9" font-weight="600">analyze</text>
-
-      <!-- ===== Layer 3: Analysis (dashed boundary) ===== -->
-      <rect x="60" y="298" width="840" height="72" rx="6" fill="none" stroke="#e65100" stroke-width="1.2" stroke-dasharray="6,3"/>
-      <text x="76" y="316" fill="#e65100" font-size="10" font-weight="700">ANALYSIS LAYER</text>
-
-      <rect x="80" y="324" width="250" height="36" rx="4" fill="#fff7ed" stroke="#e65100" stroke-width="1.2"/>
-      <text x="205" y="340" text-anchor="middle" fill="#c2410c" font-size="11" font-weight="600">Root Cause Localization</text>
-      <text x="205" y="354" text-anchor="middle" fill="#c2410c" font-size="9">S_root = αA + βI + γD + δR</text>
-
-      <rect x="360" y="324" width="250" height="36" rx="4" fill="#fff7ed" stroke="#e65100" stroke-width="1.2"/>
-      <text x="485" y="340" text-anchor="middle" fill="#c2410c" font-size="11" font-weight="600">Boundary Identification</text>
-      <text x="485" y="354" text-anchor="middle" fill="#c2410c" font-size="9">P(v) = max P(u)·w·λ</text>
-
-      <rect x="640" y="324" width="250" height="36" rx="4" fill="#fff7ed" stroke="#e65100" stroke-width="1.2"/>
-      <text x="765" y="340" text-anchor="middle" fill="#c2410c" font-size="11" font-weight="600">Repair Action Planning</text>
-      <text x="765" y="354" text-anchor="middle" fill="#c2410c" font-size="9">6 actions · cost-aware</text>
-
-      <!-- horizontal arrows within analysis -->
-      <line x1="330" y1="342" x2="356" y2="342" stroke="#e65100" stroke-width="1.2" marker-end="url(#ah-o)"/>
-      <line x1="610" y1="342" x2="636" y2="342" stroke="#e65100" stroke-width="1.2" marker-end="url(#ah-o)"/>
-
-      <!-- Arrow 3→4 -->
-      <line x1="480" y1="370" x2="480" y2="392" stroke="#e65100" stroke-width="1.5" marker-end="url(#ah-o)"/>
-      <text x="498" y="386" fill="#e65100" font-size="9" font-weight="600">RepairPlan</text>
-
-      <!-- ===== Layer 4: Execution (dashed boundary) ===== -->
-      <rect x="60" y="392" width="840" height="72" rx="6" fill="none" stroke="#0d9488" stroke-width="1.2" stroke-dasharray="6,3"/>
-      <text x="76" y="410" fill="#0d9488" font-size="10" font-weight="700">EXECUTION LAYER</text>
-
-      <rect x="120" y="418" width="300" height="36" rx="4" fill="#f0fdf4" stroke="#0d9488" stroke-width="1.2"/>
-      <text x="270" y="434" text-anchor="middle" fill="#15803d" font-size="11" font-weight="600">Incremental Re-execution</text>
-      <text x="270" y="448" text-anchor="middle" fill="#15803d" font-size="9">Checkpoint Restore + Journal Replay + ADF Inject</text>
-
-      <rect x="540" y="418" width="300" height="36" rx="4" fill="#f0fdf4" stroke="#0d9488" stroke-width="1.2"/>
-      <text x="690" y="434" text-anchor="middle" fill="#15803d" font-size="11" font-weight="600">Consistency Verification</text>
-      <text x="690" y="448" text-anchor="middle" fill="#15803d" font-size="9">Local + Global + Milestone Forward</text>
-
-      <!-- arrow between exec -->
-      <line x1="420" y1="436" x2="536" y2="436" stroke="#0d9488" stroke-width="1.2" marker-end="url(#ah-g)"/>
-
-      <!-- Arrow 4→5 -->
-      <line x1="480" y1="464" x2="480" y2="486" stroke="#0d9488" stroke-width="1.5" marker-end="url(#ah-g)"/>
-
-      <!-- ===== Layer 5: Output ===== -->
-      <rect x="240" y="486" width="480" height="38" rx="4" fill="#f0fdf4" stroke="#0d9488" stroke-width="1.5"/>
-      <text x="480" y="503" text-anchor="middle" fill="#15803d" font-size="12" font-weight="600">Repaired Trajectory T'</text>
-      <text x="480" y="518" text-anchor="middle" fill="#15803d" font-size="9.5">min intervention · max reuse · consistency guaranteed</text>
-
-      <!-- Feedback loop arrow (right side) -->
-      <path d="M 900 300 Q 940 300 940 250 L 940 90 Q 940 70 920 70 L 870 70" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ah)"/>
-      <text x="944" y="190" fill="#94a3b8" font-size="8.5" font-weight="600" transform="rotate(90,944,190)">verification fail → re-analyze</text>
-
-      <!-- Module mapping (bottom) -->
-      <rect x="60" y="536" width="840" height="36" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-      <text x="76" y="559" fill="#64748b" font-size="9.5" font-weight="600">Modules:</text>
-      <text x="140" y="559" fill="#1d4ed8" font-size="9.5">collector/</text>
-      <text x="210" y="559" fill="#7e22ce" font-size="9.5">graph/</text>
-      <text x="262" y="559" fill="#c2410c" font-size="9.5">localization/</text>
-      <text x="348" y="559" fill="#c2410c" font-size="9.5">boundary/</text>
-      <text x="420" y="559" fill="#c2410c" font-size="9.5">planner/</text>
-      <text x="482" y="559" fill="#15803d" font-size="9.5">replay/</text>
-      <text x="534" y="559" fill="#15803d" font-size="9.5">verify/</text>
-      <text x="586" y="559" fill="#475569" font-size="9.5">adapters/</text>
-    </svg>
-    <div class="fig-caption"><b>Figure 1.</b> AG-Repair 整体架构：从失败轨迹输入，经采集→图构建→分析→执行→验证五层处理，输出最小干预修复轨迹。右侧虚线表示验证失败时的反馈回路。</div>
-  </div>
-  <div class="page-num">2 / 4</div>
-</div>
-
-<!-- ===================== AG-REPAIR SLIDE 3: Core Methods ===================== -->
-<div class="slide">
-  <h2><span class="sec-num">2</span>核心方法 — 根因定位 · 边界识别 · 修复动作</h2>
-
-  <div class="grid-2">
-    <div class="card purple">
-      <h3>根因定位</h3>
-      <div class="formula">S<sub>root</sub>(v) = α·A(v) + β·I(v) + γ·D(v) + δ·R(v)</div>
-      <table style="font-size:.83em;">
-        <tr><th>分量</th><th>含义</th></tr>
-        <tr><td>A(v)</td><td>异常强度 — 硬信号优先</td></tr>
-        <tr><td>I(v)</td><td>影响强度 — 可达受影响节点数</td></tr>
-        <tr><td>D(v)</td><td>偏离程度 — 与目标偏差</td></tr>
-        <tr><td>R(v)</td><td>修复收益 — 修复价值</td></tr>
-      </table>
-      <p style="font-size:.83em;color:var(--text-l);">定位"修复价值最高的根因点"，而非"最显眼的错误点"</p>
-    </div>
-
-    <div class="card accent">
-      <h3>污染边界识别</h3>
-      <div class="formula">P(v) = max<sub>u∈Pred(v)</sub> P(u) · w(u,v) · λ</div>
-      <p style="font-size:.83em;margin:6px 0;">衰减传播模型，λ = 0.85，按边权重区分真实依赖 vs 时序相邻</p>
-      <table style="font-size:.83em;">
-        <tr><th>节点分类</th><th>复用评分</th><th>处理</th></tr>
-        <tr><td><span class="tag tag-green">Clean</span></td><td>≥ 80</td><td>PRESERVE</td></tr>
-        <tr><td><span class="tag tag-orange">Partial</span></td><td>60~80</td><td>PATCH</td></tr>
-        <tr><td><span class="tag tag-red">Invalid</span></td><td>&lt; 60</td><td>重跑/重写</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="card green" style="margin-top:4px;">
-    <h3>修复动作空间 — 六种动作按代价梯度排列</h3>
-    <div class="cost-bar">
-      <div class="seg" style="background:#2e7d32;">PRESERVE</div>
-      <div class="seg" style="background:#1565c0;">PATCH</div>
-      <div class="seg" style="background:#6a1b9a;">REPLAY_TOOL</div>
-      <div class="seg" style="background:#e65100;">RERUN_NODE</div>
-      <div class="seg" style="background:#c62828;">RERUN_BRANCH</div>
-      <div class="seg" style="background:#7f1d1d;">REWRITE_BRANCH</div>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:.8em;color:var(--text-l);padding:0 4px;">
-      <span>← 代价最低</span><span>代价最高 →</span>
-    </div>
-    <div class="highlight" style="margin-top:8px;">
-      <strong>自动升级机制：</strong>局部一致性失败 → 动作自动升级一级（PATCH → REPLAY_TOOL → RERUN_NODE → RERUN_BRANCH），最多两轮
-    </div>
-  </div>
-  <div class="page-num">3 / 4</div>
-</div>
-
-<!-- ===================== AG-REPAIR SLIDE 4: Incremental + Verification + Tech ===================== -->
-<div class="slide">
-  <h2><span class="sec-num">3</span>增量重执行 · 一致性验证 · 技术栈</h2>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>增量重执行三能力</h3>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px;">
-          <strong style="color:var(--blue);font-size:.9em;">Checkpoint 恢复</strong>
-          <span style="font-size:.82em;color:var(--text-l);">— 从最靠近根因的快照恢复</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px;">
-          <strong style="color:var(--blue);font-size:.9em;">Journal Replay</strong>
-          <span style="font-size:.82em;color:var(--text-l);">— 未修改的工具结果优先回放旧结果</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px;">
-          <strong style="color:var(--blue);font-size:.9em;">依赖注入（ADF）</strong>
-          <span style="font-size:.82em;color:var(--text-l);">— 只注入依赖前沿，减少长上下文干扰</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card purple">
-      <h3>一致性验证</h3>
-      <div style="margin-top:6px;">
-        <div style="padding:6px 10px;background:#f5f3ff;border-radius:6px;margin-bottom:4px;">
-          <strong style="color:var(--purple);font-size:.9em;">局部一致性</strong>
-          <span style="font-size:.82em;color:var(--text-l);"> — 接口兼容 · Artifact存在性 · 工具结果匹配 · 矛盾检测</span>
-        </div>
-        <div style="padding:6px 10px;background:#f5f3ff;border-radius:6px;">
-          <strong style="color:var(--purple);font-size:.9em;">全局一致性</strong>
-          <span style="font-size:.82em;color:var(--text-l);"> — 任务成功标准 · 里程碑前进 · 新错误检测 · 目标兼容</span>
-        </div>
-      </div>
-      <div class="highlight" style="margin-top:8px;">
-        <strong>Milestone Forward：</strong>关注修复是否"推动任务向前"，而非仅"减少错误"
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-top:12px;">
-    <h3 style="text-align:center;margin-bottom:8px;">技术栈</h3>
-    <div class="tech-row">
-      <span class="tech-badge t-blue">Python</span>
-      <span class="tech-badge t-purple">AG2 / AutoGen</span>
-      <span class="tech-badge t-green">NetworkX</span>
-      <span class="tech-badge t-orange">JSONL + SQLite</span>
-      <span class="tech-badge t-red">LLM (GPT-4)</span>
-      <span class="tech-badge t-dark">TypedDict / Pydantic</span>
-      <span class="tech-badge t-purple">故障注入测试</span>
-    </div>
-  </div>
-  <div class="page-num">4 / 4</div>
-</div>
-
-<!-- ===================== PROJECT DIVIDER ===================== -->
-<div class="project-divider">
-  <div style="text-align:center;">
-    <h1>FinAgent</h1>
-    <p style="font-size:1.1em;opacity:.6;margin-top:8px;">基于 LangGraph 的多智能体金融分析系统</p>
-  </div>
-</div>
-
-<!-- ===================== FINAGENT SLIDE 1: Title ===================== -->
-<div class="slide slide-dark2">
-  <div style="text-align:center;">
-    <h1>FinAgent</h1>
-    <div class="subtitle">基于 LangGraph 的多智能体金融分析系统</div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px;">
-      <span class="tag tag-blue">Multi-Agent</span>
-      <span class="tag tag-purple">LangGraph</span>
-      <span class="tag tag-green">Agentic RAG</span>
-      <span class="tag tag-orange">反爬策略</span>
-      <span class="tag tag-red">三层记忆</span>
-    </div>
-  </div>
-  <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-    <div class="card">
-      <h3 style="color:#818cf8;">项目目的</h3>
-      <p style="font-size:.88em;opacity:.88;">构建<strong>意图驱动的多智能体金融分析系统</strong>，用户通过自然语言交互，系统自动识别意图并路由到专业 Agent 执行数据采集、文本摘要、数据分析等任务</p>
-    </div>
-    <div class="card">
-      <h3 style="color:#818cf8;">核心挑战</h3>
-      <ul style="font-size:.85em;opacity:.88;">
-        <li>金融网站动态渲染 + 反爬对抗</li>
-        <li>多意图识别与路由分发</li>
-        <li>跨会话记忆一致性管理</li>
-        <li>多层容错与降级策略</li>
-      </ul>
-    </div>
-  </div>
-  <div class="page-num">1 / 4</div>
-</div>
-
-<!-- ===================== FINAGENT SLIDE 2: Architecture (SVG) ===================== -->
-<div class="slide">
-  <h2><span class="sec-num">1</span>FinAgent 整体架构</h2>
-
-  <div class="fig-wrap">
-    <svg viewBox="0 0 960 620" width="960" height="620" style="max-width:100%;">
-      <defs>
-        <marker id="ah2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#64748b"/></marker>
-        <marker id="ah2-i" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4338ca"/></marker>
-        <marker id="ah2-g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#0d9488"/></marker>
-        <marker id="ah2-o" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#e65100"/></marker>
-        <marker id="ah2-p" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7c3aed"/></marker>
-      </defs>
-
-      <!-- ===== Layer 0: User Input ===== -->
-      <rect x="340" y="6" width="280" height="34" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
-      <text x="480" y="28" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">User Natural Language Input</text>
-
-      <line x1="480" y1="40" x2="480" y2="56" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
-
-      <!-- ===== Layer 1: CLI ===== -->
-      <rect x="300" y="56" width="360" height="34" rx="4" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>
-      <text x="480" y="78" text-anchor="middle" fill="#334155" font-size="11.5" font-weight="600">CLI Layer (Click + Rich · asyncio)</text>
-
-      <line x1="480" y1="90" x2="480" y2="108" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
-
-      <!-- ===== Layer 2: Dialog Agent (dashed boundary) ===== -->
-      <rect x="60" y="108" width="840" height="80" rx="6" fill="none" stroke="#4338ca" stroke-width="1.2" stroke-dasharray="6,3"/>
+      <!-- Layer 2: Orchestration -->
+      <rect x="60" y="108" width="840" height="76" rx="6" fill="none" stroke="#4338ca" stroke-width="1.2" stroke-dasharray="6,3"/>
       <text x="76" y="126" fill="#4338ca" font-size="10" font-weight="700">ORCHESTRATION LAYER</text>
+      <rect x="190" y="132" width="580" height="40" rx="4" fill="#eef2ff" stroke="#4338ca" stroke-width="1.5"/>
+      <text x="480" y="150" text-anchor="middle" fill="#4338ca" font-size="13" font-weight="700">Dialog Agent（对话总指挥）</text>
+      <text x="480" y="165" text-anchor="middle" fill="#4338ca" font-size="9.5">意图识别 · 条件路由 · 结果整合 · 多轮对话管理</text>
 
-      <rect x="180" y="132" width="600" height="44" rx="4" fill="#eef2ff" stroke="#4338ca" stroke-width="1.5"/>
-      <text x="480" y="152" text-anchor="middle" fill="#4338ca" font-size="13" font-weight="700">Dialog Agent (Orchestrator)</text>
-      <text x="480" y="168" text-anchor="middle" fill="#4338ca" font-size="9.5">Intent Recognition · Conditional Routing · Result Aggregation · Multi-turn Dialog</text>
+      <!-- Fan-out arrows -->
+      <line x1="310" y1="184" x2="170" y2="214" stroke="#4338ca" stroke-width="1.2" marker-end="url(#ah-i)"/>
+      <line x1="480" y1="184" x2="480" y2="214" stroke="#4338ca" stroke-width="1.2" marker-end="url(#ah-i)"/>
+      <line x1="650" y1="184" x2="790" y2="214" stroke="#4338ca" stroke-width="1.2" marker-end="url(#ah-i)"/>
+      <text x="200" y="202" fill="#4338ca" font-size="8.5" font-weight="600">crawl_data</text>
+      <text x="490" y="202" fill="#4338ca" font-size="8.5" font-weight="600">summarize</text>
+      <text x="710" y="202" fill="#4338ca" font-size="8.5" font-weight="600">analyze</text>
 
-      <!-- Fan-out arrows from Dialog Agent to 3 sub-agents -->
-      <line x1="300" y1="188" x2="160" y2="218" stroke="#4338ca" stroke-width="1.2" marker-end="url(#ah2-i)"/>
-      <line x1="480" y1="188" x2="480" y2="218" stroke="#4338ca" stroke-width="1.2" marker-end="url(#ah2-i)"/>
-      <line x1="660" y1="188" x2="800" y2="218" stroke="#4338ca" stroke-width="1.2" marker-end="url(#ah2-i)"/>
+      <!-- Layer 3: Specialized Agents -->
+      <rect x="60" y="214" width="840" height="96" rx="6" fill="none" stroke="#0d9488" stroke-width="1.2" stroke-dasharray="6,3"/>
+      <text x="76" y="232" fill="#0d9488" font-size="10" font-weight="700">SPECIALIZED AGENT LAYER</text>
+      <rect x="80" y="238" width="240" height="60" rx="4" fill="#f0fdf4" stroke="#0d9488" stroke-width="1.2"/>
+      <text x="200" y="258" text-anchor="middle" fill="#15803d" font-size="11.5" font-weight="700">Crawler Agent</text>
+      <text x="200" y="273" text-anchor="middle" fill="#15803d" font-size="9">Playwright + Stealth</text>
+      <text x="200" y="287" text-anchor="middle" fill="#15803d" font-size="8.5">反检测 · 动态渲染 · 结构化输出</text>
+      <rect x="360" y="238" width="240" height="60" rx="4" fill="#eff6ff" stroke="#1a73e8" stroke-width="1.2"/>
+      <text x="480" y="258" text-anchor="middle" fill="#1d4ed8" font-size="11.5" font-weight="700">Summary Agent</text>
+      <text x="480" y="273" text-anchor="middle" fill="#1d4ed8" font-size="9">Agentic RAG + RRF Fusion</text>
+      <text x="480" y="287" text-anchor="middle" fill="#1d4ed8" font-size="8.5">向量检索 + BM25 → LLM 生成</text>
+      <rect x="640" y="238" width="240" height="60" rx="4" fill="#fff7ed" stroke="#e65100" stroke-width="1.2"/>
+      <text x="760" y="258" text-anchor="middle" fill="#c2410c" font-size="11.5" font-weight="700">Analysis Agent</text>
+      <text x="760" y="273" text-anchor="middle" fill="#c2410c" font-size="9">9 种分析技能</text>
+      <text x="760" y="287" text-anchor="middle" fill="#c2410c" font-size="8.5">Prompt Chain · 渐进式分析</text>
 
-      <!-- Route labels -->
-      <text x="210" y="206" fill="#4338ca" font-size="8.5" font-weight="600">crawl_data</text>
-      <text x="490" y="206" fill="#4338ca" font-size="8.5" font-weight="600">summarize</text>
-      <text x="720" y="206" fill="#4338ca" font-size="8.5" font-weight="600">analyze</text>
+      <!-- Fan-in arrows -->
+      <line x1="170" y1="298" x2="310" y2="328" stroke="#0d9488" stroke-width="1.2" marker-end="url(#ah-g)"/>
+      <line x1="480" y1="298" x2="480" y2="328" stroke="#1a73e8" stroke-width="1.2" marker-end="url(#ah-b)"/>
+      <line x1="790" y1="298" x2="650" y2="328" stroke="#e65100" stroke-width="1.2" marker-end="url(#ah-o)"/>
 
-      <!-- ===== Layer 3: Sub Agents (dashed boundary) ===== -->
-      <rect x="60" y="218" width="840" height="100" rx="6" fill="none" stroke="#0d9488" stroke-width="1.2" stroke-dasharray="6,3"/>
-      <text x="76" y="236" fill="#0d9488" font-size="10" font-weight="700">SPECIALIZED AGENT LAYER</text>
+      <!-- Layer 4: Infrastructure -->
+      <rect x="60" y="328" width="840" height="76" rx="6" fill="none" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="6,3"/>
+      <text x="76" y="346" fill="#7c3aed" font-size="10" font-weight="700">INFRASTRUCTURE LAYER</text>
+      <rect x="80" y="352" width="148" height="42" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="154" y="370" text-anchor="middle" fill="#7e22ce" font-size="10" font-weight="600">LLM 抽象层</text>
+      <text x="154" y="384" text-anchor="middle" fill="#7e22ce" font-size="8.5">OpenAI / 本地模型切换</text>
+      <rect x="242" y="352" width="148" height="42" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="316" y="370" text-anchor="middle" fill="#7e22ce" font-size="10" font-weight="600">向量存储</text>
+      <text x="316" y="384" text-anchor="middle" fill="#7e22ce" font-size="8.5">ChromaDB · Embedding</text>
+      <rect x="404" y="352" width="148" height="42" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="478" y="370" text-anchor="middle" fill="#7e22ce" font-size="10" font-weight="600">三层记忆</text>
+      <text x="478" y="384" text-anchor="middle" fill="#7e22ce" font-size="8.5">短期 · 长期 · RAG</text>
+      <rect x="566" y="352" width="148" height="42" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="640" y="370" text-anchor="middle" fill="#7e22ce" font-size="10" font-weight="600">配置管理</text>
+      <text x="640" y="384" text-anchor="middle" fill="#7e22ce" font-size="8.5">YAML / .env · API Key</text>
+      <rect x="728" y="352" width="148" height="42" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
+      <text x="802" y="370" text-anchor="middle" fill="#7e22ce" font-size="10" font-weight="600">日志系统</text>
+      <text x="802" y="384" text-anchor="middle" fill="#7e22ce" font-size="8.5">Rich Console · 错误追踪</text>
 
-      <!-- Crawler Agent -->
-      <rect x="80" y="244" width="240" height="62" rx="4" fill="#f0fdf4" stroke="#0d9488" stroke-width="1.2"/>
-      <text x="200" y="264" text-anchor="middle" fill="#15803d" font-size="11.5" font-weight="700">Crawler Agent</text>
-      <text x="200" y="278" text-anchor="middle" fill="#15803d" font-size="9">Playwright + Stealth</text>
-      <text x="200" y="292" text-anchor="middle" fill="#15803d" font-size="8.5">Anti-detect · Structured Output</text>
-
-      <!-- Summary Agent -->
-      <rect x="360" y="244" width="240" height="62" rx="4" fill="#eff6ff" stroke="#1a73e8" stroke-width="1.2"/>
-      <text x="480" y="264" text-anchor="middle" fill="#1d4ed8" font-size="11.5" font-weight="700">Summary Agent</text>
-      <text x="480" y="278" text-anchor="middle" fill="#1d4ed8" font-size="9">Agentic RAG + RRF Fusion</text>
-      <text x="480" y="292" text-anchor="middle" fill="#1d4ed8" font-size="8.5">Vector + BM25 → LLM Generate</text>
-
-      <!-- Analysis Agent -->
-      <rect x="640" y="244" width="240" height="62" rx="4" fill="#fff7ed" stroke="#e65100" stroke-width="1.2"/>
-      <text x="760" y="264" text-anchor="middle" fill="#c2410c" font-size="11.5" font-weight="700">Analysis Agent</text>
-      <text x="760" y="278" text-anchor="middle" fill="#c2410c" font-size="9">9 Analysis Skills</text>
-      <text x="760" y="292" text-anchor="middle" fill="#c2410c" font-size="8.5">Prompt Chain · Progressive Analysis</text>
-
-      <!-- Fan-in arrows back -->
-      <line x1="160" y1="306" x2="300" y2="338" stroke="#0d9488" stroke-width="1.2" marker-end="url(#ah2-g)"/>
-      <line x1="480" y1="306" x2="480" y2="338" stroke="#1a73e8" stroke-width="1.2" marker-end="url(#ah2)"/>
-      <line x1="800" y1="306" x2="660" y2="338" stroke="#e65100" stroke-width="1.2" marker-end="url(#ah2-o)"/>
-
-      <!-- ===== Layer 4: Infrastructure (dashed boundary) ===== -->
-      <rect x="60" y="338" width="840" height="100" rx="6" fill="none" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="6,3"/>
-      <text x="76" y="356" fill="#7c3aed" font-size="10" font-weight="700">INFRASTRUCTURE LAYER</text>
-
-      <!-- 5 infra boxes -->
-      <rect x="80" y="364" width="150" height="60" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
-      <text x="155" y="386" text-anchor="middle" fill="#7e22ce" font-size="10.5" font-weight="600">LLM Abstraction</text>
-      <text x="155" y="400" text-anchor="middle" fill="#7e22ce" font-size="8.5">OpenAI / Local Model</text>
-      <text x="155" y="414" text-anchor="middle" fill="#7e22ce" font-size="8.5">Provider Switch</text>
-
-      <rect x="250" y="364" width="150" height="60" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
-      <text x="325" y="386" text-anchor="middle" fill="#7e22ce" font-size="10.5" font-weight="600">Vector Store</text>
-      <text x="325" y="400" text-anchor="middle" fill="#7e22ce" font-size="8.5">ChromaDB</text>
-      <text x="325" y="414" text-anchor="middle" fill="#7e22ce" font-size="8.5">Embedding Index</text>
-
-      <rect x="420" y="364" width="150" height="60" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
-      <text x="495" y="386" text-anchor="middle" fill="#7e22ce" font-size="10.5" font-weight="600">Three-tier Memory</text>
-      <text x="495" y="400" text-anchor="middle" fill="#7e22ce" font-size="8.5">Short-term · Long-term</text>
-      <text x="495" y="414" text-anchor="middle" fill="#7e22ce" font-size="8.5">RAG Memory</text>
-
-      <rect x="590" y="364" width="150" height="60" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
-      <text x="665" y="386" text-anchor="middle" fill="#7e22ce" font-size="10.5" font-weight="600">Config Manager</text>
-      <text x="665" y="400" text-anchor="middle" fill="#7e22ce" font-size="8.5">YAML / .env</text>
-      <text x="665" y="414" text-anchor="middle" fill="#7e22ce" font-size="8.5">API Key Security</text>
-
-      <rect x="760" y="364" width="120" height="60" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1"/>
-      <text x="820" y="386" text-anchor="middle" fill="#7e22ce" font-size="10.5" font-weight="600">Logging</text>
-      <text x="820" y="400" text-anchor="middle" fill="#7e22ce" font-size="8.5">Rich Console</text>
-      <text x="820" y="414" text-anchor="middle" fill="#7e22ce" font-size="8.5">Error Tracking</text>
-
-      <!-- ===== LangGraph Flow (bottom section) ===== -->
-      <rect x="60" y="452" width="840" height="100" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-      <text x="76" y="470" fill="#818cf8" font-size="10" font-weight="700">LangGraph DIRECTED EXECUTION FLOW</text>
-
-      <!-- Flow nodes -->
-      <rect x="80" y="482" width="70" height="28" rx="4" fill="#059669"/>
-      <text x="115" y="501" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="600">START</text>
-
-      <line x1="150" y1="496" x2="170" y2="496" stroke="#475569" stroke-width="1.2" marker-end="url(#ah2)"/>
-
-      <rect x="170" y="482" width="90" height="28" rx="4" fill="#1e40af"/>
-      <text x="215" y="501" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="600">Input</text>
-
-      <line x1="260" y1="496" x2="280" y2="496" stroke="#475569" stroke-width="1.2" marker-end="url(#ah2)"/>
-
-      <rect x="280" y="482" width="110" height="28" rx="4" fill="#7c3aed"/>
-      <text x="335" y="501" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="600">DialogAgent</text>
-
-      <line x1="390" y1="496" x2="410" y2="496" stroke="#475569" stroke-width="1.2" marker-end="url(#ah2)"/>
-
-      <!-- Diamond for conditional routing -->
-      <polygon points="460,482 490,496 460,510 430,496" fill="#d97706" stroke="#d97706" stroke-width="1"/>
-      <text x="460" y="500" text-anchor="middle" fill="#fff" font-size="7.5" font-weight="700">Route</text>
-
-      <!-- Fan-out from diamond -->
-      <line x1="460" y1="510" x2="460" y2="524" stroke="#475569" stroke-width="1"/>
-      <line x1="460" y1="524" x2="160" y2="524" stroke="#475569" stroke-width="1"/>
-      <line x1="160" y1="524" x2="160" y2="536" stroke="#059669" stroke-width="1.2" marker-end="url(#ah2-g)"/>
-
-      <line x1="460" y1="524" x2="370" y2="524" stroke="#475569" stroke-width="1"/>
-      <line x1="370" y1="524" x2="370" y2="536" stroke="#1a73e8" stroke-width="1.2" marker-end="url(#ah2)"/>
-
-      <line x1="460" y1="524" x2="580" y2="524" stroke="#475569" stroke-width="1"/>
-      <line x1="580" y1="524" x2="580" y2="536" stroke="#e65100" stroke-width="1.2" marker-end="url(#ah2-o)"/>
-
-      <line x1="460" y1="524" x2="700" y2="524" stroke="#475569" stroke-width="1"/>
-      <line x1="700" y1="524" x2="700" y2="536" stroke="#64748b" stroke-width="1.2" marker-end="url(#ah2)"/>
-
-      <line x1="460" y1="524" x2="830" y2="524" stroke="#475569" stroke-width="1"/>
-      <line x1="830" y1="524" x2="830" y2="536" stroke="#be185d" stroke-width="1.2"/>
-
-      <!-- Route target boxes -->
-      <rect x="120" y="536" width="80" height="20" rx="3" fill="#059669"/>
-      <text x="160" y="550" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">crawl</text>
-
-      <rect x="330" y="536" width="80" height="20" rx="3" fill="#1a73e8"/>
-      <text x="370" y="550" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">summarize</text>
-
-      <rect x="540" y="536" width="80" height="20" rx="3" fill="#e65100"/>
-      <text x="580" y="550" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">analyze</text>
-
-      <rect x="660" y="536" width="80" height="20" rx="3" fill="#64748b"/>
-      <text x="700" y="550" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">chat</text>
-
-      <rect x="790" y="536" width="80" height="20" rx="3" fill="#be185d"/>
-      <text x="830" y="550" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">multi</text>
-
-      <!-- GlobalState annotation -->
-      <rect x="510" y="470" width="380" height="16" rx="3" fill="rgba(255,255,255,.06)"/>
-      <text x="520" y="482" fill="#94a3b8" font-size="8">GlobalState (TypedDict): messages | user_input | intent | crawler_output | summary_output | analysis_output | error</text>
+      <!-- LangGraph Flow -->
+      <rect x="60" y="416" width="840" height="116" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      <text x="76" y="434" fill="#818cf8" font-size="10" font-weight="700">LangGraph DIRECTED EXECUTION FLOW</text>
+      <rect x="80" y="444" width="64" height="26" rx="4" fill="#059669"/>
+      <text x="112" y="462" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">START</text>
+      <line x1="144" y1="457" x2="162" y2="457" stroke="#475569" stroke-width="1.2" marker-end="url(#ah)"/>
+      <rect x="162" y="444" width="80" height="26" rx="4" fill="#1e40af"/>
+      <text x="202" y="462" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">接收输入</text>
+      <line x1="242" y1="457" x2="260" y2="457" stroke="#475569" stroke-width="1.2" marker-end="url(#ah)"/>
+      <rect x="260" y="444" width="100" height="26" rx="4" fill="#7c3aed"/>
+      <text x="310" y="462" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Dialog Agent</text>
+      <line x1="360" y1="457" x2="378" y2="457" stroke="#475569" stroke-width="1.2" marker-end="url(#ah)"/>
+      <polygon points="418,444 448,457 418,470 388,457" fill="#d97706" stroke="#d97706"/>
+      <text x="418" y="461" text-anchor="middle" fill="#fff" font-size="7.5" font-weight="700">Route</text>
+      <line x1="418" y1="470" x2="418" y2="484" stroke="#475569" stroke-width="1"/>
+      <line x1="418" y1="484" x2="160" y2="484" stroke="#475569" stroke-width="1"/>
+      <line x1="160" y1="484" x2="160" y2="496" stroke="#059669" stroke-width="1.2" marker-end="url(#ah-g)"/>
+      <line x1="418" y1="484" x2="310" y2="484" stroke="#475569" stroke-width="1"/>
+      <line x1="310" y1="484" x2="310" y2="496" stroke="#1a73e8" stroke-width="1.2" marker-end="url(#ah-b)"/>
+      <line x1="418" y1="484" x2="520" y2="484" stroke="#475569" stroke-width="1"/>
+      <line x1="520" y1="484" x2="520" y2="496" stroke="#e65100" stroke-width="1.2" marker-end="url(#ah-o)"/>
+      <line x1="418" y1="484" x2="680" y2="484" stroke="#475569" stroke-width="1"/>
+      <line x1="680" y1="484" x2="680" y2="496" stroke="#64748b" stroke-width="1.2" marker-end="url(#ah)"/>
+      <line x1="418" y1="484" x2="840" y2="484" stroke="#475569" stroke-width="1"/>
+      <line x1="840" y1="484" x2="840" y2="496" stroke="#be185d" stroke-width="1.2" marker-end="url(#ah)"/>
+      <rect x="120" y="496" width="80" height="20" rx="3" fill="#059669"/>
+      <text x="160" y="510" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">crawl</text>
+      <rect x="270" y="496" width="80" height="20" rx="3" fill="#1a73e8"/>
+      <text x="310" y="510" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">summarize</text>
+      <rect x="480" y="496" width="80" height="20" rx="3" fill="#e65100"/>
+      <text x="520" y="510" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">analyze</text>
+      <rect x="640" y="496" width="80" height="20" rx="3" fill="#475569"/>
+      <text x="680" y="510" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">chat</text>
+      <rect x="800" y="496" width="80" height="20" rx="3" fill="#be185d"/>
+      <text x="840" y="510" text-anchor="middle" fill="#fff" font-size="8" font-weight="600">multi</text>
+      <rect x="470" y="434" width="420" height="14" rx="3" fill="rgba(255,255,255,.05)"/>
+      <text x="478" y="445" fill="#94a3b8" font-size="7.5">GlobalState: messages · user_input · intent · crawler_output · summary_output · analysis_output · error</text>
     </svg>
-    <div class="fig-caption"><b>Figure 2.</b> FinAgent 整体架构：CLI层→对话Agent(总指挥)→3个专业Agent→基础设施层。下方展示 LangGraph 有向图执行流程，含条件路由菱形节点与5种意图分发路径。</div>
   </div>
-  <div class="page-num">2 / 4</div>
+  <div class="page-num">2 / 6</div>
 </div>
 
-<!-- ===================== FINAGENT SLIDE 3: RAG + Memory + Anti-detect ===================== -->
-<div class="slide">
-  <h2><span class="sec-num">2</span>Agentic RAG · 三层记忆 · 反爬策略</h2>
+<!-- ==================== SLIDE 3: Intent Recognition ==================== -->
+<div id="s3" class="slide">
+  <div class="stage-badge" style="background:#0d9488;"><span class="num">2</span>意图识别与路由机制</div>
+  <h2>两阶段识别 · 5 种意图 · 条件路由</h2>
+  <div class="keypoints">
+    <div class="kp">关键词预筛选 → LLM 精确分类 → 意图校验路由，三重保障</div>
+    <div class="kp orange">结构化 Prompt 约束 JSON 输出：intent + intent_detail 字段</div>
+    <div class="kp red">多意图串行执行，后序意图可依赖前序输出（如先采集再分析）</div>
+  </div>
 
-  <div class="grid-3">
-    <div class="card" style="border-left-color:var(--pink);">
-      <h3>Agentic RAG Pipeline</h3>
-      <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;font-size:.83em;">
-        <div style="background:#fdf2f8;padding:4px 8px;border-radius:4px;"><strong>Q</strong> 查询理解 → LLM改写</div>
-        <div style="background:#eff6ff;padding:4px 8px;border-radius:4px;"><strong>R1</strong> 向量检索 → 语义匹配</div>
-        <div style="background:#fffbeb;padding:4px 8px;border-radius:4px;"><strong>R2</strong> BM25检索 → 关键词匹配</div>
-        <div style="background:#f5f3ff;padding:4px 8px;border-radius:4px;"><strong>F</strong> RRF融合 → 兼顾两路</div>
-        <div style="background:#f0fdf4;padding:4px 8px;border-radius:4px;"><strong>G</strong> 生成回答 → LLM评估</div>
-      </div>
-      <p style="font-size:.78em;color:var(--text-l);margin-top:4px;">vs 传统RAG：Agent自主决策检索策略，不足时重检索</p>
+  <div class="pipe-steps" style="margin-bottom:18px;">
+    <div class="pipe-step">
+      <div class="snum">01</div>
+      <h4>关键词预筛选</h4>
+      <p>规则匹配快速排除明显意图，降低 LLM 调用成本</p>
+      <span class="arr">›</span>
     </div>
-
-    <div class="card" style="border-left-color:var(--orange);">
-      <h3>三层记忆管理</h3>
-      <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
-        <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:6px 8px;font-size:.83em;">
-          <strong style="color:#d97706;">⚡ 短期记忆</strong> — 内存dict · 当前会话 · TTL淘汰
-        </div>
-        <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:6px;padding:6px 8px;font-size:.83em;">
-          <strong style="color:#2563eb;">💾 长期记忆</strong> — 本地JSON · 跨会话偏好 · FIFO淘汰
-        </div>
-        <div style="background:#ede9fe;border:1px solid #c4b5fd;border-radius:6px;padding:6px 8px;font-size:.83em;">
-          <strong style="color:#7c3aed;">🗄️ RAG记忆</strong> — 向量数据库 · 文档知识库 · 语义检索
-        </div>
-      </div>
-      <p style="font-size:.78em;color:var(--text-l);margin-top:4px;">优先级：短期 > 长期 > RAG</p>
+    <div class="pipe-step">
+      <div class="snum">02</div>
+      <h4>LLM 精确分类</h4>
+      <p>结构化 Prompt 引导输出 JSON，含 intent + intent_detail</p>
+      <span class="arr">›</span>
     </div>
-
-    <div class="card" style="border-left-color:var(--green);">
-      <h3>反爬三层策略</h3>
-      <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
-        <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:6px;padding:6px 8px;font-size:.83em;">
-          <strong style="color:#2563eb;">🎭 行为层</strong> — 随机延时 · 模拟人类 · 鼠标轨迹
-        </div>
-        <div style="background:#fce7f3;border:1px solid #f9a8d4;border-radius:6px;padding:6px 8px;font-size:.83em;">
-          <strong style="color:#db2777;">🔍 特征层</strong> — playwright-stealth · TLS/Canvas指纹
-        </div>
-        <div style="background:#d1fae5;border:1px solid #6ee7b7;border-radius:6px;padding:6px 8px;font-size:.83em;">
-          <strong style="color:#059669;">⏱️ 频率层</strong> — 请求限速 · 代理轮换 · 会话间隔
-        </div>
-      </div>
+    <div class="pipe-step">
+      <div class="snum">03</div>
+      <h4>格式校验</h4>
+      <p>正则提取 JSON，解析失败时 fallback 关键词匹配</p>
+      <span class="arr">›</span>
+    </div>
+    <div class="pipe-step">
+      <div class="snum">04</div>
+      <h4>条件路由</h4>
+      <p>add_conditional_edges 映射 intent → 目标 Agent 节点</p>
     </div>
   </div>
-  <div class="page-num">3 / 4</div>
-</div>
-
-<!-- ===================== FINAGENT SLIDE 4: Error Handling + Tech Stack ===================== -->
-<div class="slide">
-  <h2><span class="sec-num">3</span>容错机制 · 技术栈 · 核心创新</h2>
 
   <div class="grid-2">
-    <div class="card red">
-      <h3>四层容错体系</h3>
-      <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px;">
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fef2f2;border-radius:6px;">
-          <span style="background:#059669;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75em;font-weight:700;flex-shrink:0;">L1</span>
-          <div style="font-size:.85em;"><strong>自动重试</strong> — 指数退避 1s→2s→4s，最多3次</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fffbeb;border-radius:6px;">
-          <span style="background:#d97706;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75em;font-weight:700;flex-shrink:0;">L2</span>
-          <div style="font-size:.85em;"><strong>降级策略</strong> — LLM Provider切换 / 采集降级</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#eff6ff;border-radius:6px;">
-          <span style="background:#2563eb;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75em;font-weight:700;flex-shrink:0;">L3</span>
-          <div style="font-size:.85em;"><strong>状态回滚</strong> — GlobalState快照回滚，防脏状态</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f5f3ff;border-radius:6px;">
-          <span style="background:#7c3aed;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75em;font-weight:700;flex-shrink:0;">L4</span>
-          <div style="font-size:.85em;"><strong>用户兜底</strong> — 友好错误提示 + 建议操作</div>
-        </div>
-      </div>
-    </div>
-
     <div>
-      <div class="card" style="border-left-color:var(--indigo);">
-        <h3>GlobalState（TypedDict）</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;">
+      <table>
+        <tr><th>意图类型</th><th>标签</th><th>触发示例</th></tr>
+        <tr><td>数据采集</td><td><span class="tag tag-green">crawl_data</span></td><td>帮我爬取东方财富财报数据</td></tr>
+        <tr><td>文本摘要</td><td><span class="tag tag-blue">summarize</span></td><td>总结这篇研报的核心观点</td></tr>
+        <tr><td>数据分析</td><td><span class="tag tag-orange">analyze</span></td><td>分析贵州茅台的估值</td></tr>
+        <tr><td>日常对话</td><td><span class="tag tag-purple">chat</span></td><td>你好 / 什么是 PE</td></tr>
+        <tr><td>多意图</td><td><span class="tag tag-pink">multi</span></td><td>爬取数据并分析估值</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="card purple">
+        <h3>GlobalState 字段设计</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
           <span class="tag tag-blue">messages</span>
           <span class="tag tag-green">user_input</span>
           <span class="tag tag-orange">intent</span>
@@ -675,31 +422,201 @@ svg text{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
           <span class="tag tag-red">crawler_output</span>
           <span class="tag tag-blue">summary_output</span>
           <span class="tag tag-green">analysis_output</span>
-          <span class="tag tag-gray">final_response</span>
+          <span class="tag tag-purple">final_response</span>
           <span class="tag tag-orange">context</span>
           <span class="tag tag-red">error</span>
         </div>
-        <p style="font-size:.8em;color:var(--text-l);margin-top:4px;">每个Agent只修改自己负责的字段，TypedDict类型约束保证状态不可变性</p>
+        <p style="font-size:.8em;color:var(--text-l);margin-top:8px;">每个 Agent 只修改自己负责的字段，TypedDict 类型约束保证状态不可变性</p>
       </div>
-
-      <div class="card green">
-        <h3>核心创新点</h3>
-        <ul style="font-size:.85em;">
-          <li><strong>意图驱动路由</strong> — 5种意图自动识别分发</li>
-          <li><strong>Agentic RAG</strong> — 混合检索+RRF融合，Agent自主决策</li>
-          <li><strong>三层记忆</strong> — 短期/长期/RAG分层管理</li>
-          <li><strong>多层容错</strong> — 重试→降级→回滚→兜底</li>
-        </ul>
+      <div class="card orange">
+        <h3>多意图拆分策略</h3>
+        <p style="font-size:.83em;">intent_detail 中增加 <strong>sub_intents</strong> 列表，按依赖关系排序后串行调度。前序输出自动注入后续 context，某子意图失败时继续执行后续（部分降级）。</p>
       </div>
     </div>
   </div>
+  <div class="page-num">3 / 6</div>
+</div>
 
-  <div style="margin-top:10px;">
-    <h3 style="text-align:center;margin-bottom:6px;">技术栈</h3>
+<!-- ==================== SLIDE 4: Agentic RAG + Memory ==================== -->
+<div id="s4" class="slide">
+  <div class="stage-badge" style="background:#be185d;"><span class="num">3</span>Agentic RAG &amp; 三层记忆</div>
+  <h2>混合检索 + RRF 融合 · 分层记忆管理</h2>
+  <div class="keypoints">
+    <div class="kp pink">Agentic RAG：Agent 自主决策检索策略，不足时重检索，而非静态 Pipeline</div>
+    <div class="kp green">RRF 融合：score(d) = Σ 1/(k+rank)，兼顾语义相关性与关键词精确匹配</div>
+    <div class="kp orange">三层记忆优先级：短期 &gt; 长期 &gt; RAG，高优先级覆盖低优先级</div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:16px;">
+    <div>
+      <div class="card pink" style="margin-bottom:10px;">
+        <h3>Agentic RAG Pipeline</h3>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px;font-size:.83em;">
+          <div style="background:#fdf2f8;padding:5px 10px;border-radius:6px;"><strong>Q</strong> 查询理解 — LLM 改写 + 实体提取</div>
+          <div style="background:#eff6ff;padding:5px 10px;border-radius:6px;"><strong>R1</strong> 向量检索 — ChromaDB 语义匹配</div>
+          <div style="background:#fffbeb;padding:5px 10px;border-radius:6px;"><strong>R2</strong> BM25 检索 — 关键词精确匹配</div>
+          <div style="background:#f5f3ff;padding:5px 10px;border-radius:6px;"><strong>F</strong> RRF 融合 — 合并两路排名结果</div>
+          <div style="background:#f0fdf4;padding:5px 10px;border-radius:6px;"><strong>G</strong> LLM 生成 — 评估相关性，不足重检索</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>vs 传统 RAG</h3>
+        <table style="font-size:.8em;">
+          <tr><th>维度</th><th>传统 RAG</th><th>Agentic RAG</th></tr>
+          <tr><td>检索策略</td><td>单次向量</td><td>混合 + RRF</td></tr>
+          <tr><td>查询理解</td><td>原始查询</td><td>LLM 改写</td></tr>
+          <tr><td>结果评估</td><td>无</td><td>LLM 评估+重检索</td></tr>
+          <tr><td>适应性</td><td>静态 Pipeline</td><td>Agent 自主决策</td></tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="grid-3" style="margin-bottom:12px;">
+        <div class="mem-tier short">
+          <h4>⚡ 短期记忆</h4>
+          <p><strong>存储：</strong>内存 dict</p>
+          <p><strong>内容：</strong>当前会话历史</p>
+          <p><strong>淘汰：</strong>TTL 过期清除</p>
+          <p style="margin-top:6px;font-size:.78em;color:#92400e;">读写最快，容量有限</p>
+        </div>
+        <div class="mem-tier long">
+          <h4>💾 长期记忆</h4>
+          <p><strong>存储：</strong>本地 JSON</p>
+          <p><strong>内容：</strong>跨会话偏好</p>
+          <p><strong>淘汰：</strong>FIFO 容量上限</p>
+          <p style="margin-top:6px;font-size:.78em;color:#1e40af;">持久化，跨会话保持</p>
+        </div>
+        <div class="mem-tier rag">
+          <h4>🗄️ RAG 记忆</h4>
+          <p><strong>存储：</strong>向量数据库</p>
+          <p><strong>内容：</strong>文档知识库</p>
+          <p><strong>淘汰：</strong>持续积累</p>
+          <p style="margin-top:6px;font-size:.78em;color:#6d28d9;">语义检索，知识增强</p>
+        </div>
+      </div>
+      <div class="card green">
+        <h3>记忆读写流程</h3>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:.82em;">
+          <div style="padding:4px 8px;background:#f0fdf4;border-radius:4px;">① 用户输入 → 短期记忆写入，设置 TTL</div>
+          <div style="padding:4px 8px;background:#eff6ff;border-radius:4px;">② 检索时三层并行查询，按优先级融合</div>
+          <div style="padding:4px 8px;background:#f5f3ff;border-radius:4px;">③ 裁剪至 Token 预算，注入 System Prompt</div>
+          <div style="padding:4px 8px;background:#fffbeb;border-radius:4px;">④ 会话结束 → 关键信息写入长期记忆</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">4 / 6</div>
+</div>
+
+<!-- ==================== SLIDE 5: Anti-detect + Error Handling ==================== -->
+<div id="s5" class="slide">
+  <div class="stage-badge" style="background:#1a73e8;"><span class="num">4</span>反爬策略 &amp; 容错机制</div>
+  <h2>三层反检测防御 · 四级容错体系</h2>
+  <div class="keypoints">
+    <div class="kp">行为层 + 特征层 + 频率层，三层联合对抗金融网站反爬</div>
+    <div class="kp red">四级容错：自动重试 → 降级策略 → 状态回滚 → 用户兜底</div>
+    <div class="kp orange">State 快照整体回滚，防止部分字段回滚导致脏状态污染</div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="grid-3" style="margin-bottom:12px;">
+        <div class="anti-layer behavior">
+          <h4>🚶 行为层</h4>
+          <ul>
+            <li>随机页面停留时间</li>
+            <li>模拟人类滚动</li>
+            <li>随机鼠标轨迹</li>
+            <li>交互延迟抖动</li>
+          </ul>
+        </div>
+        <div class="anti-layer feature">
+          <h4>🔍 特征层</h4>
+          <ul>
+            <li>stealth 隐藏 WebDriver</li>
+            <li>Canvas 指纹随机化</li>
+            <li>User-Agent 轮换池</li>
+            <li>WebGL 渲染器伪装</li>
+          </ul>
+        </div>
+        <div class="anti-layer frequency">
+          <h4>⏱️ 频率层</h4>
+          <ul>
+            <li>请求间隔随机化</li>
+            <li>指数退避重试</li>
+            <li>并发数动态控制</li>
+            <li>IP 代理池轮换</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h3>采集 Agent 执行流程</h3>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:.82em;">
+          <div style="padding:4px 8px;background:#eff6ff;border-radius:4px;">① URL 解析 → 域名白名单校验（防 SSRF）</div>
+          <div style="padding:4px 8px;background:#f5f3ff;border-radius:4px;">② Playwright 启动 + stealth 注入 + 随机视口</div>
+          <div style="padding:4px 8px;background:#f0fdf4;border-radius:4px;">③ 等待动态渲染完成 → 提取目标 DOM</div>
+          <div style="padding:4px 8px;background:#fffbeb;border-radius:4px;">④ 结构化输出 → 写入 crawler_output 字段</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="err-step">
+        <div class="err-icon" style="background:#059669;">L1</div>
+        <div><h4>自动重试</h4><p>指数退避 1s→2s→4s，最多 3 次，覆盖瞬态网络/LLM 超时</p></div>
+      </div>
+      <div class="err-step">
+        <div class="err-icon" style="background:#d97706;">L2</div>
+        <div><h4>降级策略</h4><p>LLM Provider 切换（OpenAI → 本地模型）· 采集降级（Playwright → requests）</p></div>
+      </div>
+      <div class="err-step">
+        <div class="err-icon" style="background:#2563eb;">L3</div>
+        <div><h4>状态回滚</h4><p>执行前深拷贝 GlobalState 快照，异常时整体回滚，防脏状态</p></div>
+      </div>
+      <div class="err-step">
+        <div class="err-icon" style="background:#7c3aed;">L4</div>
+        <div><h4>用户兜底</h4><p>友好错误提示 + 建议操作，逐项 status 标注部分成功/失败</p></div>
+      </div>
+      <div class="card red" style="margin-top:4px;">
+        <h3>关键失败场景</h3>
+        <table style="font-size:.78em;">
+          <tr><th>场景</th><th>处理策略</th></tr>
+          <tr><td>网页被封 403</td><td>切换代理 → 增加延迟 → 降级静态抓取</td></tr>
+          <tr><td>JSON 解析失败</td><td>正则提取 → 重试 → fallback 关键词</td></tr>
+          <tr><td>向量检索无结果</td><td>放宽阈值 → BM25 补偿 → 提示用户</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">5 / 6</div>
+</div>
+
+<!-- ==================== SLIDE 6: Summary ==================== -->
+<div id="s6" class="slide slide-summary">
+  <h2>∑ 四大核心创新</h2>
+  <div class="grid-2" style="margin-bottom:16px;">
+    <div class="summary-card">
+      <div class="title">1. 意图驱动路由</div>
+      <p>两阶段识别（关键词预筛 + LLM 精分类）+ 5 种意图自动分发，多意图按依赖关系串行执行，结构化 JSON 约束保证格式稳定性</p>
+    </div>
+    <div class="summary-card">
+      <div class="title">2. Agentic RAG</div>
+      <p>混合检索（向量 + BM25）+ RRF 融合，Agent 自主评估检索质量并决策是否重检索，相比传统 RAG 显著提升召回准确率</p>
+    </div>
+    <div class="summary-card">
+      <div class="title">3. 三层记忆管理</div>
+      <p>短期（内存 TTL）· 长期（JSON FIFO）· RAG（向量语义）分层管理，优先级策略解决跨层信息冲突，LFU+FIFO 混合淘汰</p>
+    </div>
+    <div class="summary-card">
+      <div class="title">4. 多层容错体系</div>
+      <p>重试 → 降级 → 状态回滚 → 用户兜底四级保障，三层反爬防御（行为/特征/频率），State 快照整体回滚防脏状态</p>
+    </div>
+  </div>
+  <div style="margin-top:8px;">
+    <div style="text-align:center;margin-bottom:12px;font-size:.95em;opacity:.85;font-weight:600;">技术栈</div>
     <div class="tech-row">
-      <span class="tech-badge t-blue">Python</span>
       <span class="tech-badge t-purple">LangGraph</span>
       <span class="tech-badge t-green">LangChain</span>
+      <span class="tech-badge t-blue">Python</span>
       <span class="tech-badge t-orange">Playwright</span>
       <span class="tech-badge t-red">playwright-stealth</span>
       <span class="tech-badge t-purple">ChromaDB</span>
@@ -707,10 +624,40 @@ svg text{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
       <span class="tech-badge t-dark">Click + Rich</span>
       <span class="tech-badge t-green">BM25 + RRF</span>
       <span class="tech-badge t-orange">asyncio</span>
+      <span class="tech-badge t-dark">Pydantic</span>
+      <span class="tech-badge t-pink">loguru</span>
     </div>
   </div>
-  <div class="page-num">4 / 4</div>
+  <div style="margin-top:20px;text-align:center;padding:16px;background:rgba(255,255,255,.1);border-radius:10px;border:1px solid rgba(255,255,255,.2);">
+    <p style="font-size:1em;font-weight:600;">FinAgent 不只是一个金融数据工具</p>
+    <p style="font-size:1.2em;font-weight:800;margin-top:6px;">而是一套意图驱动、多 Agent 协同、具备完整容错的智能分析系统</p>
+  </div>
+  <div class="page-num" style="color:rgba(255,255,255,.5)">6 / 6</div>
 </div>
 
+<script>
+(function(){
+  var btn = document.getElementById('toc-toggle');
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('toc-hidden');
+  });
+  var ids = ['s1','s2','s3','s4','s5','s6'];
+  var links = {};
+  ids.forEach(function(id){ links[id] = document.querySelector('#toc a[href="#'+id+'"]'); });
+  function update(){
+    var scrollY = window.scrollY + window.innerHeight * 0.3;
+    var current = ids[0];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= scrollY) current = id;
+    });
+    ids.forEach(function(id){
+      if(links[id]) links[id].classList.toggle('active', id === current);
+    });
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+</script>
 </body>
 </html>

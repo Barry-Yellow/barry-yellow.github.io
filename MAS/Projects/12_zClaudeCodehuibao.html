@@ -490,56 +490,8 @@
     <p>不让模型自由生成"应该怎么修"，而是将修复规划视为<strong>受限决策问题</strong>：先识别错误模式，再在固定动作空间中做<strong>成本感知选择</strong>。</p>
   </div>
 
-  <div class="grid-2">
-    <div class="card">
-      <h3>五类错误模式</h3>
-      <table>
-        <tr><th>错误模式</th><th>含义</th></tr>
-        <tr><td><span class="tag tag-red">evidence_fabrication</span></td><td>伪造证据 / 事实获取失败</td></tr>
-        <tr><td><span class="tag tag-orange">tool_call_error</span></td><td>工具参数错误 / 调用失败</td></tr>
-        <tr><td><span class="tag tag-purple">context_drop</span></td><td>上下文传递失败 / 信息丢失</td></tr>
-        <tr><td><span class="tag tag-blue">reasoning_bug</span></td><td>局部逻辑推理错误</td></tr>
-        <tr><td><span class="tag tag-gray">plan_bug</span></td><td>高层规划错误</td></tr>
-      </table>
-    </div>
-
-    <div class="card purple">
-      <h3>六种修复动作</h3>
-      <table>
-        <tr><th>动作</th><th>含义</th></tr>
-        <tr><td><span class="tag tag-green">PRESERVE</span></td><td>完全保留，不动</td></tr>
-        <tr><td><span class="tag tag-blue">PATCH</span></td><td>原位局部修补</td></tr>
-        <tr><td><span class="tag tag-blue">REPLAY_TOOL</span></td><td>仅重放工具调用</td></tr>
-        <tr><td><span class="tag tag-orange">RERUN_NODE</span></td><td>仅重跑单节点</td></tr>
-        <tr><td><span class="tag tag-red">RERUN_BRANCH</span></td><td>重跑整个分支</td></tr>
-        <tr><td><span class="tag tag-red">REWRITE_BRANCH</span></td><td>重写整个分支</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <h3>代价梯度</h3>
-  <div class="cost-bar">
-    <div class="seg" style="background:#2e7d32;">PATCH</div>
-    <div class="seg" style="background:#1565c0;">REPLAY_TOOL</div>
-    <div class="seg" style="background:#6a1b9a;">RERUN_NODE</div>
-    <div class="seg" style="background:#e65100;">RERUN_BRANCH</div>
-    <div class="seg" style="background:#c62828;">REWRITE_BRANCH</div>
-  </div>
-  <div style="display:flex;justify-content:space-between;font-size:0.85em;color:var(--text-light);padding:0 4px;">
-    <span>← 代价最低</span><span>代价最高 →</span>
-  </div>
-
-  <div class="card green" style="margin-top:20px;">
-    <h3>决策逻辑映射</h3>
-    <table>
-      <tr><th>节点状态</th><th>默认动作</th><th>决策依据</th></tr>
-      <tr><td>Clean 节点</td><td><span class="tag tag-green">PRESERVE</span></td><td>复用评分 ≥ 80，无需干预</td></tr>
-      <tr><td>Partial 节点</td><td><span class="tag tag-blue">PATCH</span></td><td>局部修补即可恢复</td></tr>
-      <tr><td>Invalid 工具节点</td><td><span class="tag tag-blue">REPLAY_TOOL</span></td><td>仅工具调用出错，重放即可</td></tr>
-      <tr><td>Invalid 普通节点</td><td><span class="tag tag-orange">RERUN_NODE</span></td><td>节点逻辑错误，需重新执行</td></tr>
-      <tr><td>规划错误</td><td><span class="tag tag-red">RERUN_BRANCH</span></td><td>高层规划偏差，影响整个分支</td></tr>
-      <tr><td>分支级严重污染</td><td><span class="tag tag-red">REWRITE_BRANCH</span></td><td>Invalid > 40%，局部修补不经济</td></tr>
-    </table>
+  <div style="margin-top:16px;">
+    <img src="src/repair_planning.svg" alt="修复规划框架图" style="width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.10);">
   </div>
   <div class="page-num">7</div>
 </div>

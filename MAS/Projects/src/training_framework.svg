@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 820" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <filter id="sh" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.11"/>
+    </filter>
+    <linearGradient id="hdr" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0d47a1"/>
+      <stop offset="100%" style="stop-color:#1976d2"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0,10 3.5,0 7" fill="#455a64"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="820" rx="16" fill="#f5f7fa"/>
+  <rect width="1100" height="58" rx="16" fill="url(#hdr)"/>
+  <rect y="30" width="1100" height="28" fill="url(#hdr)"/>
+  <text x="550" y="38" text-anchor="middle" fill="white" font-size="21" font-weight="700">AgenTracer 改进版 GRPO — 训练框架与数据集</text>
+
+  <!-- ===== LEFT: Dataset ===== -->
+  <rect x="30" y="76" width="330" height="720" rx="12" fill="white" stroke="#e0e4e8" filter="url(#sh)"/>
+  <rect x="30" y="76" width="330" height="40" rx="12" fill="#0d47a1"/>
+  <rect x="30" y="100" width="330" height="16" fill="#0d47a1"/>
+  <text x="195" y="102" text-anchor="middle" font-size="14" font-weight="700" fill="white">数据集</text>
+
+  <rect x="50" y="130" width="290" height="80" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="195" y="153" text-anchor="middle" font-size="13" font-weight="700" fill="#0d47a1">TracerTraj-2.5K</text>
+  <text x="195" y="172" text-anchor="middle" font-size="11" fill="#5f6368">AgenTracer 数据集</text>
+  <text x="195" y="189" text-anchor="middle" font-size="11" fill="#5f6368">2400 条多智能体失败轨迹</text>
+
+  <line x1="195" y1="210" x2="195" y2="238" stroke="#455a64" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="195" y="228" text-anchor="middle" font-size="10" fill="#78909c">SFT 预训练</text>
+
+  <rect x="50" y="240" width="290" height="60" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5" filter="url(#sh)"/>
+  <text x="195" y="265" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">Qwen3-4B</text>
+  <text x="195" y="283" text-anchor="middle" font-size="11" fill="#5f6368">SFT 微调基座模型</text>
+
+  <line x1="195" y1="300" x2="195" y2="328" stroke="#455a64" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="195" y="318" text-anchor="middle" font-size="10" fill="#78909c">GRPO 强化学习</text>
+
+  <rect x="50" y="330" width="290" height="60" rx="10" fill="#fce4ec" stroke="#c62828" stroke-width="2" filter="url(#sh)"/>
+  <text x="195" y="355" text-anchor="middle" font-size="13" font-weight="700" fill="#c62828">detector-4B</text>
+  <text x="195" y="373" text-anchor="middle" font-size="11" fill="#5f6368">失效专属微调小模型</text>
+
+  <text x="195" y="420" text-anchor="middle" font-size="12" font-weight="700" fill="#455a64">评测数据集</text>
+  <rect x="50" y="430" width="135" height="56" rx="8" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+  <text x="117" y="453" text-anchor="middle" font-size="12" font-weight="700" fill="#6a1b9a">WW-GAIA</text>
+  <text x="117" y="471" text-anchor="middle" font-size="10" fill="#5f6368">通用智能体任务</text>
+  <rect x="205" y="430" width="135" height="56" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="272" y="453" text-anchor="middle" font-size="12" font-weight="700" fill="#e65100">WW-AB</text>
+  <text x="272" y="471" text-anchor="middle" font-size="10" fill="#5f6368">智能体基准测试</text>
+
+  <rect x="50" y="500" width="290" height="30" rx="6" fill="#eceff1"/>
+  <text x="195" y="520" text-anchor="middle" font-size="12" font-weight="600" fill="#455a64">合计 58 条评测样本</text>
+
+  <!-- Hyperparams -->
+  <text x="195" y="560" text-anchor="middle" font-size="12" font-weight="700" fill="#0d47a1">固定超参数</text>
+  <rect x="50" y="568" width="290" height="210" rx="8" fill="#f8fafc" stroke="#e0e4e8"/>
+
+  <text x="70" y="592" font-size="11" fill="#1a1a2e">G = 8</text>
+  <text x="240" y="592" font-size="11" fill="#5f6368">单次 Rollout 候选对数</text>
+  <line x1="50" y1="600" x2="340" y2="600" stroke="#e0e4e8" stroke-width="1"/>
+
+  <text x="70" y="618" font-size="11" fill="#1a1a2e">ε = 0.2</text>
+  <text x="240" y="618" font-size="11" fill="#5f6368">固定裁剪系数</text>
+  <line x1="50" y1="626" x2="340" y2="626" stroke="#e0e4e8" stroke-width="1"/>
+
+  <text x="70" y="644" font-size="11" fill="#1a1a2e">λ = 0.5</text>
+  <text x="240" y="644" font-size="11" fill="#5f6368">步骤级奖励权重</text>
+  <line x1="50" y1="652" x2="340" y2="652" stroke="#e0e4e8" stroke-width="1"/>
+
+  <text x="70" y="670" font-size="11" fill="#1a1a2e">σ = 1.0</text>
+  <text x="240" y="670" font-size="11" fill="#5f6368">高斯核带宽</text>
+  <line x1="50" y1="678" x2="340" y2="678" stroke="#e0e4e8" stroke-width="1"/>
+
+  <text x="70" y="696" font-size="11" fill="#1a1a2e">ε = 1×10<tspan dy="-5" font-size="8">−6</tspan></text>
+  <text x="240" y="696" font-size="11" fill="#5f6368">数值稳定常数</text>
+  <line x1="50" y1="704" x2="340" y2="704" stroke="#e0e4e8" stroke-width="1"/>
+
+  <text x="70" y="722" font-size="11" fill="#1a1a2e">kl_coeff = 0.0</text>
+  <text x="240" y="722" font-size="11" fill="#5f6368">完全移除 KL 约束</text>
+  <line x1="50" y1="730" x2="340" y2="730" stroke="#e0e4e8" stroke-width="1"/>
+
+  <text x="70" y="748" font-size="11" fill="#1a1a2e">cliprange = 0.2</text>
+  <text x="240" y="748" font-size="11" fill="#5f6368">固定裁剪系数</text>
+
+  <!-- ===== RIGHT: Formulas ===== -->
+  <rect x="380" y="76" width="690" height="720" rx="12" fill="white" stroke="#e0e4e8" filter="url(#sh)"/>
+  <rect x="380" y="76" width="690" height="40" rx="12" fill="#b71c1c"/>
+  <rect x="380" y="100" width="690" height="16" fill="#b71c1c"/>
+  <text x="725" y="102" text-anchor="middle" font-size="14" font-weight="700" fill="white">改进版 GRPO — 3 项核心定制 + 完整公式</text>
+
+  <!-- 3 innovations -->
+  <rect x="400" y="128" width="200" height="64" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+  <text x="500" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">① 移除 KL 散度</text>
+  <text x="500" y="164" text-anchor="middle" font-size="10" fill="#5f6368">kl_coeff = 0.0</text>
+  <text x="500" y="180" text-anchor="middle" font-size="10" fill="#5f6368">无额外 KL 损失项</text>
+
+  <rect x="620" y="128" width="200" height="64" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="720" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#e65100">② 固定裁剪 ε=0.2</text>
+  <text x="720" y="164" text-anchor="middle" font-size="10" fill="#5f6368">标准 PPO 裁剪系数</text>
+  <text x="720" y="180" text-anchor="middle" font-size="10" fill="#5f6368">简单稳定，无需调度</text>
+
+  <rect x="840" y="128" width="210" height="64" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="945" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#2e7d32">③ 多粒度混合奖励</text>
+  <text x="945" y="164" text-anchor="middle" font-size="10" fill="#5f6368">格式门控 + 智能体级</text>
+  <text x="945" y="180" text-anchor="middle" font-size="10" fill="#5f6368">+ 步骤级高斯奖励</text>
+
+  <!-- Formula 1: Loss (single line) -->
+  <rect x="400" y="208" width="650" height="100" rx="8" fill="#f0f4ff" stroke="#c5d5f7"/>
+  <text x="410" y="228" font-size="12" font-weight="700" fill="#0d47a1">① 强化学习损失</text>
+  <text x="725" y="264" text-anchor="middle" font-size="10" fill="#1a1a2e" font-family="Georgia, serif">L<tspan dy="3" font-size="7">RL</tspan><tspan dy="-3" font-size="10"> = −E [ (1/G) · Σ min( ρ</tspan><tspan dy="3" font-size="7">k</tspan><tspan dy="-3" font-size="10"> · A</tspan><tspan dy="3" font-size="7">k</tspan><tspan dy="-3" font-size="10"> , clip(ρ</tspan><tspan dy="3" font-size="7">k</tspan><tspan dy="-3" font-size="10">, 1−ε, 1+ε) · A</tspan><tspan dy="3" font-size="7">k</tspan><tspan dy="-3" font-size="10"> ) ]</tspan></text>
+  <text x="410" y="290" font-size="10" fill="#5f6368">ρ_k = 新旧策略概率比  ·  A_k = 标准化优势值  ·  ε = 0.2 固定裁剪系数</text>
+
+  <!-- Formula 2: Bs  +  Formula 3: Ak  (side by side) -->
+  <rect x="400" y="322" width="310" height="88" rx="8" fill="#fff8e1" stroke="#ffe0b2"/>
+  <text x="410" y="340" font-size="12" font-weight="700" fill="#e65100">② 固定裁剪 ε</text>
+  <text x="555" y="365" text-anchor="middle" font-size="13" fill="#1a1a2e" font-family="Georgia, serif">ε = 0.2（固定常数）</text>
+  <text x="410" y="398" font-size="10" fill="#5f6368">标准 PPO 裁剪，全程不变，无需步数调度</text>
+
+  <rect x="730" y="322" width="320" height="88" rx="8" fill="#f3e5f5" stroke="#e1bee7"/>
+  <text x="740" y="342" font-size="12" font-weight="700" fill="#6a1b9a">③ 标准化优势 A<tspan dy="4" font-size="8">k</tspan></text>
+  <text x="890" y="380" text-anchor="middle" font-size="12" fill="#1a1a2e" font-family="Georgia, serif">A<tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12"> = ( R</tspan><tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12"> − mean({R</tspan><tspan dy="4" font-size="8">j</tspan><tspan dy="-4" font-size="12">}) ) / ( std({R</tspan><tspan dy="4" font-size="8">j</tspan><tspan dy="-4" font-size="12">}) + ε )</tspan></text>
+  <text x="740" y="402" font-size="10" fill="#5f6368">批内奖励标准化，消除量纲差异</text>
+
+  <!-- Formula 4: Total Reward -->
+  <rect x="400" y="424" width="650" height="88" rx="8" fill="#e8f5e9" stroke="#c8e6c9"/>
+  <text x="410" y="444" font-size="12" font-weight="700" fill="#2e7d32">④ 多粒度总奖励 R</text>
+  <text x="725" y="470" text-anchor="middle" font-size="12" fill="#1a1a2e" font-family="Georgia, serif">
+    R(p̂<tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12">) = I</tspan><tspan dy="4" font-size="8">format</tspan><tspan dy="-4" font-size="12"> · [ λ · r</tspan><tspan dy="4" font-size="8">step</tspan><tspan dy="-4" font-size="12">(t̂</tspan><tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12">) + (1−λ) · r</tspan><tspan dy="4" font-size="8">agent</tspan><tspan dy="-4" font-size="12">(î</tspan><tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12">) ]</tspan>
+  </text>
+  <text x="410" y="498" font-size="10" fill="#5f6368">I_format = 格式硬门控(0/1)  ·  λ=0.5 步骤权重  ·  (1−λ)=0.5 智能体权重</text>
+  <text x="410" y="504" font-size="10" fill="#5f6368"> </text>
+
+  <!-- Formula 5: Format gate  +  Formula 6: Gaussian -->
+  <rect x="400" y="526" width="300" height="100" rx="8" fill="#fce4ec" stroke="#ffcdd2"/>
+  <text x="410" y="546" font-size="12" font-weight="700" fill="#c62828">⑤ 格式门控 I<tspan dy="4" font-size="8">format</tspan></text>
+  <text x="550" y="572" text-anchor="middle" font-size="11" fill="#1a1a2e" font-family="Georgia, serif">I = 1  若含 &lt;think&gt;...&lt;answer&gt;</text>
+  <text x="550" y="590" text-anchor="middle" font-size="11" fill="#1a1a2e" font-family="Georgia, serif">I = 0  格式错误/标签缺失</text>
+  <text x="410" y="616" font-size="10" fill="#5f6368">硬门控：格式不对总奖励归零</text>
+
+  <rect x="720" y="526" width="330" height="100" rx="8" fill="#e3f2fd" stroke="#bbdefb"/>
+  <text x="730" y="546" font-size="12" font-weight="700" fill="#1565c0">⑥ 步骤级高斯奖励 r<tspan dy="4" font-size="8">step</tspan></text>
+  <text x="885" y="574" text-anchor="middle" font-size="12" fill="#1a1a2e" font-family="Georgia, serif">
+    r<tspan dy="4" font-size="8">step</tspan><tspan dy="-4" font-size="12"> = exp( −(t̂</tspan><tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12"> − t*)</tspan><tspan dy="-5" font-size="9">2</tspan><tspan dy="5" font-size="12"> / 2σ</tspan><tspan dy="-5" font-size="9">2</tspan><tspan dy="5" font-size="12"> )</tspan>
+  </text>
+  <text x="730" y="598" font-size="10" fill="#5f6368">t* = 真实错误步骤  ·  σ=1.0</text>
+  <text x="730" y="614" font-size="10" fill="#5f6368">预测越近奖励越高（高斯衰减）</text>
+
+  <!-- Formula 7: Agent reward -->
+  <rect x="400" y="640" width="650" height="60" rx="8" fill="#f1f8e9" stroke="#dcedc8"/>
+  <text x="410" y="660" font-size="12" font-weight="700" fill="#2e7d32">⑦ 智能体级二值奖励 r<tspan dy="4" font-size="8">agent</tspan></text>
+  <text x="725" y="684" text-anchor="middle" font-size="12" fill="#1a1a2e" font-family="Georgia, serif">
+    r<tspan dy="4" font-size="8">agent</tspan><tspan dy="-4" font-size="12">(î</tspan><tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12">) = I( î</tspan><tspan dy="4" font-size="8">k</tspan><tspan dy="-4" font-size="12"> = i* )  →  预测智能体 ID 与真实标注完全匹配得 1，否则得 0</tspan>
+  </text>
+
+  <!-- Pipeline -->
+  <rect x="400" y="714" width="650" height="70" rx="8" fill="#eceff1" stroke="#cfd8dc"/>
+  <text x="410" y="732" font-size="12" font-weight="700" fill="#455a64">训练流程</text>
+  <rect x="410" y="740" width="100" height="36" rx="6" fill="#e3f2fd" stroke="#1565c0"/>
+  <text x="460" y="763" text-anchor="middle" font-size="10" font-weight="600" fill="#1565c0">TracerTraj 2.5K</text>
+  <line x1="510" y1="758" x2="530" y2="758" stroke="#455a64" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="532" y="740" width="100" height="36" rx="6" fill="#e8f5e9" stroke="#2e7d32"/>
+  <text x="582" y="763" text-anchor="middle" font-size="10" font-weight="600" fill="#2e7d32">Qwen3-4B SFT</text>
+  <line x1="632" y1="758" x2="652" y2="758" stroke="#455a64" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="654" y="740" width="100" height="36" rx="6" fill="#fff3e0" stroke="#e65100"/>
+  <text x="704" y="763" text-anchor="middle" font-size="10" font-weight="600" fill="#e65100">GRPO RL</text>
+  <line x1="754" y1="758" x2="774" y2="758" stroke="#455a64" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="776" y="740" width="100" height="36" rx="6" fill="#fce4ec" stroke="#c62828"/>
+  <text x="826" y="763" text-anchor="middle" font-size="10" font-weight="600" fill="#c62828">detector-4B</text>
+  <line x1="876" y1="758" x2="896" y2="758" stroke="#455a64" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="898" y="740" width="140" height="36" rx="6" fill="#e8eaf6" stroke="#3949ab"/>
+  <text x="968" y="758" text-anchor="middle" font-size="10" font-weight="600" fill="#3949ab">评测 58 条</text>
+  <text x="968" y="772" text-anchor="middle" font-size="9" fill="#5f6368">WW-GAIA + WW-AB</text>
+</svg>
