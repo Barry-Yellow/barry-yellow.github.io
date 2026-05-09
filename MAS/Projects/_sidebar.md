@@ -7,6 +7,7 @@
   - [项目汇报PPT](MAS/Projects/项目汇报PPT.html ':ignore')
 - **面试准备**
   - [Agent 面试高频考点](MAS/Projects/Agent面试高频考点.md)
+  - [金融分析技能](MAS/Projects/金融skills.md)
 - **学习笔记**
   - [Claude Code 多智能体架构](MAS/Projects/ClaudeCode的多智能体架构.md)
   - [上下文工程完全指南](MAS/Projects/上下文工程完全指南.md)
