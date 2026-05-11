@@ -54,9 +54,9 @@
   <rect x="30" y="190" width="1040" height="38" fill="#f8fafc"/>
   <text x="130" y="214" text-anchor="middle" font-size="11" fill="#1a1a2e">平均 API 调用次数 ↓</text>
   <text x="280" y="214" text-anchor="middle" font-size="12" fill="#c62828" font-weight="600">12.5</text>
-  <text x="400" y="214" text-anchor="middle" font-size="12" fill="#e65100">8.3/12</text>
-  <text x="510" y="214" text-anchor="middle" font-size="12" fill="#e65100">10.2/12</text>
-  <text x="620" y="214" text-anchor="middle" font-size="12" fill="#f57f17">7.1/12</text>
+  <text x="400" y="214" text-anchor="middle" font-size="12" fill="#e65100">8.3</text>
+  <text x="510" y="214" text-anchor="middle" font-size="12" fill="#e65100">10.2</text>
+  <text x="620" y="214" text-anchor="middle" font-size="12" fill="#f57f17">7.1</text>
   <rect x="690" y="196" width="140" height="26" rx="5" fill="#e8f5e9"/>
   <text x="760" y="214" text-anchor="middle" font-size="13" fill="#2e7d32" font-weight="800">5.6/12 ★</text>
   <text x="960" y="214" text-anchor="middle" font-size="12" fill="#5f6368">6.2/12</text>
