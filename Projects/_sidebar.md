@@ -1,0 +1,20 @@
+- **个人介绍**
+  - [个人介绍](Projects/个人介绍.md)
+- **项目汇报**
+  - [AG-Repair 方法论汇报](Projects/AG-Repair方法论汇报.html ':ignore')
+  - [AG-Repair 详细汇报](Projects/AG-Repair详细汇报.html ':ignore')
+  - [FinAgent 简要汇报](Projects/FinAgent简要汇报.html ':ignore')
+  - [FinAgent 详细汇报](Projects/FinAgent详细汇报.html ':ignore')
+- **面试准备**
+  - [Agent 面试高频考点](Projects/Agent面试高频考点.md)
+- **AI Agent 学习笔记**
+  - [Claude Code 多智能体架构](Projects/ClaudeCode的多智能体架构.md)
+  - [上下文工程完全指南](Projects/上下文工程完全指南.md)
+  - [LangGraph 完整指南](Projects/LangGraph完整指南.md)
+  - [多格式数据摘要处理](Projects/多格式数据摘要处理.md)
+- **金融投研**
+  - [金融分析技能](Projects/金融分析技能.md)
+  - [金融投研投顾全流程教程](Projects/金融投研投顾全流程教程.html ':ignore')
+  - [金融投研 Agent 与普通 Agent 对比](Projects/金融投研Agent与普通Agent对比.html ':ignore')
+  - [金融投研指标速查手册](Projects/金融投研指标速查手册.html ':ignore')
+- [Back to Homepage](README.md)

@@ -1,7 +1,7 @@
 # Project Guide — barry-yellow.github.io
 
 > AI 快速上手文档。新 session 读此文件即可了解整个项目结构，无需重新扫描所有文件。
-> 最后更新：2026-04-30
+> 最后更新：2026-05-14
 
 ---
 
@@ -14,7 +14,7 @@
 | 内容语言 | 中文为主，技术术语英文 |
 | 写作风格 | 学术笔记，含 LaTeX 公式、架构图、实验结果 |
 | Markdown 文件数 | ~100 篇 |
-| 主题文件夹 | 11 个（见下） |
+| 主题文件夹 | 12 个（见下） |
 
 ---
 
@@ -25,7 +25,7 @@
 | `index.html` | Docsify 主配置：插件、主题、KaTeX LaTeX 宏、全文搜索 |
 | `_coverpage.md` | 封面页（Barry's Notes + 名言 + GitHub 链接） |
 | `_navbar.md` | 顶部导航栏（Markdown 指南、相关链接） |
-| `_sidebar.md` | 全局侧边栏（10 个主题文件夹入口） |
+| `_sidebar.md` | 全局侧边栏（12 个主题文件夹入口，Projects 排第一） |
 | `_config.yml` | Jekyll 配置（GitHub Pages 用，实际由 `.nojekyll` 禁用 Jekyll） |
 | `.nojekyll` | 禁用 Jekyll，让 GitHub Pages 直接托管静态文件 |
 | `my_style.css` | 自定义样式 |
@@ -39,17 +39,43 @@
 
 - 每个文件夹有自己的 `_sidebar.md`，Docsify 会自动加载当前路径下最近的 `_sidebar.md`
 - 链接路径**从项目根目录开始**，如 `MAS/Topology/DyLAN.md`（不加前导 `/`）
-- 全局 `_sidebar.md` 列出 11 个主题入口，各子文件夹的 `_sidebar.md` 列出该主题的文章
+- 全局 `_sidebar.md` 列出 12 个主题入口，各子文件夹的 `_sidebar.md` 列出该主题的文章
 - 子文件夹 sidebar 末尾通常有 `[Back to Homepage](README.md)` 或 `[Back to MAS](MAS/README.md)`
 
 ---
 
 ## 四、文件夹结构与内容
 
-### 4.1 MAS/ — 多智能体系统（LLM-based）
+### 4.1 Projects/ — 个人项目与面试介绍
+
+**`Projects/_sidebar.md`** 结构：
+- 个人介绍
+- 项目汇报
+- 面试准备
+- AI Agent 学习笔记
+- 金融投研
+
+| 文件 | 说明 |
+|------|------|
+| `README.md` | Projects 目录首页 |
+| `个人介绍.md` | 个人简介、技能清单、项目经验、求职目标 |
+| `Agent面试高频考点.md` | Agent 系统设计与实现的面试重点 |
+| `ClaudeCode的多智能体架构.md` | Claude Code 多智能体架构分析 ✅ |
+| `上下文工程完全指南.md` | 上下文工程方法论 ✅ |
+| `LangGraph完整指南.md` | LangGraph 完整使用指南 ✅ |
+| `多格式数据摘要处理.md` | 多格式数据摘要处理流水线 ✅ |
+| `金融分析技能.md` | 金融分析核心技能执行逻辑 |
+| `AG-Repair方法论汇报.html` | AG-Repair 方法论完整汇报 |
+| `AG-Repair详细汇报.html` | AG-Repair 详细汇报 |
+| `FinAgent简要汇报.html` | FinAgent 简要汇报 |
+| `FinAgent详细汇报.html` | FinAgent 详细汇报 |
+| `金融投研投顾全流程教程.html` | 金融投研与投顾流程知识教程 |
+| `金融投研Agent与普通Agent对比.html` | 金融投研 Agent 与普通 Agent 的核心区别 |
+| `金融投研指标速查手册.html` | 金融投研指标速查手册 |
+
+### 4.2 MAS/ — 多智能体系统（LLM-based）
 
 **`MAS/_sidebar.md`** 结构：
-- 个人项目与学习 → Projects/
 - 拓扑优化 → Topology/
 - 提示词优化 → Prompt/
 - 失败分析 → FailAndWhy/
@@ -59,10 +85,6 @@
 |----------|------|------|
 | `MAS/` 根 | `README.md` | 概述 |
 | | `references.md` | 参考文献列表 |
-| `MAS/Projects/` | `ClaudeCode的多智能体架构.md` | Claude Code 多智能体架构分析 ✅ |
-| | `上下文工程完全指南.md` | 上下文工程方法论 ✅ |
-| | `LangGraph完整指南.md` | LangGraph 完整使用指南 ✅ |
-| | `多格式数据摘要处理.md` | 多格式数据摘要处理流水线 ✅ |
 | `MAS/Topology/` | `MASFrameWork.md` | MAS 框架对比分析（新增，已有 .html 版） |
 | | `DyLAN.md` | DyLAN 论文笔记（内容极少，待补充） |
 | | `AFlow.md` | AFlow 论文笔记（内容极少，待补充） |
@@ -78,7 +100,7 @@
 
 ---
 
-### 4.2 MARL/ — 多智能体强化学习
+### 4.3 MARL/ — 多智能体强化学习
 
 **`MARL/_sidebar.md`**：MARL 基础、MARL 安全综述 2023
 
@@ -89,7 +111,7 @@
 
 ---
 
-### 4.3 LM/ — 语言模型
+### 4.4 LM/ — 语言模型
 
 **`LM/_sidebar.md`**：BERT、NLP基础、大模型基础、强化学习基础、Transformer、MoE
 
@@ -104,7 +126,7 @@
 
 ---
 
-### 4.4 DMT/ — 深度多模态学习
+### 4.5 DMT/ — 深度多模态学习
 
 **`DMT/_sidebar.md`**：多模态概念笔记、导论、CLIP、BLIP、BLIP2、Diffusion、自回归、NLP基础、VidKV量化
 
@@ -122,7 +144,7 @@
 
 ---
 
-### 4.5 SafeRL/ — 安全强化学习
+### 4.6 SafeRL/ — 安全强化学习
 
 **`SafeRL/_sidebar.md`**：survey 2024、survey 2023、schedule、Safe Critic、More 2024
 
@@ -136,7 +158,7 @@
 
 ---
 
-### 4.6 Mamba/ — Mamba 架构（SSM）
+### 4.7 Mamba/ — Mamba 架构（SSM）
 
 **`Mamba/_sidebar.md`**：Mamba 基础、Mamba+频率分解实验、Mamba 改进
 
@@ -148,7 +170,7 @@
 
 ---
 
-### 4.7 Frequency/ — 频域分析与 Transformer 预测
+### 4.8 Frequency/ — 频域分析与 Transformer 预测
 
 **`Frequency/_sidebar.md`** 结构：
 - 频域基础：Cross_cov、EMD_X11_diff
@@ -170,7 +192,7 @@
 
 ---
 
-### 4.8 Time_Series_Prediction/ — 时间序列预测
+### 4.9 Time_Series_Prediction/ — 时间序列预测
 
 **`Time_Series_Prediction/_sidebar.md`**：LSTM+Frequency、小波+注意力、多变量LSTM、小波+投资组合、跨文件夹链接
 
@@ -183,7 +205,7 @@
 
 ---
 
-### 4.9 asset_pricing/ — 资产定价
+### 4.10 asset_pricing/ — 资产定价
 
 **`asset_pricing/_sidebar.md`**：SDF与回报空间、风险价格与风险溢价、SDF/β/均值方差联系、HJ边界、特征预处理
 
@@ -197,7 +219,7 @@
 
 ---
 
-### 4.10 Quantization/ — 模型量化
+### 4.11 Quantization/ — 模型量化
 
 **`Quantization/_sidebar.md`**：VidKV、旋转量化、量化基础、QuantCode、KIVI、QuaRot、Lexico、calibQuant
 
@@ -214,13 +236,13 @@
 
 ---
 
-### 4.11 temp/ — 未归档暂存区
+### 4.12 temp/ — 未归档暂存区
 
-存放尚未归档的草稿和参考资料，内容确认后应移入对应主题文件夹。当前为空。
+存放尚未归档的草稿和参考资料，内容确认后应移入对应主题文件夹。当前为空；原金融投研 HTML 已归入 `Projects/`。
 
 ---
 
-### 4.12 Interview/ — 面试知识库
+### 4.13 Interview/ — 面试知识库
 
 **`Interview/_sidebar.md`**：大模型基础、多模态大模型、强化学习与对齐、Agent智能体、检索增强生成、模型评估、LLM前沿展望、AIGC生成式AI、训练基础设施
 
