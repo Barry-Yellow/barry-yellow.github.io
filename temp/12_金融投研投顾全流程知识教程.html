@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>金融投研投顾全流程知识教程</title>
+  <style>
+    :root {
+      --bg: #f6f3ec;
+      --paper: #fffaf0;
+      --paper-strong: #fff5df;
+      --ink: #1d2433;
+      --muted: #667085;
+      --line: #e3d8c6;
+      --accent: #8a4b22;
+      --accent-strong: #633416;
+      --accent-soft: #f1dfc7;
+      --blue: #244d70;
+      --green: #2e6b4f;
+      --shadow: 0 22px 60px rgba(71, 45, 17, 0.13);
+      --radius: 22px;
+      --content: 980px;
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(138, 75, 34, 0.18), transparent 32rem),
+        linear-gradient(180deg, #f2eadc 0%, var(--bg) 42%, #fbf8f1 100%);
+      line-height: 1.75;
+    }
+
+    a { color: inherit; }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 20;
+      width: 0%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), #bf7c38, var(--green));
+      box-shadow: 0 0 18px rgba(138, 75, 34, 0.45);
+    }
+
+    .hero {
+      padding: 56px 28px 34px;
+      border-bottom: 1px solid rgba(138, 75, 34, 0.16);
+    }
+
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 32px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border: 1px solid rgba(138, 75, 34, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 250, 240, 0.62);
+      color: var(--accent-strong);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    h1 {
+      margin: 18px 0 16px;
+      max-width: 880px;
+      font-size: clamp(34px, 6vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -0.055em;
+      color: #172033;
+    }
+
+    .subtitle {
+      max-width: 860px;
+      margin: 0;
+      color: #4c5566;
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .hero-card {
+      padding: 24px;
+      border: 1px solid rgba(138, 75, 34, 0.18);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.74);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-card strong {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--accent-strong);
+      font-size: 15px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 16px;
+      background: #fff7e8;
+      border: 1px solid rgba(138, 75, 34, 0.12);
+    }
+
+    .stat b {
+      display: block;
+      font-size: 26px;
+      line-height: 1.1;
+      color: var(--accent);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .roadmap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px 30px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .roadmap-card {
+      min-height: 138px;
+      padding: 18px;
+      border: 1px solid rgba(138, 75, 34, 0.16);
+      border-radius: 20px;
+      background: rgba(255, 250, 240, 0.78);
+      box-shadow: 0 12px 32px rgba(71, 45, 17, 0.08);
+    }
+
+    .roadmap-card .num {
+      width: 28px;
+      height: 28px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .roadmap-card h2 {
+      margin: 12px 0 6px;
+      padding: 0;
+      border: 0;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    .roadmap-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 28px 72px;
+      display: grid;
+      grid-template-columns: 286px minmax(0, var(--content));
+      gap: 30px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 20px;
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      padding: 18px;
+      border: 1px solid rgba(138, 75, 34, 0.16);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.76);
+      box-shadow: 0 12px 36px rgba(71, 45, 17, 0.09);
+      backdrop-filter: blur(14px);
+    }
+
+    .toc-title {
+      margin: 0 0 12px;
+      color: var(--accent-strong);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 11px;
+      color: #596171;
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.45;
+      transition: 0.18s ease;
+    }
+
+    .toc-link:hover,
+    .toc-link.active {
+      color: var(--accent-strong);
+      background: var(--accent-soft);
+    }
+
+    .toc-level-3 { padding-left: 24px; font-size: 12.5px; }
+
+    .article {
+      min-width: 0;
+      padding: 34px clamp(22px, 5vw, 58px) 54px;
+      border: 1px solid rgba(138, 75, 34, 0.15);
+      border-radius: 30px;
+      background: rgba(255, 250, 240, 0.92);
+      box-shadow: var(--shadow);
+    }
+
+    .article > :first-child { margin-top: 0; }
+
+    .article h2 {
+      position: relative;
+      margin: 68px 0 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: #172033;
+      font-size: clamp(25px, 3.5vw, 36px);
+      line-height: 1.25;
+      letter-spacing: -0.045em;
+    }
+
+    .article h3 {
+      margin: 36px 0 14px;
+      color: var(--blue);
+      font-size: 22px;
+      line-height: 1.35;
+      letter-spacing: -0.025em;
+    }
+
+    .article h4 {
+      margin: 26px 0 12px;
+      color: var(--green);
+      font-size: 18px;
+    }
+
+    .heading-anchor {
+      margin-left: -1.1em;
+      padding-right: 0.28em;
+      opacity: 0;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.18s ease;
+    }
+
+    h2:hover .heading-anchor,
+    h3:hover .heading-anchor,
+    h4:hover .heading-anchor { opacity: 1; }
+
+    p { margin: 13px 0; }
+
+    .article p,
+    .article li,
+    .article td,
+    .article th {
+      font-size: 16px;
+    }
+
+    .article ul,
+    .article ol {
+      margin: 14px 0 20px;
+      padding-left: 1.45em;
+    }
+
+    .article li { margin: 7px 0; }
+
+    blockquote {
+      margin: 18px 0 26px;
+      padding: 18px 22px;
+      border-left: 5px solid var(--accent);
+      border-radius: 0 18px 18px 0;
+      background: linear-gradient(90deg, rgba(241, 223, 199, 0.82), rgba(255, 247, 232, 0.62));
+      color: #394150;
+    }
+
+    blockquote p { margin: 0; }
+
+    .table-wrap {
+      width: 100%;
+      margin: 18px 0 28px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fffdf8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+    }
+
+    th,
+    td {
+      padding: 13px 15px;
+      border-bottom: 1px solid #eadfcd;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #f4e5cf;
+      color: var(--accent-strong);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) td { background: rgba(250, 242, 229, 0.6); }
+    tbody tr:last-child td { border-bottom: 0; }
+
+    code {
+      padding: 0.15em 0.38em;
+      border: 1px solid rgba(138, 75, 34, 0.16);
+      border-radius: 7px;
+      background: #f4e7d6;
+      color: #673916;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      margin: 18px 0 28px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      border: 1px solid rgba(36, 77, 112, 0.18);
+      border-radius: 18px;
+      background: #172033;
+      color: #f8f4ec;
+      line-height: 1.75;
+    }
+
+    pre code {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 14px;
+    }
+
+    hr {
+      margin: 34px 0;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    strong { color: #172033; }
+
+    .backtop {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 12px 26px rgba(99, 52, 22, 0.3);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .layout { grid-template-columns: 1fr; }
+      .toc { position: relative; top: auto; max-height: none; }
+      .toc-link { display: inline-block; margin: 0 4px 7px 0; }
+      .toc-level-3 { padding-left: 10px; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 36px 18px 24px; }
+      .hero-inner,
+      .roadmap,
+      .layout { padding-left: 18px; padding-right: 18px; }
+      .roadmap { grid-template-columns: 1fr; }
+      .layout { gap: 18px; padding-bottom: 42px; }
+      .article { padding: 24px 18px 38px; border-radius: 22px; }
+      .article h2 { margin-top: 48px; }
+      .hero-card { padding: 18px; }
+      .stats { grid-template-columns: 1fr; }
+      table { min-width: 520px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Investment Research Tutorial</span>
+        <h1>金融投研投顾全流程知识教程</h1>
+        <p class="subtitle">围绕公司基本面、行业研究、财报解读、盈利预测、估值、新闻聚合、量化策略、基金测算和投顾适配，构建一套从研究问题到可执行结论的完整知识地图。</p>
+      </div>
+      <aside class="hero-card" aria-label="文档概览">
+        <strong>文档概览</strong>
+        <div class="stats">
+          <div class="stat"><b>20</b><span>个核心章节</span></div>
+          <div class="stat"><b>78</b><span>个细分知识点</span></div>
+          <div class="stat"><b>5</b><span>段学习路径</span></div>
+          <div class="stat"><b>1</b><span>套投研闭环</span></div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <section class="roadmap" aria-label="阅读路径">
+    <div class="roadmap-card"><span class="num">1</span><h2>建立框架</h2><p>先理解投研目标、主观与量化分工，以及完整研究闭环。</p></div>
+    <div class="roadmap-card"><span class="num">2</span><h2>看懂资产</h2><p>从公司、行业、财报、盈利预测和估值理解资产本身。</p></div>
+    <div class="roadmap-card"><span class="num">3</span><h2>量化验证</h2><p>用因子、回测、收益风险指标验证策略是否可重复。</p></div>
+    <div class="roadmap-card"><span class="num">4</span><h2>产品测算</h2><p>对基金和组合做收益、回撤、归因、风格和适配分析。</p></div>
+    <div class="roadmap-card"><span class="num">5</span><h2>落地投顾</h2><p>把研究结论转化为合规、可解释、适合用户的投顾表达。</p></div>
+  </section>
+
+  <div class="layout">
+    <nav class="toc" aria-label="章节目录">
+      <p class="toc-title">目录</p>
+      <a class="toc-link toc-level-2" href="#一金融投研到底在做什么">一、金融投研到底在做什么</a>
+<a class="toc-link toc-level-3" href="#1.1-投研的核心目标">1.1 投研的核心目标</a>
+<a class="toc-link toc-level-3" href="#1.2-主观研究与量化研究的区别">1.2 主观研究与量化研究的区别</a>
+<a class="toc-link toc-level-2" href="#二完整投研工作流">二、完整投研工作流</a>
+<a class="toc-link toc-level-3" href="#2.1-从问题到结论的标准流程">2.1 从问题到结论的标准流程</a>
+<a class="toc-link toc-level-3" href="#2.2-一份完整投研报告的结构">2.2 一份完整投研报告的结构</a>
+<a class="toc-link toc-level-2" href="#三公司基本面研究">三、公司基本面研究</a>
+<a class="toc-link toc-level-3" href="#3.1-公司基本面研究的核心问题">3.1 公司基本面研究的核心问题</a>
+<a class="toc-link toc-level-3" href="#3.2-商业模式分析">3.2 商业模式分析</a>
+<a class="toc-link toc-level-3" href="#3.3-竞争格局分析">3.3 竞争格局分析</a>
+<a class="toc-link toc-level-3" href="#3.4-护城河分析">3.4 护城河分析</a>
+<a class="toc-link toc-level-2" href="#四行业研究">四、行业研究</a>
+<a class="toc-link toc-level-3" href="#4.1-行业研究的核心问题">4.1 行业研究的核心问题</a>
+<a class="toc-link toc-level-3" href="#4.2-行业生命周期">4.2 行业生命周期</a>
+<a class="toc-link toc-level-3" href="#4.3-产业链分析">4.3 产业链分析</a>
+<a class="toc-link toc-level-3" href="#4.4-行业景气度指标">4.4 行业景气度指标</a>
+<a class="toc-link toc-level-2" href="#五财报解读">五、财报解读</a>
+<a class="toc-link toc-level-3" href="#5.1-三张表的关系">5.1 三张表的关系</a>
+<a class="toc-link toc-level-3" href="#5.2-利润表分析">5.2 利润表分析</a>
+<a class="toc-link toc-level-3" href="#5.3-资产负债表分析">5.3 资产负债表分析</a>
+<a class="toc-link toc-level-3" href="#5.4-现金流分析">5.4 现金流分析</a>
+<a class="toc-link toc-level-3" href="#5.5-财报质量识别">5.5 财报质量识别</a>
+<a class="toc-link toc-level-2" href="#六盈利预测">六、盈利预测</a>
+<a class="toc-link toc-level-3" href="#6.1-盈利预测的基本思路">6.1 盈利预测的基本思路</a>
+<a class="toc-link toc-level-3" href="#6.2-收入预测方法">6.2 收入预测方法</a>
+<a class="toc-link toc-level-3" href="#6.3-利润率预测">6.3 利润率预测</a>
+<a class="toc-link toc-level-3" href="#6.4-盈利预测模板">6.4 盈利预测模板</a>
+<a class="toc-link toc-level-3" href="#6.5-敏感性分析">6.5 敏感性分析</a>
+<a class="toc-link toc-level-2" href="#七估值方法">七、估值方法</a>
+<a class="toc-link toc-level-3" href="#7.1-相对估值">7.1 相对估值</a>
+<a class="toc-link toc-level-3" href="#7.2-dcf-与自由现金流模型">7.2 DCF 与自由现金流模型</a>
+<a class="toc-link toc-level-3" href="#7.3-估值中最常见的错误">7.3 估值中最常见的错误</a>
+<a class="toc-link toc-level-2" href="#八新闻公告与行业信息聚合分析">八、新闻、公告与行业信息聚合分析</a>
+<a class="toc-link toc-level-3" href="#8.1-信息源分类">8.1 信息源分类</a>
+<a class="toc-link toc-level-3" href="#8.2-新闻分析流程">8.2 新闻分析流程</a>
+<a class="toc-link toc-level-3" href="#8.3-新闻解读模板">8.3 新闻解读模板</a>
+<a class="toc-link toc-level-2" href="#九量化研究基础">九、量化研究基础</a>
+<a class="toc-link toc-level-3" href="#9.1-量化研究在做什么">9.1 量化研究在做什么</a>
+<a class="toc-link toc-level-3" href="#9.2-常见量化因子">9.2 常见量化因子</a>
+<a class="toc-link toc-level-3" href="#9.3-回测关键指标">9.3 回测关键指标</a>
+<a class="toc-link toc-level-3" href="#9.4-回测容易犯的错误">9.4 回测容易犯的错误</a>
+<a class="toc-link toc-level-2" href="#十常见投资策略">十、常见投资策略</a>
+<a class="toc-link toc-level-3" href="#10.1-全天候策略">10.1 全天候策略</a>
+<a class="toc-link toc-level-3" href="#10.2-动量策略">10.2 动量策略</a>
+<a class="toc-link toc-level-3" href="#10.3-价差策略">10.3 价差策略</a>
+<a class="toc-link toc-level-3" href="#10.4-套息交易">10.4 套息交易</a>
+<a class="toc-link toc-level-3" href="#10.5-固收固收+权益类策略">10.5 固收、固收+、权益类策略</a>
+<a class="toc-link toc-level-3" href="#10.6-策略评价框架">10.6 策略评价框架</a>
+<a class="toc-link toc-level-2" href="#十一基金产品量化测算与分析">十一、基金产品量化测算与分析</a>
+<a class="toc-link toc-level-3" href="#11.1-基金分析的核心问题">11.1 基金分析的核心问题</a>
+<a class="toc-link toc-level-3" href="#11.2-基金产品画像">11.2 基金产品画像</a>
+<a class="toc-link toc-level-3" href="#11.3-基金收益风险测算">11.3 基金收益风险测算</a>
+<a class="toc-link toc-level-3" href="#11.4-基金归因分析">11.4 基金归因分析</a>
+<a class="toc-link toc-level-3" href="#11.5-基金定投测算">11.5 基金定投测算</a>
+<a class="toc-link toc-level-3" href="#11.6-一只基金的分析报告模板">11.6 一只基金的分析报告模板</a>
+<a class="toc-link toc-level-2" href="#十二资产配置与投顾">十二、资产配置与投顾</a>
+<a class="toc-link toc-level-3" href="#12.1-投顾和投研的连接">12.1 投顾和投研的连接</a>
+<a class="toc-link toc-level-3" href="#12.2-用户画像">12.2 用户画像</a>
+<a class="toc-link toc-level-3" href="#12.3-组合构建流程">12.3 组合构建流程</a>
+<a class="toc-link toc-level-3" href="#12.4-常见组合类型">12.4 常见组合类型</a>
+<a class="toc-link toc-level-3" href="#12.5-再平衡">12.5 再平衡</a>
+<a class="toc-link toc-level-2" href="#十三不同资产类别研究重点">十三、不同资产类别研究重点</a>
+<a class="toc-link toc-level-3" href="#13.1-权益类">13.1 权益类</a>
+<a class="toc-link toc-level-3" href="#13.2-固收类">13.2 固收类</a>
+<a class="toc-link toc-level-3" href="#13.3-固收+">13.3 固收+</a>
+<a class="toc-link toc-level-3" href="#13.4-商品和黄金">13.4 商品和黄金</a>
+<a class="toc-link toc-level-2" href="#十四宏观与市场环境分析">十四、宏观与市场环境分析</a>
+<a class="toc-link toc-level-3" href="#14.1-宏观四象限">14.1 宏观四象限</a>
+<a class="toc-link toc-level-3" href="#14.2-宏观变量如何影响资产">14.2 宏观变量如何影响资产</a>
+<a class="toc-link toc-level-2" href="#十五从研究到投资建议的合规表达">十五、从研究到投资建议的合规表达</a>
+<a class="toc-link toc-level-3" href="#15.1-投研结论和投顾建议的区别">15.1 投研结论和投顾建议的区别</a>
+<a class="toc-link toc-level-3" href="#15.2-合规表达模板">15.2 合规表达模板</a>
+<a class="toc-link toc-level-2" href="#十六投研系统或金融-agent-如何落地">十六、投研系统或金融 Agent 如何落地</a>
+<a class="toc-link toc-level-3" href="#16.1-投研-agent-的能力模块">16.1 投研 Agent 的能力模块</a>
+<a class="toc-link toc-level-3" href="#16.2-一个-agent-工作流示例分析一只基金">16.2 一个 Agent 工作流示例：分析一只基金</a>
+<a class="toc-link toc-level-3" href="#16.3-一个-agent-工作流示例分析一家公司">16.3 一个 Agent 工作流示例：分析一家公司</a>
+<a class="toc-link toc-level-3" href="#16.4-一个-agent-工作流示例宏观环境判断与资产配置">16.4 一个 Agent 工作流示例：宏观环境判断与资产配置</a>
+<a class="toc-link toc-level-3" href="#16.5-一个-agent-工作流示例行业景气度跟踪">16.5 一个 Agent 工作流示例：行业景气度跟踪</a>
+<a class="toc-link toc-level-3" href="#16.6-一个-agent-工作流示例分析固收或债券基金">16.6 一个 Agent 工作流示例：分析固收或债券基金</a>
+<a class="toc-link toc-level-3" href="#16.7-一个-agent-工作流示例拆解固收+产品">16.7 一个 Agent 工作流示例：拆解固收+产品</a>
+<a class="toc-link toc-level-3" href="#16.8-一个-agent-工作流示例构建基金组合与再平衡">16.8 一个 Agent 工作流示例：构建基金组合与再平衡</a>
+<a class="toc-link toc-level-3" href="#16.9-一个-agent-工作流示例用户持仓诊断与投顾适配">16.9 一个 Agent 工作流示例：用户持仓诊断与投顾适配</a>
+<a class="toc-link toc-level-3" href="#16.10-一个-agent-工作流示例动量轮动策略回测">16.10 一个 Agent 工作流示例：动量轮动策略回测</a>
+<a class="toc-link toc-level-3" href="#16.11-一个-agent-工作流示例新闻公告事件驱动分析">16.11 一个 Agent 工作流示例：新闻公告事件驱动分析</a>
+<a class="toc-link toc-level-2" href="#十七实战学习路径">十七、实战学习路径</a>
+<a class="toc-link toc-level-3" href="#17.1-第一阶段金融基础">17.1 第一阶段：金融基础</a>
+<a class="toc-link toc-level-3" href="#17.2-第二阶段主观投研">17.2 第二阶段：主观投研</a>
+<a class="toc-link toc-level-3" href="#17.3-第三阶段量化研究">17.3 第三阶段：量化研究</a>
+<a class="toc-link toc-level-3" href="#17.4-第四阶段资产配置与投顾">17.4 第四阶段：资产配置与投顾</a>
+<a class="toc-link toc-level-2" href="#十八常用分析模板汇总">十八、常用分析模板汇总</a>
+<a class="toc-link toc-level-3" href="#18.1-公司基本面速查模板">18.1 公司基本面速查模板</a>
+<a class="toc-link toc-level-3" href="#18.2-行业分析模板">18.2 行业分析模板</a>
+<a class="toc-link toc-level-3" href="#18.3-基金分析模板">18.3 基金分析模板</a>
+<a class="toc-link toc-level-3" href="#18.4-策略分析模板">18.4 策略分析模板</a>
+<a class="toc-link toc-level-2" href="#十九一个完整案例框架">十九、一个完整案例框架</a>
+<a class="toc-link toc-level-3" href="#19.1-分析一家公司">19.1 分析一家公司</a>
+<a class="toc-link toc-level-3" href="#19.2-分析一只固收+基金">19.2 分析一只固收+基金</a>
+<a class="toc-link toc-level-2" href="#二十最终总结">二十、最终总结</a>
+    </nav>
+    <main class="article">
+      <blockquote><p>目标：用一套可学习、可复用、可落地的框架，系统理解金融投研和投顾如何做公司研究、行业研究、财报解读、盈利预测、估值、新闻聚合、量化研究、基金产品测算、资产配置和策略分析。<br>适用对象：金融投研入门者、财富管理/投顾产品经理、金融 Agent 开发者、量化研究初学者、投研系统工程师。<br>重要提示：本文是研究与教育材料，不构成任何投资建议。真实投资决策必须结合风险承受能力、投资期限、流动性需求、合规要求和专业持牌意见。</p></blockquote>
+<hr>
+<h2 id="一金融投研到底在做什么"><a class="heading-anchor" href="#一金融投研到底在做什么" aria-label="链接到本节">#</a>一、金融投研到底在做什么</h2>
+<h3 id="1.1-投研的核心目标"><a class="heading-anchor" href="#1.1-投研的核心目标" aria-label="链接到本节">#</a>1.1 投研的核心目标</h3>
+<p>金融投研不是简单判断“涨还是跌”，而是回答四类问题：</p>
+<div class="table-wrap"><table><thead><tr><th>问题</th><th>对应研究内容</th><th>输出结果</th></tr></thead><tbody><tr><td>资产是什么</td><td>股票、债券、基金、商品、外汇、衍生品</td><td>产品和底层资产画像</td></tr><tr><td>为什么会赚钱</td><td>盈利增长、估值修复、票息、利差、套利、风险溢价</td><td>收益来源拆解</td></tr><tr><td>为什么会亏钱</td><td>基本面恶化、估值回落、信用违约、流动性冲击、政策变化</td><td>风险来源拆解</td></tr><tr><td>是否适合某个用户</td><td>风险等级、投资期限、回撤承受能力、现金流需求</td><td>投顾适配结论</td></tr></tbody></table></div>
+<p>一句话概括：</p>
+<blockquote><p>投研研究“资产是否值得投”，投顾研究“资产是否适合这个人投”。</p></blockquote>
+<h3 id="1.2-主观研究与量化研究的区别"><a class="heading-anchor" href="#1.2-主观研究与量化研究的区别" aria-label="链接到本节">#</a>1.2 主观研究与量化研究的区别</h3>
+<div class="table-wrap"><table><thead><tr><th>维度</th><th>主观研究</th><th>量化研究</th></tr></thead><tbody><tr><td>核心方法</td><td>产业逻辑、公司调研、财报分析、竞争格局、管理层判断</td><td>数据、模型、因子、回测、统计检验</td></tr><tr><td>优势</td><td>能理解复杂商业变化、政策和非结构化信息</td><td>可规模化、可回测、纪律性强</td></tr><tr><td>劣势</td><td>主观偏差、难以批量覆盖、验证周期长</td><td>数据依赖强、容易过拟合、解释有时较弱</td></tr><tr><td>典型产出</td><td>行业深度、公司深度、盈利预测、估值报告</td><td>因子模型、策略回测、组合优化、风险模型</td></tr><tr><td>适合场景</td><td>个股深度研究、产业趋势判断、重大事件分析</td><td>多资产配置、选股、择时、风控、基金评价</td></tr></tbody></table></div>
+<p>成熟投研通常不是二选一，而是：</p>
+<blockquote><p>用主观研究形成假设，用量化研究验证假设，用投顾框架匹配用户。</p></blockquote>
+<hr>
+<h2 id="二完整投研工作流"><a class="heading-anchor" href="#二完整投研工作流" aria-label="链接到本节">#</a>二、完整投研工作流</h2>
+<h3 id="2.1-从问题到结论的标准流程"><a class="heading-anchor" href="#2.1-从问题到结论的标准流程" aria-label="链接到本节">#</a>2.1 从问题到结论的标准流程</h3>
+<pre><code class="language-text">确定研究问题
+  ↓
+定义资产和研究范围
+  ↓
+收集数据：行情、财报、公告、新闻、宏观、行业、持仓、估值
+  ↓
+建立分析框架：行业、公司、财务、估值、风险、情景
+  ↓
+形成核心假设：增长、利润率、估值、利率、风险偏好
+  ↓
+定量测算：收益、回撤、波动、估值、敏感性、情景分析
+  ↓
+交叉验证：历史、同业、专家观点、市场价格、资金流
+  ↓
+输出结论：买入/持有/回避/观察，或适配/不适配
+  ↓
+持续跟踪：财报、政策、价格、预期差、风险事件</code></pre>
+<h3 id="2.2-一份完整投研报告的结构"><a class="heading-anchor" href="#2.2-一份完整投研报告的结构" aria-label="链接到本节">#</a>2.2 一份完整投研报告的结构</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>需要回答的问题</th></tr></thead><tbody><tr><td>核心结论</td><td>为什么现在研究？结论是什么？主要收益和风险是什么？</td></tr><tr><td>行业分析</td><td>行业空间多大？增长驱动是什么？周期位置在哪里？</td></tr><tr><td>公司分析</td><td>公司靠什么赚钱？护城河在哪里？竞争优势是否可持续？</td></tr><tr><td>财务分析</td><td>收入、利润、现金流、资产负债质量如何？</td></tr><tr><td>盈利预测</td><td>未来收入、利润率、费用率、资本开支如何变化？</td></tr><tr><td>估值分析</td><td>用 PE/PB/EV/EBITDA/DCF/FCFF 是否合理？隐含预期是什么？</td></tr><tr><td>催化剂</td><td>什么事件可能推动价格重估？</td></tr><tr><td>风险因素</td><td>哪些假设错了会导致亏损？</td></tr><tr><td>投顾适配</td><td>适合什么风险等级、期限和目标的用户？</td></tr></tbody></table></div>
+<hr>
+<h2 id="三公司基本面研究"><a class="heading-anchor" href="#三公司基本面研究" aria-label="链接到本节">#</a>三、公司基本面研究</h2>
+<h3 id="3.1-公司基本面研究的核心问题"><a class="heading-anchor" href="#3.1-公司基本面研究的核心问题" aria-label="链接到本节">#</a>3.1 公司基本面研究的核心问题</h3>
+<p>研究一家公司，核心不是背指标，而是回答：</p>
+<ol><li>公司卖什么产品或服务。</li><li>谁付钱，为什么愿意付钱。</li><li>公司如何获得收入和利润。</li><li>行业是否还在增长。</li><li>公司相对竞争对手有什么优势。</li><li>这种优势能持续多久。</li><li>未来盈利能否增长，增长质量如何。</li><li>当前价格是否已经反映这些预期。</li></ol>
+<h3 id="3.2-商业模式分析"><a class="heading-anchor" href="#3.2-商业模式分析" aria-label="链接到本节">#</a>3.2 商业模式分析</h3>
+<p>商业模式关注“公司如何赚钱”。常见维度如下：</p>
+<div class="table-wrap"><table><thead><tr><th>维度</th><th>研究问题</th><th>示例</th></tr></thead><tbody><tr><td>客户</td><td>谁是客户？B 端、C 端还是政府？</td><td>消费品面向个人，软件可能面向企业</td></tr><tr><td>产品</td><td>产品是否刚需？是否高频？是否可替代？</td><td>白酒、药品、云服务、汽车</td></tr><tr><td>收入模式</td><td>一次性销售、订阅、佣金、广告、利息、价差？</td><td>SaaS 订阅、券商佣金、银行净息差</td></tr><tr><td>成本结构</td><td>固定成本高还是变动成本高？</td><td>制造业原材料成本高，软件边际成本低</td></tr><tr><td>定价能力</td><td>能否涨价？涨价是否影响销量？</td><td>高端消费品通常定价力更强</td></tr><tr><td>规模效应</td><td>规模扩大后利润率是否提升？</td><td>平台、软件、半导体设计</td></tr><tr><td>现金流</td><td>先收钱还是先垫钱？</td><td>预收款模式现金流好，工程类项目回款慢</td></tr></tbody></table></div>
+<h4 id="商业模式质量判断"><a class="heading-anchor" href="#商业模式质量判断" aria-label="链接到本节">#</a>商业模式质量判断</h4>
+<div class="table-wrap"><table><thead><tr><th>高质量商业模式</th><th>低质量商业模式</th></tr></thead><tbody><tr><td>高毛利、高复购、高客户粘性</td><td>低毛利、一次性交易、价格战严重</td></tr><tr><td>轻资产、现金流好</td><td>重资产、高负债、回款慢</td></tr><tr><td>有品牌、渠道、技术、网络效应</td><td>同质化严重、客户议价权强</td></tr><tr><td>收入可预测</td><td>项目制收入波动大</td></tr></tbody></table></div>
+<h3 id="3.3-竞争格局分析"><a class="heading-anchor" href="#3.3-竞争格局分析" aria-label="链接到本节">#</a>3.3 竞争格局分析</h3>
+<p>竞争格局研究“钱最终被谁赚走”。</p>
+<div class="table-wrap"><table><thead><tr><th>维度</th><th>观察指标</th></tr></thead><tbody><tr><td>市场集中度</td><td>CR3、CR5、CR10，头部企业市占率</td></tr><tr><td>进入壁垒</td><td>技术、牌照、资本、品牌、渠道、供应链、数据</td></tr><tr><td>替代威胁</td><td>新技术、新商业模式、进口替代、国产替代</td></tr><tr><td>供应商议价权</td><td>原材料集中度、核心部件依赖、上游价格波动</td></tr><tr><td>客户议价权</td><td>大客户占比、客户集中度、转换成本</td></tr><tr><td>竞争方式</td><td>价格战、产品差异化、渠道竞争、服务竞争</td></tr></tbody></table></div>
+<p>常用框架：波特五力模型。</p>
+<pre><code class="language-text">行业内竞争
+供应商议价权
+客户议价权
+潜在进入者威胁
+替代品威胁</code></pre>
+<p>判断竞争格局时要注意：</p>
+<ol><li>市占率高不等于利润高，关键看是否有定价权。</li><li>行业增长快不等于公司赚钱，可能被价格战吞噬。</li><li>技术领先不等于商业成功，还要看客户、渠道和成本。</li><li>护城河必须能体现到财务指标，例如毛利率、ROE、现金流、客户留存。</li></ol>
+<h3 id="3.4-护城河分析"><a class="heading-anchor" href="#3.4-护城河分析" aria-label="链接到本节">#</a>3.4 护城河分析</h3>
+<div class="table-wrap"><table><thead><tr><th>护城河类型</th><th>解释</th><th>财务表现</th></tr></thead><tbody><tr><td>品牌</td><td>用户愿意为品牌支付溢价</td><td>高毛利、稳定销量</td></tr><tr><td>成本优势</td><td>同等产品成本更低</td><td>毛利率高于同业或价格更具竞争力</td></tr><tr><td>网络效应</td><td>用户越多，产品越有价值</td><td>用户增长带来边际成本下降</td></tr><tr><td>转换成本</td><td>客户迁移成本高</td><td>高续费率、低流失率</td></tr><tr><td>牌照/资源</td><td>政策或资源限制进入者</td><td>稳定利润、竞争者少</td></tr><tr><td>技术壁垒</td><td>专利、工艺、研发积累</td><td>研发效率、产品领先、毛利稳定</td></tr></tbody></table></div>
+<hr>
+<h2 id="四行业研究"><a class="heading-anchor" href="#四行业研究" aria-label="链接到本节">#</a>四、行业研究</h2>
+<h3 id="4.1-行业研究的核心问题"><a class="heading-anchor" href="#4.1-行业研究的核心问题" aria-label="链接到本节">#</a>4.1 行业研究的核心问题</h3>
+<p>行业研究要回答：</p>
+<ol><li>行业空间有多大。</li><li>行业现在处于导入期、成长期、成熟期还是衰退期。</li><li>行业增长来自需求增长、价格上涨、渗透率提升还是政策驱动。</li><li>行业利润在产业链上如何分配。</li><li>当前景气度如何，未来可能上行还是下行。</li><li>哪些公司最受益，哪些公司最受损。</li></ol>
+<h3 id="4.2-行业生命周期"><a class="heading-anchor" href="#4.2-行业生命周期" aria-label="链接到本节">#</a>4.2 行业生命周期</h3>
+<div class="table-wrap"><table><thead><tr><th>阶段</th><th>特征</th><th>投研重点</th></tr></thead><tbody><tr><td>导入期</td><td>技术不成熟，需求刚出现，亏损多</td><td>看技术路线和商业化可能性</td></tr><tr><td>成长期</td><td>需求高速增长，竞争者进入</td><td>看渗透率、龙头份额、规模效应</td></tr><tr><td>成熟期</td><td>增速放缓，格局稳定</td><td>看定价权、分红、成本控制</td></tr><tr><td>衰退期</td><td>需求下降，产能过剩</td><td>看出清、重组、现金流和低估值陷阱</td></tr></tbody></table></div>
+<h3 id="4.3-产业链分析"><a class="heading-anchor" href="#4.3-产业链分析" aria-label="链接到本节">#</a>4.3 产业链分析</h3>
+<p>产业链分析关注利润如何分配。</p>
+<pre><code class="language-text">上游资源/原材料 → 中游制造/加工 → 下游渠道/品牌/终端客户</code></pre>
+<p>例子：新能源汽车产业链。</p>
+<div class="table-wrap"><table><thead><tr><th>环节</th><th>关注点</th></tr></thead><tbody><tr><td>上游锂、镍、钴</td><td>资源价格、供需缺口、矿山扩产</td></tr><tr><td>中游电池、材料</td><td>技术路线、成本下降、客户绑定</td></tr><tr><td>下游整车</td><td>品牌、渠道、车型周期、价格战</td></tr><tr><td>后市场</td><td>充电、维修、二手车、保险</td></tr></tbody></table></div>
+<h3 id="4.4-行业景气度指标"><a class="heading-anchor" href="#4.4-行业景气度指标" aria-label="链接到本节">#</a>4.4 行业景气度指标</h3>
+<div class="table-wrap"><table><thead><tr><th>行业</th><th>常用景气指标</th></tr></thead><tbody><tr><td>消费</td><td>零售额、客单价、销量、渠道库存、消费者信心</td></tr><tr><td>地产</td><td>新开工、销售面积、竣工、土地成交、按揭利率</td></tr><tr><td>银行</td><td>信贷增速、净息差、不良率、拨备覆盖率</td></tr><tr><td>券商</td><td>成交额、两融余额、IPO/再融资规模、权益市场表现</td></tr><tr><td>半导体</td><td>库存周期、资本开支、晶圆价格、终端需求</td></tr><tr><td>光伏</td><td>硅料价格、组件价格、装机量、海外需求</td></tr><tr><td>医药</td><td>集采政策、医保支付、研发管线、销售费用率</td></tr><tr><td>航运</td><td>运价指数、船舶供给、港口吞吐、油价</td></tr></tbody></table></div>
+<hr>
+<h2 id="五财报解读"><a class="heading-anchor" href="#五财报解读" aria-label="链接到本节">#</a>五、财报解读</h2>
+<h3 id="5.1-三张表的关系"><a class="heading-anchor" href="#5.1-三张表的关系" aria-label="链接到本节">#</a>5.1 三张表的关系</h3>
+<div class="table-wrap"><table><thead><tr><th>报表</th><th>看什么</th><th>核心问题</th></tr></thead><tbody><tr><td>利润表</td><td>收入、成本、费用、利润</td><td>公司是否赚钱，利润来自哪里</td></tr><tr><td>资产负债表</td><td>资产、负债、权益</td><td>公司资产质量和杠杆是否健康</td></tr><tr><td>现金流量表</td><td>经营、投资、筹资现金流</td><td>公司赚到的是现金还是会计利润</td></tr></tbody></table></div>
+<p>三张表的逻辑：</p>
+<pre><code class="language-text">利润表：这一期赚了多少钱
+资产负债表：期末还剩下什么资产和负债
+现金流量表：这一期现金怎么流入和流出</code></pre>
+<h3 id="5.2-利润表分析"><a class="heading-anchor" href="#5.2-利润表分析" aria-label="链接到本节">#</a>5.2 利润表分析</h3>
+<div class="table-wrap"><table><thead><tr><th>指标</th><th>公式</th><th>含义</th></tr></thead><tbody><tr><td>收入增速</td><td>本期收入 / 上期收入 - 1</td><td>需求和市场份额变化</td></tr><tr><td>毛利率</td><td>毛利 / 收入</td><td>产品竞争力和成本控制</td></tr><tr><td>销售费用率</td><td>销售费用 / 收入</td><td>渠道投入和获客成本</td></tr><tr><td>管理费用率</td><td>管理费用 / 收入</td><td>管理效率</td></tr><tr><td>研发费用率</td><td>研发费用 / 收入</td><td>技术投入强度</td></tr><tr><td>净利率</td><td>净利润 / 收入</td><td>最终盈利能力</td></tr></tbody></table></div>
+<p>利润表分析顺序：</p>
+<ol><li>收入是否增长。</li><li>增长来自销量、价格、产品结构还是并表。</li><li>毛利率是否提升或下降。</li><li>期间费用是否被规模效应摊薄。</li><li>利润增长是否高于收入增长。</li><li>扣非净利润是否与净利润一致。</li></ol>
+<h3 id="5.3-资产负债表分析"><a class="heading-anchor" href="#5.3-资产负债表分析" aria-label="链接到本节">#</a>5.3 资产负债表分析</h3>
+<div class="table-wrap"><table><thead><tr><th>科目</th><th>重点问题</th><th>风险信号</th></tr></thead><tbody><tr><td>货币资金</td><td>现金是否充足</td><td>账上现金多但有大量短债</td></tr><tr><td>应收账款</td><td>客户是否及时付款</td><td>应收增速远高于收入增速</td></tr><tr><td>存货</td><td>产品是否卖得出去</td><td>存货大增、跌价准备不足</td></tr><tr><td>固定资产</td><td>是否重资产扩张</td><td>产能过剩、折旧压力大</td></tr><tr><td>商誉</td><td>并购是否有效</td><td>商誉大且业绩承诺不达标</td></tr><tr><td>短期借款</td><td>短期偿债压力</td><td>短债长投、流动性紧张</td></tr><tr><td>有息负债</td><td>杠杆水平</td><td>利息费用侵蚀利润</td></tr></tbody></table></div>
+<h3 id="5.4-现金流分析"><a class="heading-anchor" href="#5.4-现金流分析" aria-label="链接到本节">#</a>5.4 现金流分析</h3>
+<div class="table-wrap"><table><thead><tr><th>指标</th><th>含义</th><th>判断</th></tr></thead><tbody><tr><td>经营现金流净额</td><td>主业带来的现金</td><td>长期应与净利润匹配</td></tr><tr><td>投资现金流净额</td><td>资本开支、并购、理财</td><td>成长期常为负，需看回报</td></tr><tr><td>筹资现金流净额</td><td>借钱、还钱、分红、增发</td><td>判断资金来源</td></tr><tr><td>自由现金流</td><td>企业可自由支配现金</td><td>估值和分红能力基础</td></tr></tbody></table></div>
+<p>自由现金流常用简化公式：</p>
+<pre><code class="language-text">FCF = 经营现金流净额 - 资本开支
+FCFF = EBIT × (1 - 税率) + 折旧摊销 - 资本开支 - 营运资本增加
+FCFE = 净利润 + 折旧摊销 - 资本开支 - 营运资本增加 + 新增净债务</code></pre>
+<h3 id="5.5-财报质量识别"><a class="heading-anchor" href="#5.5-财报质量识别" aria-label="链接到本节">#</a>5.5 财报质量识别</h3>
+<p>重点风险信号：</p>
+<ol><li>收入增长很快，但经营现金流长期为负。</li><li>应收账款增速显著高于收入增速。</li><li>存货大幅增加，同时毛利率下降。</li><li>非经常性损益贡献大量利润。</li><li>商誉过高，存在减值风险。</li><li>关联交易占比高。</li><li>大股东质押比例高。</li><li>审计意见异常或频繁更换审计机构。</li></ol>
+<hr>
+<h2 id="六盈利预测"><a class="heading-anchor" href="#六盈利预测" aria-label="链接到本节">#</a>六、盈利预测</h2>
+<h3 id="6.1-盈利预测的基本思路"><a class="heading-anchor" href="#6.1-盈利预测的基本思路" aria-label="链接到本节">#</a>6.1 盈利预测的基本思路</h3>
+<p>盈利预测不是拍脑袋给利润增速，而是拆分驱动因素。</p>
+<pre><code class="language-text">收入 = 销量 × 价格
+毛利 = 收入 × 毛利率
+营业利润 = 毛利 - 销售费用 - 管理费用 - 研发费用 - 财务费用
+净利润 = 营业利润 + 投资收益 + 其他收益 - 所得税 - 少数股东损益</code></pre>
+<h3 id="6.2-收入预测方法"><a class="heading-anchor" href="#6.2-收入预测方法" aria-label="链接到本节">#</a>6.2 收入预测方法</h3>
+<div class="table-wrap"><table><thead><tr><th>方法</th><th>适用场景</th><th>示例</th></tr></thead><tbody><tr><td>量价拆分</td><td>制造、消费、资源品</td><td>销量增长 10%，价格下降 3%</td></tr><tr><td>门店/客户数 × 单店/客单价</td><td>连锁、互联网、消费</td><td>门店数、同店增长、客单价</td></tr><tr><td>产能 × 利用率 × 单价</td><td>周期制造</td><td>新产能投产、产能利用率</td></tr><tr><td>市场空间 × 市占率</td><td>成长期行业</td><td>行业增长和份额提升</td></tr><tr><td>订单/合同转化</td><td>工程、军工、软件</td><td>在手订单转收入</td></tr></tbody></table></div>
+<h3 id="6.3-利润率预测"><a class="heading-anchor" href="#6.3-利润率预测" aria-label="链接到本节">#</a>6.3 利润率预测</h3>
+<p>利润率预测要拆分：</p>
+<ol><li>原材料价格变化。</li><li>产品结构升级或降级。</li><li>规模效应。</li><li>价格竞争。</li><li>汇率和运输成本。</li><li>会计政策变化。</li></ol>
+<h3 id="6.4-盈利预测模板"><a class="heading-anchor" href="#6.4-盈利预测模板" aria-label="链接到本节">#</a>6.4 盈利预测模板</h3>
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>T-1 年</th><th>T 年</th><th>T+1 年</th><th>T+2 年</th><th>预测依据</th></tr></thead><tbody><tr><td>收入</td><td>100</td><td>115</td><td>132</td><td>150</td><td>行业增长 + 市占率提升</td></tr><tr><td>收入增速</td><td>10%</td><td>15%</td><td>15%</td><td>14%</td><td>量价拆分</td></tr><tr><td>毛利率</td><td>35%</td><td>36%</td><td>37%</td><td>37%</td><td>产品结构改善</td></tr><tr><td>销售费用率</td><td>12%</td><td>12%</td><td>11.5%</td><td>11%</td><td>规模效应</td></tr><tr><td>管理费用率</td><td>6%</td><td>5.8%</td><td>5.6%</td><td>5.5%</td><td>管理效率提升</td></tr><tr><td>研发费用率</td><td>8%</td><td>8.5%</td><td>8.5%</td><td>8%</td><td>研发投入稳定</td></tr><tr><td>净利率</td><td>8%</td><td>9%</td><td>10%</td><td>10.5%</td><td>毛利率提升 + 费用摊薄</td></tr><tr><td>净利润</td><td>8</td><td>10.35</td><td>13.2</td><td>15.75</td><td>由模型计算</td></tr></tbody></table></div>
+<h3 id="6.5-敏感性分析"><a class="heading-anchor" href="#6.5-敏感性分析" aria-label="链接到本节">#</a>6.5 敏感性分析</h3>
+<p>盈利预测必须做敏感性分析，因为核心假设可能错。</p>
+<div class="table-wrap"><table><thead><tr><th>情景</th><th>收入增速</th><th>毛利率</th><th>净利润结果</th><th>含义</th></tr></thead><tbody><tr><td>乐观</td><td>20%</td><td>38%</td><td>高</td><td>需求强、竞争缓和</td></tr><tr><td>中性</td><td>15%</td><td>36%</td><td>中</td><td>符合基准假设</td></tr><tr><td>悲观</td><td>5%</td><td>32%</td><td>低</td><td>价格战或需求下滑</td></tr></tbody></table></div>
+<hr>
+<h2 id="七估值方法"><a class="heading-anchor" href="#七估值方法" aria-label="链接到本节">#</a>七、估值方法</h2>
+<h3 id="7.1-相对估值"><a class="heading-anchor" href="#7.1-相对估值" aria-label="链接到本节">#</a>7.1 相对估值</h3>
+<p>相对估值用同类公司或历史估值对比当前价格是否合理。</p>
+<div class="table-wrap"><table><thead><tr><th>方法</th><th>公式</th><th>适用对象</th></tr></thead><tbody><tr><td>PE</td><td>市值 / 净利润</td><td>盈利稳定的公司</td></tr><tr><td>PB</td><td>市值 / 净资产</td><td>银行、保险、周期、资产型公司</td></tr><tr><td>PS</td><td>市值 / 收入</td><td>尚未盈利但收入可比的成长公司</td></tr><tr><td>EV/EBITDA</td><td>企业价值 / EBITDA</td><td>资本结构不同、折旧较重行业</td></tr><tr><td>股息率</td><td>每股分红 / 股价</td><td>高分红、公用事业、成熟企业</td></tr></tbody></table></div>
+<p>相对估值的关键不是“低 PE 就便宜”，而是：</p>
+<pre><code class="language-text">估值 = 增长质量 + 盈利稳定性 + 竞争壁垒 + 利率环境 + 风险偏好</code></pre>
+<h3 id="7.2-dcf-与自由现金流模型"><a class="heading-anchor" href="#7.2-dcf-与自由现金流模型" aria-label="链接到本节">#</a>7.2 DCF 与自由现金流模型</h3>
+<p>DCF 的核心思想：企业价值等于未来自由现金流折现之和。</p>
+<pre><code class="language-text">企业价值 = Σ FCFF_t / (1 + WACC)^t + 终值 / (1 + WACC)^n
+终值 = FCFF_(n+1) / (WACC - 永续增长率)
+股权价值 = 企业价值 - 净债务
+每股价值 = 股权价值 / 总股本</code></pre>
+<h4 id="dcf-的关键假设"><a class="heading-anchor" href="#dcf-的关键假设" aria-label="链接到本节">#</a>DCF 的关键假设</h4>
+<div class="table-wrap"><table><thead><tr><th>假设</th><th>含义</th><th>风险</th></tr></thead><tbody><tr><td>收入增速</td><td>未来增长速度</td><td>过度乐观会高估价值</td></tr><tr><td>利润率</td><td>未来盈利能力</td><td>竞争加剧会压低利润率</td></tr><tr><td>资本开支</td><td>维持和扩张所需投入</td><td>重资产企业 FCF 压力大</td></tr><tr><td>营运资本</td><td>应收、存货、应付变化</td><td>回款恶化会吞噬现金</td></tr><tr><td>WACC</td><td>加权资本成本</td><td>利率上升会压低估值</td></tr><tr><td>永续增长率</td><td>长期增长假设</td><td>不能长期高于经济增速太多</td></tr></tbody></table></div>
+<h3 id="7.3-估值中最常见的错误"><a class="heading-anchor" href="#7.3-估值中最常见的错误" aria-label="链接到本节">#</a>7.3 估值中最常见的错误</h3>
+<ol><li>只看 PE，不看利润质量。</li><li>用周期高点利润算低估。</li><li>对成长股给过高永续增长率。</li><li>忽略股权稀释和净债务。</li><li>忽略资本开支，利润高但自由现金流差。</li><li>用不可比公司做可比估值。</li></ol>
+<hr>
+<h2 id="八新闻公告与行业信息聚合分析"><a class="heading-anchor" href="#八新闻公告与行业信息聚合分析" aria-label="链接到本节">#</a>八、新闻、公告与行业信息聚合分析</h2>
+<h3 id="8.1-信息源分类"><a class="heading-anchor" href="#8.1-信息源分类" aria-label="链接到本节">#</a>8.1 信息源分类</h3>
+<div class="table-wrap"><table><thead><tr><th>信息源</th><th>内容</th><th>作用</th></tr></thead><tbody><tr><td>公司公告</td><td>财报、并购、减持、质押、诉讼、分红</td><td>最权威的一手信息</td></tr><tr><td>交易所问询函</td><td>监管关注点</td><td>识别财务和合规风险</td></tr><tr><td>行业新闻</td><td>政策、价格、供需、技术</td><td>判断景气变化</td></tr><tr><td>研报</td><td>券商观点、盈利预测、估值</td><td>参考市场共识</td></tr><tr><td>社交媒体</td><td>市场情绪、突发信息</td><td>需要严格验证</td></tr><tr><td>宏观数据</td><td>利率、通胀、PMI、就业、汇率</td><td>判断资产配置环境</td></tr></tbody></table></div>
+<h3 id="8.2-新闻分析流程"><a class="heading-anchor" href="#8.2-新闻分析流程" aria-label="链接到本节">#</a>8.2 新闻分析流程</h3>
+<pre><code class="language-text">新闻抓取
+  ↓
+去重和来源可信度评分
+  ↓
+实体识别：公司、行业、产品、人物、政策、地区
+  ↓
+事件分类：业绩、订单、价格、监管、诉讼、并购、舆情
+  ↓
+影响判断：收入、成本、估值、风险偏好、流动性
+  ↓
+和历史类似事件对比
+  ↓
+输出结论：利好、利空、中性、待验证</code></pre>
+<h3 id="8.3-新闻解读模板"><a class="heading-anchor" href="#8.3-新闻解读模板" aria-label="链接到本节">#</a>8.3 新闻解读模板</h3>
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody><tr><td>事件</td><td>发生了什么</td></tr><tr><td>来源</td><td>是否为公司公告、权威媒体、传闻</td></tr><tr><td>影响对象</td><td>公司、行业、供应链、竞争对手</td></tr><tr><td>影响路径</td><td>对收入、成本、利润率、估值、风险偏好有什么影响</td></tr><tr><td>时间维度</td><td>短期情绪、中期盈利、长期格局</td></tr><tr><td>可验证数据</td><td>后续看哪些指标确认或证伪</td></tr><tr><td>初步结论</td><td>利好、利空、中性、待验证</td></tr></tbody></table></div>
+<hr>
+<h2 id="九量化研究基础"><a class="heading-anchor" href="#九量化研究基础" aria-label="链接到本节">#</a>九、量化研究基础</h2>
+<h3 id="9.1-量化研究在做什么"><a class="heading-anchor" href="#9.1-量化研究在做什么" aria-label="链接到本节">#</a>9.1 量化研究在做什么</h3>
+<p>量化研究用数据和模型寻找可重复的收益来源。核心步骤：</p>
+<pre><code class="language-text">提出假设 → 构造指标/因子 → 数据清洗 → 回测 → 风险评估 → 组合构建 → 实盘跟踪</code></pre>
+<h3 id="9.2-常见量化因子"><a class="heading-anchor" href="#9.2-常见量化因子" aria-label="链接到本节">#</a>9.2 常见量化因子</h3>
+<div class="table-wrap"><table><thead><tr><th>因子类型</th><th>代表指标</th><th>逻辑</th></tr></thead><tbody><tr><td>价值</td><td>PE、PB、股息率、EV/EBITDA</td><td>买便宜资产</td></tr><tr><td>成长</td><td>收入增速、利润增速、ROE 提升</td><td>买增长资产</td></tr><tr><td>质量</td><td>ROE、毛利率、现金流质量、低杠杆</td><td>买好公司</td></tr><tr><td>动量</td><td>过去 1/3/6/12 月收益</td><td>强者恒强</td></tr><tr><td>反转</td><td>短期跌幅、超跌程度</td><td>均值回归</td></tr><tr><td>波动</td><td>历史波动率、下行波动率</td><td>风险补偿或低波异象</td></tr><tr><td>流动性</td><td>成交额、换手率、买卖价差</td><td>流动性风险溢价</td></tr><tr><td>情绪</td><td>新闻情绪、分析师上调、资金流</td><td>预期变化</td></tr></tbody></table></div>
+<h3 id="9.3-回测关键指标"><a class="heading-anchor" href="#9.3-回测关键指标" aria-label="链接到本节">#</a>9.3 回测关键指标</h3>
+<div class="table-wrap"><table><thead><tr><th>指标</th><th>公式/含义</th><th>用途</th></tr></thead><tbody><tr><td>年化收益</td><td>将区间收益换算成年化</td><td>收益水平</td></tr><tr><td>年化波动</td><td>收益率标准差年化</td><td>波动风险</td></tr><tr><td>最大回撤</td><td>净值从高点到低点最大跌幅</td><td>极端亏损体验</td></tr><tr><td>夏普比率</td><td>(年化收益 - 无风险利率) / 年化波动</td><td>单位波动收益</td></tr><tr><td>卡玛比率</td><td>年化收益 / 最大回撤</td><td>回撤调整后收益</td></tr><tr><td>胜率</td><td>盈利交易次数 / 总交易次数</td><td>交易稳定性</td></tr><tr><td>盈亏比</td><td>平均盈利 / 平均亏损</td><td>单次交易质量</td></tr><tr><td>换手率</td><td>调仓规模 / 组合规模</td><td>交易成本压力</td></tr><tr><td>信息比率</td><td>超额收益 / 跟踪误差</td><td>主动管理能力</td></tr></tbody></table></div>
+<h3 id="9.4-回测容易犯的错误"><a class="heading-anchor" href="#9.4-回测容易犯的错误" aria-label="链接到本节">#</a>9.4 回测容易犯的错误</h3>
+<ol><li>未来函数：用了当时还不知道的数据。</li><li>幸存者偏差：只用当前仍上市或仍存在的标的。</li><li>过拟合：参数过多，只适合历史。</li><li>忽略交易成本、冲击成本和滑点。</li><li>忽略流动性，策略容量不现实。</li><li>样本期太短，只覆盖一种市场环境。</li><li>只看收益，不看回撤、波动和持有体验。</li></ol>
+<hr>
+<h2 id="十常见投资策略"><a class="heading-anchor" href="#十常见投资策略" aria-label="链接到本节">#</a>十、常见投资策略</h2>
+<h3 id="10.1-全天候策略"><a class="heading-anchor" href="#10.1-全天候策略" aria-label="链接到本节">#</a>10.1 全天候策略</h3>
+<p>全天候策略的核心是：不同经济环境中配置不同资产，让组合不过度依赖单一宏观情景。</p>
+<div class="table-wrap"><table><thead><tr><th>宏观环境</th><th>常见受益资产</th></tr></thead><tbody><tr><td>经济增长上行，通胀温和</td><td>股票、信用债</td></tr><tr><td>经济增长下行，通胀下行</td><td>长久期利率债</td></tr><tr><td>通胀上行，增长稳定</td><td>商品、资源股、通胀挂钩资产</td></tr><tr><td>滞胀</td><td>黄金、商品、部分防御资产</td></tr></tbody></table></div>
+<p>全天候不是永远赚钱，而是通过多资产分散降低单一场景暴露。</p>
+<h3 id="10.2-动量策略"><a class="heading-anchor" href="#10.2-动量策略" aria-label="链接到本节">#</a>10.2 动量策略</h3>
+<p>动量策略假设：过去表现强的资产未来一段时间可能继续强。</p>
+<p>常见做法：</p>
+<ol><li>计算过去 3、6、12 个月收益率。</li><li>剔除最近 1 个月，减少短期反转影响。</li><li>排名选择强势资产。</li><li>定期调仓。</li><li>加入止损、波动率控制和行业约束。</li></ol>
+<p>风险：</p>
+<ol><li>市场风格切换时容易大回撤。</li><li>拥挤交易可能导致踩踏。</li><li>高换手会放大交易成本。</li></ol>
+<h3 id="10.3-价差策略"><a class="heading-anchor" href="#10.3-价差策略" aria-label="链接到本节">#</a>10.3 价差策略</h3>
+<p>价差策略关注两个相关资产之间的价格偏离。</p>
+<p>常见类型：</p>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>例子</th><th>逻辑</th></tr></thead><tbody><tr><td>配对交易</td><td>同行业两只股票</td><td>价差偏离后回归</td></tr><tr><td>期现套利</td><td>期货与现货</td><td>基差收敛</td></tr><tr><td>跨期套利</td><td>不同到期月份期货</td><td>期限结构回归</td></tr><tr><td>跨市场套利</td><td>A/H 股、ETF 一二级市场</td><td>同一资产不同市场价差</td></tr><tr><td>可转债套利</td><td>转债、正股、期权价值</td><td>债底 + 转股价值错配</td></tr></tbody></table></div>
+<p>关键风险：相关性失效、流动性不足、交易成本、强制平仓、制度限制。</p>
+<h3 id="10.4-套息交易"><a class="heading-anchor" href="#10.4-套息交易" aria-label="链接到本节">#</a>10.4 套息交易</h3>
+<p>套息交易通常是借入低利率货币或低成本资金，买入高收益资产，赚取利差。</p>
+<pre><code class="language-text">收益来源 = 高收益资产收益 - 融资成本 - 汇率/价格波动损失</code></pre>
+<p>例子：</p>
+<ol><li>外汇套息：借低利率货币，买高利率货币资产。</li><li>债券套息：融资买入收益率更高的债券。</li><li>杠杆票息策略：通过杠杆放大票息收益。</li></ol>
+<p>主要风险：汇率反向波动、利率上行、信用利差扩大、融资收紧、流动性冲击。</p>
+<h3 id="10.5-固收固收+权益类策略"><a class="heading-anchor" href="#10.5-固收固收+权益类策略" aria-label="链接到本节">#</a>10.5 固收、固收+、权益类策略</h3>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>主要资产</th><th>收益来源</th><th>风险来源</th><th>适合用户</th></tr></thead><tbody><tr><td>纯固收</td><td>国债、金融债、信用债、存单</td><td>票息、久期、信用利差</td><td>利率、信用、流动性</td><td>低风险、稳健型</td></tr><tr><td>固收+</td><td>债券 + 少量股票/转债/打新/量化</td><td>票息 + 权益增强</td><td>权益回撤、转债波动</td><td>稳健偏进取</td></tr><tr><td>权益类</td><td>股票、股票基金、ETF</td><td>企业盈利增长、估值提升</td><td>市场波动、行业风险</td><td>中高风险、长期资金</td></tr><tr><td>多资产</td><td>股债商金等</td><td>分散化、再平衡</td><td>相关性上升、模型失效</td><td>追求长期稳健配置</td></tr></tbody></table></div>
+<h3 id="10.6-策略评价框架"><a class="heading-anchor" href="#10.6-策略评价框架" aria-label="链接到本节">#</a>10.6 策略评价框架</h3>
+<p>评价策略不能只看收益，要看：</p>
+<ol><li>收益来自哪里：风险溢价、阿尔法、杠杆、流动性、运气。</li><li>最大可能亏多少：最大回撤、压力测试。</li><li>什么时候失效：市场环境、拥挤度、政策变化。</li><li>能投多少钱：容量和流动性。</li><li>是否可持续：逻辑是否长期存在。</li><li>是否适合用户：风险等级和持有期限是否匹配。</li></ol>
+<hr>
+<h2 id="十一基金产品量化测算与分析"><a class="heading-anchor" href="#十一基金产品量化测算与分析" aria-label="链接到本节">#</a>十一、基金产品量化测算与分析</h2>
+<h3 id="11.1-基金分析的核心问题"><a class="heading-anchor" href="#11.1-基金分析的核心问题" aria-label="链接到本节">#</a>11.1 基金分析的核心问题</h3>
+<p>分析一只基金，不是只看过去收益，而是回答：</p>
+<ol><li>基金投什么资产。</li><li>收益来自市场 beta、行业暴露、风格暴露还是基金经理 alpha。</li><li>风险有多大，最大回撤是否能承受。</li><li>和同类产品相比是否有优势。</li><li>基金经理风格是否稳定。</li><li>当前是否适合用户的风险承受能力和投资期限。</li></ol>
+<h3 id="11.2-基金产品画像"><a class="heading-anchor" href="#11.2-基金产品画像" aria-label="链接到本节">#</a>11.2 基金产品画像</h3>
+<div class="table-wrap"><table><thead><tr><th>维度</th><th>分析内容</th></tr></thead><tbody><tr><td>产品类型</td><td>货币、债券、混合、股票、指数、FOF、QDII</td></tr><tr><td>投资范围</td><td>股票仓位、债券仓位、可转债、港股、商品、衍生品</td></tr><tr><td>基准</td><td>沪深 300、中证 800、偏股基金指数、中债指数等</td></tr><tr><td>规模</td><td>规模过小有清盘风险，过大可能影响操作灵活性</td></tr><tr><td>费率</td><td>管理费、托管费、销售服务费、申赎费</td></tr><tr><td>基金经理</td><td>任职年限、历史业绩、风格稳定性</td></tr><tr><td>持仓</td><td>行业集中度、前十大重仓、换手率</td></tr></tbody></table></div>
+<h3 id="11.3-基金收益风险测算"><a class="heading-anchor" href="#11.3-基金收益风险测算" aria-label="链接到本节">#</a>11.3 基金收益风险测算</h3>
+<p>常用输入：基金净值序列、同类基金指数、业绩比较基准、无风险利率。</p>
+<div class="table-wrap"><table><thead><tr><th>指标</th><th>解读</th></tr></thead><tbody><tr><td>区间收益</td><td>过去一段时间赚了多少</td></tr><tr><td>年化收益</td><td>收益年化，便于比较</td></tr><tr><td>年化波动率</td><td>净值波动程度</td></tr><tr><td>最大回撤</td><td>最差持有体验</td></tr><tr><td>夏普比率</td><td>承担单位波动获得的超额收益</td></tr><tr><td>信息比率</td><td>相对基准的超额收益稳定性</td></tr><tr><td>Alpha</td><td>超越市场和风格暴露后的能力</td></tr><tr><td>Beta</td><td>对市场涨跌的敏感度</td></tr><tr><td>跟踪误差</td><td>与基准偏离程度</td></tr><tr><td>下行波动</td><td>只统计亏损方向波动</td></tr><tr><td>Calmar</td><td>年化收益 / 最大回撤</td></tr></tbody></table></div>
+<h3 id="11.4-基金归因分析"><a class="heading-anchor" href="#11.4-基金归因分析" aria-label="链接到本节">#</a>11.4 基金归因分析</h3>
+<p>基金收益可以拆成：</p>
+<pre><code class="language-text">基金收益 = 市场 beta + 行业配置 + 风格暴露 + 个股选择 + 择时 + 交易成本 + 运气</code></pre>
+<p>常见归因维度：</p>
+<div class="table-wrap"><table><thead><tr><th>归因类型</th><th>看什么</th></tr></thead><tbody><tr><td>资产配置归因</td><td>股票、债券、现金、商品比例是否贡献收益</td></tr><tr><td>行业归因</td><td>超配或低配哪些行业</td></tr><tr><td>个股归因</td><td>重仓股选择是否有效</td></tr><tr><td>风格归因</td><td>偏成长、价值、大盘、小盘、质量、动量</td></tr><tr><td>择时归因</td><td>是否在市场上涨前加仓、下跌前减仓</td></tr></tbody></table></div>
+<h3 id="11.5-基金定投测算"><a class="heading-anchor" href="#11.5-基金定投测算" aria-label="链接到本节">#</a>11.5 基金定投测算</h3>
+<p>定投测算要关注：</p>
+<ol><li>定投频率：周、双周、月。</li><li>每期金额。</li><li>投资期限。</li><li>退出规则：目标止盈、估值止盈、再平衡、持有到期。</li><li>最大浮亏和回本时间。</li></ol>
+<p>定投收益的核心不是“每次买低”，而是用纪律性平滑买入成本，适合波动较高但长期有正期望的资产。</p>
+<h3 id="11.6-一只基金的分析报告模板"><a class="heading-anchor" href="#11.6-一只基金的分析报告模板" aria-label="链接到本节">#</a>11.6 一只基金的分析报告模板</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>内容</th></tr></thead><tbody><tr><td>产品结论</td><td>是否值得关注，适合什么用户</td></tr><tr><td>基金画像</td><td>类型、规模、费率、经理、投资范围</td></tr><tr><td>业绩表现</td><td>近 1/3/5 年收益，同类排名，基准比较</td></tr><tr><td>风险指标</td><td>波动、回撤、下行风险、极端月份</td></tr><tr><td>风格分析</td><td>成长/价值、大盘/小盘、行业集中度</td></tr><tr><td>持仓分析</td><td>重仓股、债券久期、信用等级、换手率</td></tr><tr><td>归因分析</td><td>收益来自市场、行业、个股还是择时</td></tr><tr><td>情景分析</td><td>牛市、熊市、震荡市、利率上行下表现</td></tr><tr><td>投顾适配</td><td>风险等级、建议持有期、组合角色</td></tr></tbody></table></div>
+<hr>
+<h2 id="十二资产配置与投顾"><a class="heading-anchor" href="#十二资产配置与投顾" aria-label="链接到本节">#</a>十二、资产配置与投顾</h2>
+<h3 id="12.1-投顾和投研的连接"><a class="heading-anchor" href="#12.1-投顾和投研的连接" aria-label="链接到本节">#</a>12.1 投顾和投研的连接</h3>
+<p>投研给出资产观点，投顾要把观点转换为用户可执行方案。</p>
+<pre><code class="language-text">投研观点：权益资产长期预期收益较高，但短期波动较大
+投顾转换：适合风险承受能力较高、资金期限 3 年以上的用户；不适合作为短期备用金配置</code></pre>
+<h3 id="12.2-用户画像"><a class="heading-anchor" href="#12.2-用户画像" aria-label="链接到本节">#</a>12.2 用户画像</h3>
+<div class="table-wrap"><table><thead><tr><th>维度</th><th>需要了解什么</th></tr></thead><tbody><tr><td>风险承受能力</td><td>能否承受本金波动和最大亏损</td></tr><tr><td>投资期限</td><td>3 个月、1 年、3 年、5 年以上</td></tr><tr><td>流动性需求</td><td>是否随时可能用钱</td></tr><tr><td>收益目标</td><td>保值、稳健增值、长期增长</td></tr><tr><td>投资经验</td><td>是否理解基金、股票、债券风险</td></tr><tr><td>资产负债</td><td>收入稳定性、负债压力、备用金</td></tr><tr><td>行为特征</td><td>是否容易追涨杀跌、恐慌赎回</td></tr></tbody></table></div>
+<h3 id="12.3-组合构建流程"><a class="heading-anchor" href="#12.3-组合构建流程" aria-label="链接到本节">#</a>12.3 组合构建流程</h3>
+<pre><code class="language-text">用户画像 → 风险等级 → 目标收益和最大回撤约束 → 资产类别选择 → 产品筛选 → 权重配置 → 再平衡 → 持续陪伴</code></pre>
+<h3 id="12.4-常见组合类型"><a class="heading-anchor" href="#12.4-常见组合类型" aria-label="链接到本节">#</a>12.4 常见组合类型</h3>
+<div class="table-wrap"><table><thead><tr><th>组合</th><th>资产结构</th><th>目标</th></tr></thead><tbody><tr><td>保守型</td><td>货币 + 短债 + 高等级债</td><td>控制波动和流动性</td></tr><tr><td>稳健型</td><td>债券为主 + 少量权益/转债</td><td>追求稳健增强</td></tr><tr><td>平衡型</td><td>股债均衡</td><td>中长期增值</td></tr><tr><td>进取型</td><td>权益为主 + 少量债券</td><td>长期高收益，承受较大回撤</td></tr><tr><td>全天候型</td><td>股票、债券、黄金、商品、现金</td><td>多场景分散</td></tr></tbody></table></div>
+<h3 id="12.5-再平衡"><a class="heading-anchor" href="#12.5-再平衡" aria-label="链接到本节">#</a>12.5 再平衡</h3>
+<p>再平衡是把组合权重拉回目标比例。</p>
+<p>例子：目标为 60% 股票、40% 债券。股票上涨后变成 70%，债券变成 30%，再平衡会卖出部分股票、买入债券。</p>
+<p>再平衡的作用：</p>
+<ol><li>控制风险暴露。</li><li>强制低买高卖。</li><li>避免组合漂移到不适合用户的风险等级。</li></ol>
+<hr>
+<h2 id="十三不同资产类别研究重点"><a class="heading-anchor" href="#十三不同资产类别研究重点" aria-label="链接到本节">#</a>十三、不同资产类别研究重点</h2>
+<h3 id="13.1-权益类"><a class="heading-anchor" href="#13.1-权益类" aria-label="链接到本节">#</a>13.1 权益类</h3>
+<p>权益类研究重点：</p>
+<ol><li>企业盈利增长。</li><li>商业模式和竞争壁垒。</li><li>行业景气和政策。</li><li>估值水平和市场风险偏好。</li><li>资金流和风格切换。</li></ol>
+<p>适合长期资金，但短期波动较大。</p>
+<h3 id="13.2-固收类"><a class="heading-anchor" href="#13.2-固收类" aria-label="链接到本节">#</a>13.2 固收类</h3>
+<p>固收类研究重点：</p>
+<div class="table-wrap"><table><thead><tr><th>维度</th><th>内容</th></tr></thead><tbody><tr><td>利率风险</td><td>久期越长，对利率越敏感</td></tr><tr><td>信用风险</td><td>发行人是否可能违约</td></tr><tr><td>流动性风险</td><td>能否顺利买卖</td></tr><tr><td>期限利差</td><td>长短期限收益率差</td></tr><tr><td>信用利差</td><td>信用债相对利率债的补偿</td></tr><tr><td>杠杆风险</td><td>回购融资放大收益和风险</td></tr></tbody></table></div>
+<p>固收不是无风险。债券基金也可能因为利率上行、信用事件、赎回冲击而亏损。</p>
+<h3 id="13.3-固收+"><a class="heading-anchor" href="#13.3-固收+" aria-label="链接到本节">#</a>13.3 固收+</h3>
+<p>固收+ 的关键是“+”的部分加了什么。</p>
+<div class="table-wrap"><table><thead><tr><th>增强来源</th><th>风险</th></tr></thead><tbody><tr><td>股票</td><td>权益市场回撤</td></tr><tr><td>可转债</td><td>股性波动、溢价率压缩</td></tr><tr><td>打新</td><td>政策变化、收益下降</td></tr><tr><td>量化对冲</td><td>模型失效、基差风险</td></tr><tr><td>高收益债</td><td>信用风险</td></tr></tbody></table></div>
+<p>分析固收+ 产品时，要看权益仓位上限、转债仓位、历史最大回撤和极端市场表现。</p>
+<h3 id="13.4-商品和黄金"><a class="heading-anchor" href="#13.4-商品和黄金" aria-label="链接到本节">#</a>13.4 商品和黄金</h3>
+<p>商品研究关注供需、库存、产能、地缘政治、美元和实际利率。黄金通常与实际利率、美元、避险需求相关。</p>
+<hr>
+<h2 id="十四宏观与市场环境分析"><a class="heading-anchor" href="#十四宏观与市场环境分析" aria-label="链接到本节">#</a>十四、宏观与市场环境分析</h2>
+<h3 id="14.1-宏观四象限"><a class="heading-anchor" href="#14.1-宏观四象限" aria-label="链接到本节">#</a>14.1 宏观四象限</h3>
+<div class="table-wrap"><table><thead><tr><th>环境</th><th>特征</th><th>资产表现倾向</th></tr></thead><tbody><tr><td>复苏</td><td>增长上行、通胀低位</td><td>股票、信用债较好</td></tr><tr><td>过热</td><td>增长上行、通胀上行</td><td>商品较好，债券承压</td></tr><tr><td>滞胀</td><td>增长下行、通胀上行</td><td>股票债券都承压，商品/黄金可能防御</td></tr><tr><td>衰退</td><td>增长下行、通胀下行</td><td>利率债较好，股票承压</td></tr></tbody></table></div>
+<h3 id="14.2-宏观变量如何影响资产"><a class="heading-anchor" href="#14.2-宏观变量如何影响资产" aria-label="链接到本节">#</a>14.2 宏观变量如何影响资产</h3>
+<div class="table-wrap"><table><thead><tr><th>变量</th><th>影响路径</th></tr></thead><tbody><tr><td>利率</td><td>影响债券价格、股票估值、融资成本</td></tr><tr><td>通胀</td><td>影响企业成本、居民购买力、货币政策</td></tr><tr><td>汇率</td><td>影响出口、进口成本、外资流动</td></tr><tr><td>信用</td><td>影响企业融资和经济扩张</td></tr><tr><td>政策</td><td>影响行业景气和风险偏好</td></tr><tr><td>流动性</td><td>影响估值和市场交易拥挤度</td></tr></tbody></table></div>
+<hr>
+<h2 id="十五从研究到投资建议的合规表达"><a class="heading-anchor" href="#十五从研究到投资建议的合规表达" aria-label="链接到本节">#</a>十五、从研究到投资建议的合规表达</h2>
+<h3 id="15.1-投研结论和投顾建议的区别"><a class="heading-anchor" href="#15.1-投研结论和投顾建议的区别" aria-label="链接到本节">#</a>15.1 投研结论和投顾建议的区别</h3>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>可以表达</th><th>需要避免</th></tr></thead><tbody><tr><td>投研结论</td><td>某资产的收益来源、风险、估值、情景分析</td><td>绝对化预测、保证收益</td></tr><tr><td>投顾建议</td><td>基于用户画像的适配性说明</td><td>未了解用户就给具体买卖指令</td></tr><tr><td>教育内容</td><td>解释概念、方法、风险</td><td>暗示稳赚、诱导交易</td></tr></tbody></table></div>
+<h3 id="15.2-合规表达模板"><a class="heading-anchor" href="#15.2-合规表达模板" aria-label="链接到本节">#</a>15.2 合规表达模板</h3>
+<p>更稳妥的表达：</p>
+<pre><code class="language-text">该产品历史波动较高，适合风险承受能力较强、投资期限较长的用户。
+如果用户资金用途较短或无法承受净值回撤，应谨慎配置或降低比例。
+历史业绩不代表未来表现，具体配置需结合个人风险测评和资产状况。</code></pre>
+<p>不应表达：</p>
+<pre><code class="language-text">这只基金一定会涨。
+现在必须买入。
+保证收益。
+亏了我负责。</code></pre>
+<hr>
+<h2 id="十六投研系统或金融-agent-如何落地"><a class="heading-anchor" href="#十六投研系统或金融-agent-如何落地" aria-label="链接到本节">#</a>十六、投研系统或金融 Agent 如何落地</h2>
+<h3 id="16.1-投研-agent-的能力模块"><a class="heading-anchor" href="#16.1-投研-agent-的能力模块" aria-label="链接到本节">#</a>16.1 投研 Agent 的能力模块</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>功能</th></tr></thead><tbody><tr><td>数据接入</td><td>行情、财报、公告、新闻、基金净值、宏观数据</td></tr><tr><td>信息抽取</td><td>公司、行业、事件、财务指标、风险点识别</td></tr><tr><td>研究框架</td><td>行业、公司、财务、估值、策略模板</td></tr><tr><td>计算工具</td><td>收益风险、估值、DCF、基金测算、回测</td></tr><tr><td>证据管理</td><td>每个结论绑定数据来源和引用</td></tr><tr><td>反思校验</td><td>检查未来函数、数据缺失、结论跳跃、合规风险</td></tr><tr><td>用户适配</td><td>根据风险等级和期限转为投顾表达</td></tr><tr><td>追踪监控</td><td>研究对象后续公告、新闻、价格和风险事件</td></tr></tbody></table></div>
+<h3 id="16.2-一个-agent-工作流示例分析一只基金"><a class="heading-anchor" href="#16.2-一个-agent-工作流示例分析一只基金" aria-label="链接到本节">#</a>16.2 一个 Agent 工作流示例：分析一只基金</h3>
+<pre><code class="language-text">用户问题：这只基金怎么样，适合我买吗？
+
+1. 识别基金代码和产品类型
+2. 拉取基金净值、规模、费率、持仓、基金经理信息
+3. 计算收益、波动、最大回撤、夏普、同类排名
+4. 分析持仓行业、风格和集中度
+5. 对比同类基金和业绩基准
+6. 判断收益来源和风险来源
+7. 结合用户风险等级、期限、资金用途做适配判断
+8. 输出合规结论和风险提示</code></pre>
+<h3 id="16.3-一个-agent-工作流示例分析一家公司"><a class="heading-anchor" href="#16.3-一个-agent-工作流示例分析一家公司" aria-label="链接到本节">#</a>16.3 一个 Agent 工作流示例：分析一家公司</h3>
+<pre><code class="language-text">用户问题：某公司基本面如何？
+
+1. 拉取公司基本信息、主营业务、财报、公告、新闻
+2. 识别行业和产业链位置
+3. 分析商业模式、竞争格局、护城河
+4. 解读三张财务报表和核心财务指标
+5. 建立收入、利润、现金流预测
+6. 使用 PE/PB/EV/EBITDA/DCF 做估值区间
+7. 提取催化剂和风险因素
+8. 输出结论、证据、假设、风险和待跟踪事项</code></pre>
+<h3 id="16.4-一个-agent-工作流示例宏观环境判断与资产配置"><a class="heading-anchor" href="#16.4-一个-agent-工作流示例宏观环境判断与资产配置" aria-label="链接到本节">#</a>16.4 一个 Agent 工作流示例：宏观环境判断与资产配置</h3>
+<pre><code class="language-text">用户问题：现在市场环境下，我的资产应该怎么配置？
+
+需要数据：宏观数据（GDP、PMI、CPI、PPI、社融、信贷）、
+利率与利差数据（国债收益率曲线、期限利差、信用利差）、
+主要资产估值分位与股债收益差、用户风险等级与投资期限
+
+处理流程：判断经济增长方向（PMI、社融是否改善）→
+判断通胀与流动性方向 → 映射到复苏/过热/滞胀/衰退四象限 →
+结合估值分位和用户画像，生成保守/稳健/平衡/进取配置方案
+
+计算指标：股债收益差 = 盈利收益率 - 10年国债收益率、
+估值历史分位数、期限利差与信用利差、
+组合预期收益与最大回撤情景测算
+
+结果输出：当前宏观状态判断、大类资产高配/标配/低配观点、
+推荐权重区间而非单一比例、主要风险与最短持有期限</code></pre>
+<h3 id="16.5-一个-agent-工作流示例行业景气度跟踪"><a class="heading-anchor" href="#16.5-一个-agent-工作流示例行业景气度跟踪" aria-label="链接到本节">#</a>16.5 一个 Agent 工作流示例：行业景气度跟踪</h3>
+<pre><code class="language-text">用户问题：这个行业现在景气度怎么样，哪些公司更受益？
+
+需要数据：行业高频数据（价格、销量、库存、开工率、订单）、
+产业链上下游数据（原材料价格、中游利润、下游需求）、
+行业内公司收入增速、毛利率、存货、产能与市占率
+
+处理流程：识别行业生命周期 → 拆分需求驱动因素 →
+跟踪景气指标变化（价格、库存、订单是否改善）→
+对比公司成本优势与产能弹性，判断谁最受益
+
+计算指标：行业景气指数（多指标标准化加权）、
+库存周期指标 = 库存增速 - 销量增速、
+盈利弹性 = 行业价格变动1%时公司利润变动幅度、市占率变化
+
+结果输出：景气方向判断（上行/下行/底部修复/顶部回落）、
+受益环节与公司类型、后续需跟踪的验证指标与风险提示</code></pre>
+<h3 id="16.6-一个-agent-工作流示例分析固收或债券基金"><a class="heading-anchor" href="#16.6-一个-agent-工作流示例分析固收或债券基金" aria-label="链接到本节">#</a>16.6 一个 Agent 工作流示例：分析固收或债券基金</h3>
+<pre><code class="language-text">用户问题：这只债券基金稳不稳，会不会亏很多？
+
+需要数据：基金净值、规模、费率与历史持仓、
+债券久期、评级、券种与行业分布、
+国债收益率曲线与信用利差、机构持有人比例
+
+处理流程：判断产品类型（短债/纯债/二级债基）→
+拆解收益来源（票息/久期/信用下沉/杠杆）→
+分析极端情景（利率上行、信用利差扩大、大额赎回）
+
+计算指标：年化收益与最大回撤、夏普与卡玛比率、
+久期风险 = 利率上行100bp时估算净值损失、
+信用下沉比例（AA+以下占比）、杠杆水平 = 总资产/净资产
+
+结果输出：产品风险等级、收益来源解释、
+极端情景测算与同类比较、适合的投顾场景与风险提示</code></pre>
+<h3 id="16.7-一个-agent-工作流示例拆解固收+产品"><a class="heading-anchor" href="#16.7-一个-agent-工作流示例拆解固收+产品" aria-label="链接到本节">#</a>16.7 一个 Agent 工作流示例：拆解固收+产品</h3>
+<pre><code class="language-text">用户问题：这只固收+基金为什么波动比纯债大，它的"+"到底加了什么？
+
+需要数据：基金净值与资产配置比例（债券/股票/转债/现金）、
+债券持仓久期与评级、权益与转债仓位及行业分布、
+债券指数、权益指数、转债指数用于回归分析
+
+处理流程：确认产品定位（稳健/平衡/权益增强型）→
+拆分底仓收益（票息/久期）与增强收益（股票/转债/打新）→
+检查极端市场表现（股跌债涨、股债双杀、转债杀估值）
+
+计算指标：权益与转债仓位均值及峰值、
+增强收益贡献 = 基金收益 - 债券基准收益、
+最大回撤阶段由哪类资产引起、对各类指数的Beta暴露
+
+结果输出：固收部分是否稳健、"+"的具体来源与占比、
+增强是否有效匹配风险、适合用户类型与建议持有期限</code></pre>
+<h3 id="16.8-一个-agent-工作流示例构建基金组合与再平衡"><a class="heading-anchor" href="#16.8-一个-agent-工作流示例构建基金组合与再平衡" aria-label="链接到本节">#</a>16.8 一个 Agent 工作流示例：构建基金组合与再平衡</h3>
+<pre><code class="language-text">用户问题：我想买几只基金组成组合，应该怎么搭配？后续怎么调仓？
+
+需要数据：用户风险等级与期限、候选基金收益/风险/相关性、资产类别指数、约束条件（权重上限/合规限制）
+处理流程：用户画像映射组合目标 → 确定大类权重 → 筛选基金并优化分配 → 设计再平衡规则（定期或偏离阈值触发）
+计算指标：组合预期收益/波动/回撤/夏普、资产权重与集中度、压力测试损失、再平衡触发条件
+结果输出：组合定位与推荐权重、收益风险预期（三种情景）、再平衡规则、投顾适配与风险提示</code></pre>
+<h3 id="16.9-一个-agent-工作流示例用户持仓诊断与投顾适配"><a class="heading-anchor" href="#16.9-一个-agent-工作流示例用户持仓诊断与投顾适配" aria-label="链接到本节">#</a>16.9 一个 Agent 工作流示例：用户持仓诊断与投顾适配</h3>
+<pre><code class="language-text">用户问题：我现在持有这些基金和股票，风险大不大，要不要调整？
+
+需要数据：用户全部持仓与成本、用户风险画像、基金穿透持仓（行业/风格/仓位）、市场估值与波动数据
+处理流程：汇总资产结构 → 穿透底层识别真实行业与个股集中度 → 检查与用户风险等级是否匹配 → 生成调整建议
+计算指标：权益穿透仓位、行业/重仓集中度、组合历史回撤、与建议权益仓位差额、调仓成本
+结果输出：账户诊断结论（过度集中/风格单一/风险超标）、调整建议与执行顺序、合规适配表达</code></pre>
+<h3 id="16.10-一个-agent-工作流示例动量轮动策略回测"><a class="heading-anchor" href="#16.10-一个-agent-工作流示例动量轮动策略回测" aria-label="链接到本节">#</a>16.10 一个 Agent 工作流示例：动量轮动策略回测</h3>
+<pre><code class="language-text">用户问题：能不能用动量策略在几个指数之间轮动？历史效果怎么样？
+
+需要数据：标的池历史价格/净值、成交额与流动性、基准指数、无风险利率、交易费率与约束条件
+处理流程：定义标的池与样本期 → 构造动量因子（剔除近1月）→ 按排名选标并设定权重 → 扣除成本回测 → 参数稳健性检验
+计算指标：年化收益/波动/回撤/夏普、超额收益与信息比率、换手率与交易成本占比、分市场环境表现
+结果输出：策略是否稳定有效、收益来源、风险约束规则、实盘可行性与投顾适配表达</code></pre>
+<h3 id="16.11-一个-agent-工作流示例新闻公告事件驱动分析"><a class="heading-anchor" href="#16.11-一个-agent-工作流示例新闻公告事件驱动分析" aria-label="链接到本节">#</a>16.11 一个 Agent 工作流示例：新闻公告事件驱动分析</h3>
+<pre><code class="language-text">用户问题：这条新闻或公告对公司/行业/基金有什么影响？
+
+需要数据：原始文本（公告/新闻/政策）、相关标的价格与成交量、公司基本面结构、历史类似事件库
+处理流程：识别事件主体与类型 → 判断信息可信度 → 建立影响路径（收入/成本/估值/风险偏好）→ 对照历史类似事件
+计算指标：事件情绪分数、组合中相关资产穿透占比、历史事件平均超额收益、盈利敏感性
+结果输出：利好/利空/中性/待验证结论、影响层级（短期情绪/中期盈利/长期格局）、后续跟踪指标</code></pre>
+<hr>
+<h2 id="十七实战学习路径"><a class="heading-anchor" href="#十七实战学习路径" aria-label="链接到本节">#</a>十七、实战学习路径</h2>
+<h3 id="17.1-第一阶段金融基础"><a class="heading-anchor" href="#17.1-第一阶段金融基础" aria-label="链接到本节">#</a>17.1 第一阶段：金融基础</h3>
+<p>学习重点：</p>
+<ol><li>股票、债券、基金、ETF、可转债、商品、外汇基础。</li><li>三张财务报表。</li><li>PE、PB、ROE、毛利率、现金流等指标。</li><li>基金净值、收益、波动、回撤。</li></ol>
+<p>练习：选择 3 只不同类型基金，计算过去 1 年收益、波动和最大回撤。</p>
+<h3 id="17.2-第二阶段主观投研"><a class="heading-anchor" href="#17.2-第二阶段主观投研" aria-label="链接到本节">#</a>17.2 第二阶段：主观投研</h3>
+<p>学习重点：</p>
+<ol><li>行业生命周期。</li><li>商业模式分析。</li><li>竞争格局和护城河。</li><li>盈利预测和估值。</li></ol>
+<p>练习：选择一家上市公司，写一页纸基本面分析。</p>
+<h3 id="17.3-第三阶段量化研究"><a class="heading-anchor" href="#17.3-第三阶段量化研究" aria-label="链接到本节">#</a>17.3 第三阶段：量化研究</h3>
+<p>学习重点：</p>
+<ol><li>收益率、波动率、回撤、夏普。</li><li>因子和回测。</li><li>动量、反转、价值、质量策略。</li><li>交易成本和过拟合。</li></ol>
+<p>练习：用指数 ETF 做简单动量轮动回测。</p>
+<h3 id="17.4-第四阶段资产配置与投顾"><a class="heading-anchor" href="#17.4-第四阶段资产配置与投顾" aria-label="链接到本节">#</a>17.4 第四阶段：资产配置与投顾</h3>
+<p>学习重点：</p>
+<ol><li>用户风险画像。</li><li>股债配置和再平衡。</li><li>全天候、多资产组合。</li><li>合规表达和适当性。</li></ol>
+<p>练习：为保守、稳健、进取三类用户设计基金组合，并说明原因。</p>
+<hr>
+<h2 id="十八常用分析模板汇总"><a class="heading-anchor" href="#十八常用分析模板汇总" aria-label="链接到本节">#</a>十八、常用分析模板汇总</h2>
+<h3 id="18.1-公司基本面速查模板"><a class="heading-anchor" href="#18.1-公司基本面速查模板" aria-label="链接到本节">#</a>18.1 公司基本面速查模板</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>问题</th></tr></thead><tbody><tr><td>主营业务</td><td>公司靠什么赚钱？</td></tr><tr><td>行业空间</td><td>行业是否增长？天花板多大？</td></tr><tr><td>竞争格局</td><td>市占率、竞争者、价格战情况？</td></tr><tr><td>护城河</td><td>品牌、成本、技术、渠道、网络效应？</td></tr><tr><td>财务质量</td><td>收入、利润、现金流是否匹配？</td></tr><tr><td>盈利预测</td><td>未来 2-3 年增长来自哪里？</td></tr><tr><td>估值</td><td>当前价格隐含什么预期？</td></tr><tr><td>风险</td><td>哪些假设可能错？</td></tr></tbody></table></div>
+<h3 id="18.2-行业分析模板"><a class="heading-anchor" href="#18.2-行业分析模板" aria-label="链接到本节">#</a>18.2 行业分析模板</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>问题</th></tr></thead><tbody><tr><td>空间</td><td>TAM/SAM/SOM 多大？</td></tr><tr><td>增速</td><td>增长来自渗透率、价格、政策还是替代？</td></tr><tr><td>周期</td><td>当前处于景气上行还是下行？</td></tr><tr><td>格局</td><td>龙头份额和利润率是否稳定？</td></tr><tr><td>产业链</td><td>哪个环节最赚钱？</td></tr><tr><td>政策</td><td>监管支持还是压制？</td></tr><tr><td>风险</td><td>产能、价格、技术、政策风险？</td></tr></tbody></table></div>
+<h3 id="18.3-基金分析模板"><a class="heading-anchor" href="#18.3-基金分析模板" aria-label="链接到本节">#</a>18.3 基金分析模板</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>问题</th></tr></thead><tbody><tr><td>类型</td><td>是债基、混合、股票、指数还是 FOF？</td></tr><tr><td>收益</td><td>长短期收益是否稳定？</td></tr><tr><td>风险</td><td>最大回撤和波动是否可接受？</td></tr><tr><td>比较</td><td>相对同类和基准是否有优势？</td></tr><tr><td>风格</td><td>基金经理风格是否漂移？</td></tr><tr><td>持仓</td><td>行业和个股是否过度集中？</td></tr><tr><td>适配</td><td>适合什么用户、期限和组合角色？</td></tr></tbody></table></div>
+<h3 id="18.4-策略分析模板"><a class="heading-anchor" href="#18.4-策略分析模板" aria-label="链接到本节">#</a>18.4 策略分析模板</h3>
+<div class="table-wrap"><table><thead><tr><th>模块</th><th>问题</th></tr></thead><tbody><tr><td>策略逻辑</td><td>收益来源是什么？</td></tr><tr><td>数据</td><td>数据是否可靠，是否存在未来函数？</td></tr><tr><td>回测</td><td>收益、波动、回撤、夏普如何？</td></tr><tr><td>成本</td><td>交易成本、滑点、冲击成本是否纳入？</td></tr><tr><td>风险</td><td>什么市场环境会失效？</td></tr><tr><td>容量</td><td>能否承载足够资金？</td></tr><tr><td>执行</td><td>调仓频率、风控规则、止损规则？</td></tr></tbody></table></div>
+<hr>
+<h2 id="十九一个完整案例框架"><a class="heading-anchor" href="#十九一个完整案例框架" aria-label="链接到本节">#</a>十九、一个完整案例框架</h2>
+<h3 id="19.1-分析一家公司"><a class="heading-anchor" href="#19.1-分析一家公司" aria-label="链接到本节">#</a>19.1 分析一家公司</h3>
+<pre><code class="language-text">研究对象：某消费龙头公司
+
+1. 行业：消费行业增速放缓，但高端化趋势仍在。
+2. 商业模式：品牌溢价 + 渠道掌控 + 高毛利。
+3. 竞争格局：头部集中，二三线品牌竞争更激烈。
+4. 财务：收入稳定增长，毛利率较高，经营现金流优于净利润。
+5. 盈利预测：销量低个位数增长，价格和产品结构贡献中个位数增长。
+6. 估值：PE 高于历史均值，需要增长兑现支撑。
+7. 催化剂：旺季销售超预期、渠道库存下降、分红提升。
+8. 风险：消费疲软、渠道压货、价格体系松动。
+9. 结论：公司质量较高，但需关注估值安全边际和需求趋势。</code></pre>
+<h3 id="19.2-分析一只固收+基金"><a class="heading-anchor" href="#19.2-分析一只固收+基金" aria-label="链接到本节">#</a>19.2 分析一只固收+基金</h3>
+<pre><code class="language-text">研究对象：某固收+基金
+
+1. 产品类型：债券为底仓，少量权益和可转债增强。
+2. 收益来源：票息收益 + 久期管理 + 权益增强 + 转债弹性。
+3. 风险来源：利率上行、信用利差扩大、权益市场下跌、转债估值压缩。
+4. 历史表现：年化收益中等，最大回撤高于纯债基金但低于偏股基金。
+5. 持仓分析：债券信用等级、久期、转债仓位、权益行业暴露。
+6. 同类比较：看收益排名、回撤排名、夏普、卡玛、规模和费率。
+7. 适配结论：适合能承受一定净值波动、期限 1 年以上、追求稳健增强的用户。</code></pre>
+<hr>
+<h2 id="二十最终总结"><a class="heading-anchor" href="#二十最终总结" aria-label="链接到本节">#</a>二十、最终总结</h2>
+<p>金融投研可以理解为三层能力：</p>
+<div class="table-wrap"><table><thead><tr><th>层级</th><th>核心能力</th><th>典型问题</th></tr></thead><tbody><tr><td>资产研究</td><td>看懂股票、债券、基金、行业和策略</td><td>这个资产为什么涨跌？</td></tr><tr><td>定量测算</td><td>用数据计算收益、风险、估值和情景</td><td>赚多少、亏多少、概率如何？</td></tr><tr><td>投顾适配</td><td>把研究结论转成用户可理解、可执行、合规的建议</td><td>是否适合这个用户？</td></tr></tbody></table></div>
+<p>最重要的学习方法是：</p>
+<ol><li>每研究一个资产，都拆分收益来源和风险来源。</li><li>每看到一个结论，都追问证据和假设。</li><li>每做一个测算，都检查数据、成本、回撤和极端情景。</li><li>每输出一个建议，都回到用户画像和合规边界。</li></ol>
+<p>一句话收束：</p>
+<blockquote><p>好的金融投研不是预测未来，而是在不确定性中建立可解释、可验证、可跟踪、可风控的决策框架。</p></blockquote>
+    </main>
+  </div>
+
+  <button class="backtop" type="button" aria-label="回到顶部" id="backtop">↑</button>
+
+  <script>
+    const progress = document.getElementById('progress');
+    const backtop = document.getElementById('backtop');
+    const links = Array.from(document.querySelectorAll('.toc-link'));
+    const headings = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+
+    function updateProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = height > 0 ? (scrollTop / height * 100) + '%' : '0%';
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+      });
+    }, { rootMargin: '-20% 0px -72% 0px', threshold: 0.01 });
+
+    headings.forEach(heading => observer.observe(heading));
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+    backtop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+</body>
+</html>
