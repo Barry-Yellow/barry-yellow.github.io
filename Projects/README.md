@@ -30,6 +30,7 @@
 | 文章 | 说明 |
 |------|------|
 | [Claude Code 多智能体架构](Projects/ClaudeCode的多智能体架构.md) | Claude Code 的多智能体架构完全解析 |
+| [agentUniverse 框架介绍](Projects/框架介绍.md) | agentUniverse 多智能体框架、PEER/DOE 协作模式与金融应用案例 |
 | [上下文工程完全指南](Projects/上下文工程完全指南.md) | 上下文工程方法论：Write / Select / Compass / Isolate |
 | [LangGraph 完整指南](Projects/LangGraph完整指南.md) | 状态管理、消息流转、多智能体、动态编排 |
 | [多格式数据摘要处理](Projects/多格式数据摘要处理.md) | 多格式数据处理流水线：解析 → 提取 → 摘要 → 存储 |
