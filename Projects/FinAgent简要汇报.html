@@ -182,6 +182,14 @@ body.toc-hidden #toc { transform: translateX(-100%); }
 .anti-layer ul { list-style: none; }
 .anti-layer li { padding: 2px 0; font-size: .82em; color: #334155; }
 .anti-layer li::before { content: '•'; margin-right: 6px; font-weight: bold; }
+.logic-stack { display:flex; flex-direction:column; gap:8px; }
+.logic-card { background:#fff; border-radius:10px; padding:12px 14px; border-left:4px solid var(--primary); box-shadow:0 1px 5px rgba(0,0,0,.05); }
+.logic-card.green { border-left-color:var(--green); }
+.logic-card.orange { border-left-color:var(--orange); }
+.logic-card.red { border-left-color:var(--red); }
+.logic-card.pink { border-left-color:var(--pink); }
+.logic-card h4 { font-size:.88em; color:var(--primary-dark); margin-bottom:3px; }
+.logic-card p { font-size:.78em; color:#475569; }
 svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; }
 @media print {
   #toc { display: none; } body { padding-left: 0; }
@@ -210,7 +218,8 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
   <a href="#s3">② 意图识别<span class="pg">p.3</span></a>
   <a href="#s4">③ RAG &amp; 记忆<span class="pg">p.4</span></a>
   <a href="#s5">④ 反爬 &amp; 容错<span class="pg">p.5</span></a>
-  <a href="#s6">∑ 总结<span class="pg">p.6</span></a>
+  <a href="#s6">⑤ 金融 Agent 硬约束<span class="pg">p.6</span></a>
+  <a href="#s8">∑ 总结<span class="pg">p.7</span></a>
 </nav>
 
 <!-- ==================== SLIDE 1: Cover ==================== -->
@@ -232,7 +241,7 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
     <span class="tag tag-pink">三层记忆</span>
   </div>
   <p class="cover-note">核心思想：意图驱动路由，专业 Agent 协同，多层容错保障</p>
-  <div class="page-num" style="color:rgba(255,255,255,.55)">1 / 6</div>
+  <div class="page-num" style="color:rgba(255,255,255,.55)">1 / 7</div>
 </div>
 
 <!-- ==================== SLIDE 2: Architecture ==================== -->
@@ -361,7 +370,7 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
       <text x="478" y="445" fill="#94a3b8" font-size="7.5">GlobalState: messages · user_input · intent · crawler_output · summary_output · analysis_output · error</text>
     </svg>
   </div>
-  <div class="page-num">2 / 6</div>
+  <div class="page-num">2 / 7</div>
 </div>
 
 <!-- ==================== SLIDE 3: Intent Recognition ==================== -->
@@ -434,7 +443,7 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
       </div>
     </div>
   </div>
-  <div class="page-num">3 / 6</div>
+  <div class="page-num">3 / 7</div>
 </div>
 
 <!-- ==================== SLIDE 4: Agentic RAG + Memory ==================== -->
@@ -505,7 +514,7 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
       </div>
     </div>
   </div>
-  <div class="page-num">4 / 6</div>
+  <div class="page-num">4 / 7</div>
 </div>
 
 <!-- ==================== SLIDE 5: Anti-detect + Error Handling ==================== -->
@@ -587,11 +596,53 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
       </div>
     </div>
   </div>
-  <div class="page-num">5 / 6</div>
+  <div class="page-num">5 / 7</div>
 </div>
 
-<!-- ==================== SLIDE 6: Summary ==================== -->
-<div id="s6" class="slide slide-summary">
+<!-- ==================== SLIDE 6: Financial Agent Constraints ==================== -->
+<div id="s6" class="slide">
+  <div class="stage-badge" style="background:#c62828;"><span class="num">5</span>金融 Agent 的三条硬约束</div>
+  <h2>低幻觉 · 低容错 · 强解释：金融分析不是普通问答</h2>
+  <div class="keypoints">
+    <div class="kp red">数字不能猜：核心数值必须绑定来源，并通过工具计算和规则校验</div>
+    <div class="kp orange">冲突不能硬判：结论要经过置信度门控，低置信时主动降级</div>
+    <div class="kp purple">判断必须可复核：输出因果链、证据链和关键假设</div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:12px;">
+    <div class="card red" style="margin-bottom:0;">
+      <h3>1. 数值幻觉零容忍</h3>
+      <div class="logic-stack" style="margin-top:8px;">
+        <div class="logic-card red"><h4>问题</h4><p>金融 Agent 不能“看起来合理地报数”：价格、同比、估值倍数、财报字段一旦报错，后续分析会整体失真。</p></div>
+        <div class="logic-card orange"><h4>原因</h4><p>金融数据强依赖时间、口径和单位；LLM 容易补全缺失值，但金融场景不允许把“合理猜测”当事实。</p></div>
+        <div class="logic-card green"><h4>具体方案</h4><p>核心数字绑定来源、时间戳、字段名、单位；价格/同比/估值/财务指标由工具计算；输出前做交易日/报告期一致性、元/万元/亿元单位、百分比/小数、会计等式和异常波动阈值校验，失败则只返回“数据不足/需复核”。</p></div>
+      </div>
+    </div>
+    <div class="card orange" style="margin-bottom:0;">
+      <h3>2. 置信度门控 + 失败降级</h3>
+      <div class="logic-stack" style="margin-top:8px;">
+        <div class="logic-card red"><h4>问题</h4><p>多来源冲突、字段缺失或数据过期时，普通 Agent 仍可能给出确定性判断；在金融场景，“继续回答”比“暂不下结论”更危险。</p></div>
+        <div class="logic-card orange"><h4>原因</h4><p>金融结论往往依赖多源证据链，一处冲突就可能改变方向；错误代价不是体验下降，而是资金损失和合规风险。</p></div>
+        <div class="logic-card green"><h4>具体方案</h4><p>按来源数量、来源一致性、数据新鲜度、字段完整性、关键指标校验结果计算置信度；高置信输出判断，中置信输出倾向并标注冲突点，低置信禁止强判断，降级为事实汇总 + 人工复核提示。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <h3>3. 因果链可解释输出</h3>
+    <div class="grid-2" style="gap:12px;margin-top:8px;">
+      <div class="logic-stack">
+        <div class="logic-card purple"><h4>问题</h4><p>只给“利好/利空/看多/看空”没有复核价值，用户需要知道判断从哪里来、经过了哪些变量传导。</p></div>
+        <div class="logic-card orange"><h4>原因</h4><p>金融分析很容易把相关性误当因果性；报告型输出必须能被审阅、追责和复盘。</p></div>
+      </div>
+      <div class="logic-card green" style="height:100%;"><h4>具体方案</h4><p>固定生成链路：事件/触发因素 → 影响变量 → 财务指标变化 → 估值/风险传导 → 最终判断。每一步都挂载数据点、来源片段、计算过程、前提假设，并补充反事实或风险提示；缺任一关键证据时，结论自动降级为“可能影响路径”。</p></div>
+    </div>
+  </div>
+  <div class="page-num">6 / 7</div>
+</div>
+
+<!-- ==================== SLIDE 7: Summary ==================== -->
+<div id="s8" class="slide slide-summary">
   <h2>∑ 四大核心创新</h2>
   <div class="grid-2" style="margin-bottom:16px;">
     <div class="summary-card">
@@ -607,8 +658,8 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
       <p>短期（内存 TTL）· 长期（JSON FIFO）· RAG（向量语义）分层管理，优先级策略解决跨层信息冲突，LFU+FIFO 混合淘汰</p>
     </div>
     <div class="summary-card">
-      <div class="title">4. 多层容错体系</div>
-      <p>重试 → 降级 → 状态回滚 → 用户兜底四级保障，三层反爬防御（行为/特征/频率），State 快照整体回滚防脏状态</p>
+      <div class="title">4. 金融可信分析闭环</div>
+      <p>来源绑定 + 工具计算 + 规则校验控制数值幻觉，置信度门控处理冲突数据，因果链与证据链保证结论可复核</p>
     </div>
   </div>
   <div style="margin-top:8px;">
@@ -632,7 +683,7 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
     <p style="font-size:1em;font-weight:600;">FinAgent 不只是一个金融数据工具</p>
     <p style="font-size:1.2em;font-weight:800;margin-top:6px;">而是一套意图驱动、多 Agent 协同、具备完整容错的智能分析系统</p>
   </div>
-  <div class="page-num" style="color:rgba(255,255,255,.5)">6 / 6</div>
+  <div class="page-num" style="color:rgba(255,255,255,.5)">7 / 7</div>
 </div>
 
 <script>
@@ -641,7 +692,7 @@ svg text { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif
   btn.addEventListener('click', function(){
     document.body.classList.toggle('toc-hidden');
   });
-  var ids = ['s1','s2','s3','s4','s5','s6'];
+  var ids = ['s1','s2','s3','s4','s5','s6','s8'];
   var links = {};
   ids.forEach(function(id){ links[id] = document.querySelector('#toc a[href="#'+id+'"]'); });
   function update(){

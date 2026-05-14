@@ -13,8 +13,8 @@
   - [LangGraph 完整指南](Projects/LangGraph完整指南.md)
   - [多格式数据摘要处理](Projects/多格式数据摘要处理.md)
 - **金融投研**
-  - [金融分析技能](Projects/金融分析技能.md)
   - [金融投研投顾全流程教程](Projects/金融投研投顾全流程教程.html ':ignore')
   - [金融投研 Agent 与普通 Agent 对比](Projects/金融投研Agent与普通Agent对比.html ':ignore')
   - [金融投研指标速查手册](Projects/金融投研指标速查手册.html ':ignore')
+  - [金融分析技能](Projects/金融分析技能.md)
 - [Back to Homepage](README.md)
