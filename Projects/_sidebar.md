@@ -9,6 +9,7 @@
   - [Agent 面试高频考点](Projects/Agent面试高频考点.md)
 - **AI Agent 学习笔记**
   - [Claude Code 多智能体架构](Projects/ClaudeCode的多智能体架构.md)
+  - [agentUniverse 框架介绍](Projects/框架介绍.md)
   - [上下文工程完全指南](Projects/上下文工程完全指南.md)
   - [LangGraph 完整指南](Projects/LangGraph完整指南.md)
   - [多格式数据摘要处理](Projects/多格式数据摘要处理.md)
