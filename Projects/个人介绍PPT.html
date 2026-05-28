@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黄宇航｜个人介绍</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #172033;
+    --muted: #69738a;
+    --paper: #f8f4ec;
+    --card: rgba(255,255,255,.82);
+    --line: rgba(23,32,51,.12);
+    --blue: #2f6f9f;
+    --cyan: #79c6d8;
+    --sand: #d8b36a;
+    --green: #7a9b72;
+    --shadow: 0 28px 80px rgba(23,32,51,.16);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    min-height: 100vh;
+    color: var(--ink);
+    font-family: "Songti SC", "Noto Serif CJK SC", "STSong", serif;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(121,198,216,.34), transparent 28vw),
+      radial-gradient(circle at 86% 10%, rgba(216,179,106,.30), transparent 24vw),
+      linear-gradient(135deg, #eef5f7 0%, var(--paper) 48%, #eef1e8 100%);
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .28;
+    background-image:
+      linear-gradient(rgba(23,32,51,.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23,32,51,.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  }
+  .deck {
+    width: min(1180px, calc(100vw - 40px));
+    margin: 0 auto;
+  }
+  .slide {
+    min-height: 100vh;
+    padding: 56px 0;
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .frame {
+    width: 100%;
+    min-height: min(720px, calc(100vh - 112px));
+    border: 1px solid var(--line);
+    border-radius: 34px;
+    background: rgba(255,255,255,.58);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(18px);
+    position: relative;
+    overflow: hidden;
+  }
+  .frame::after {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    border: 1px solid rgba(23,32,51,.09);
+    border-radius: 24px;
+    pointer-events: none;
+  }
+  .cover {
+    display: grid;
+    grid-template-columns: .92fr 1.08fr;
+    gap: 32px;
+    padding: 52px;
+  }
+  .photo-card {
+    min-height: 600px;
+    border-radius: 28px;
+    overflow: hidden;
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.70)),
+      linear-gradient(145deg, #79c6d8 0%, #f1efe5 54%, #d8b36a 100%);
+    border: 1px solid rgba(255,255,255,.7);
+  }
+  .photo-card::before {
+    content: "HYH";
+    position: absolute;
+    left: -12px;
+    bottom: -28px;
+    font-family: Georgia, serif;
+    font-size: clamp(96px, 12vw, 168px);
+    font-weight: 900;
+    letter-spacing: -12px;
+    color: rgba(255,255,255,.58);
+  }
+  .photo-card::after {
+    content: "AI Agent · Finance · Engineering";
+    position: absolute;
+    left: 28px;
+    top: 28px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(23,32,51,.34);
+    backdrop-filter: blur(10px);
+    font-size: 13px;
+    letter-spacing: .08em;
+  }
+  .silhouette {
+    position: absolute;
+    left: 50%;
+    bottom: 58px;
+    width: 210px;
+    height: 330px;
+    transform: translateX(-50%);
+  }
+  .head {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #1f2a3e, #3c4b61);
+    margin: 0 auto 12px;
+    box-shadow: 0 18px 42px rgba(23,32,51,.28);
+  }
+  .body-shape {
+    width: 162px;
+    height: 224px;
+    margin: 0 auto;
+    border-radius: 56px 56px 26px 26px;
+    background: linear-gradient(145deg, #f9fbff, #dfe8ef 70%, #b7c7d1);
+    box-shadow: 0 24px 54px rgba(23,32,51,.22);
+    position: relative;
+  }
+  .body-shape::before, .body-shape::after {
+    content: "";
+    position: absolute;
+    top: 28px;
+    width: 38px;
+    height: 154px;
+    border-radius: 24px;
+    background: linear-gradient(180deg, #e8eff4, #bccbd5);
+  }
+  .body-shape::before { left: -26px; transform: rotate(12deg); }
+  .body-shape::after { right: -26px; transform: rotate(-12deg); }
+  .intro-panel {
+    padding: 38px 18px 28px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .eyebrow {
+    width: fit-content;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--blue);
+    background: rgba(255,255,255,.52);
+    font-size: 13px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  h1 {
+    margin-top: 24px;
+    font-size: clamp(58px, 8vw, 116px);
+    line-height: .9;
+    letter-spacing: -.08em;
+    font-family: Georgia, "Songti SC", serif;
+  }
+  .name-en {
+    display: block;
+    margin-top: 16px;
+    color: var(--muted);
+    font-family: Georgia, serif;
+    font-size: clamp(24px, 3vw, 40px);
+    letter-spacing: .18em;
+  }
+  .brief {
+    margin-top: 28px;
+    font-size: clamp(20px, 2.3vw, 30px);
+    line-height: 1.55;
+    max-width: 680px;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 34px;
+  }
+  .info {
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--card);
+  }
+  .label {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: .12em;
+  }
+  .value {
+    margin-top: 6px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .section {
+    padding: 56px;
+  }
+  .section h2 {
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1;
+    letter-spacing: -.06em;
+    font-family: Georgia, "Songti SC", serif;
+  }
+  .section-subtitle {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 20px;
+  }
+  .cards {
+    margin-top: 42px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .card {
+    min-height: 250px;
+    padding: 26px;
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    background: var(--card);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    width: 132px;
+    height: 132px;
+    right: -54px;
+    top: -54px;
+    border-radius: 50%;
+    background: var(--tone, rgba(47,111,159,.18));
+  }
+  .card h3 {
+    font-size: 25px;
+    margin-bottom: 16px;
+  }
+  .card p {
+    color: #3c4658;
+    font-size: 17px;
+    line-height: 1.72;
+  }
+  .project-layout {
+    margin-top: 38px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  .project {
+    padding: 30px;
+    border-radius: 28px;
+    color: #fff;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+  }
+  .project::after {
+    content: "";
+    position: absolute;
+    width: 270px;
+    height: 270px;
+    right: -110px;
+    bottom: -120px;
+    border: 1px solid rgba(255,255,255,.36);
+    border-radius: 50%;
+  }
+  .project.agent { background: linear-gradient(135deg, #172033, #2f6f9f); }
+  .project.finance { background: linear-gradient(135deg, #4c5a38, #d8b36a); }
+  .project h3 {
+    font-size: 32px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .project p {
+    max-width: 520px;
+    font-size: 18px;
+    line-height: 1.75;
+    color: rgba(255,255,255,.86);
+    position: relative;
+    z-index: 1;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .tag {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.22);
+    font-size: 13px;
+  }
+  .closing {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 30px;
+    align-items: center;
+    padding: 60px;
+  }
+  .quote {
+    font-size: clamp(36px, 5vw, 72px);
+    line-height: 1.12;
+    letter-spacing: -.06em;
+    font-family: Georgia, "Songti SC", serif;
+  }
+  .quote strong { color: var(--blue); }
+  .contact {
+    padding: 32px;
+    border-radius: 28px;
+    background: rgba(255,255,255,.76);
+    border: 1px solid var(--line);
+  }
+  .contact h3 { font-size: 28px; margin-bottom: 20px; }
+  .contact-row {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .contact-row:last-child { border-bottom: 0; }
+  .contact-row span:first-child { color: var(--muted); }
+  .nav {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .nav a {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(23,32,51,.22);
+    border: 1px solid rgba(255,255,255,.7);
+    transition: .2s;
+  }
+  .nav a:hover { transform: scale(1.45); background: var(--blue); }
+  @media (max-width: 860px) {
+    .deck { width: min(100vw - 20px, 680px); }
+    .slide { padding: 20px 0; }
+    .frame { min-height: auto; border-radius: 24px; }
+    .cover, .closing { grid-template-columns: 1fr; padding: 26px; }
+    .photo-card { min-height: 360px; }
+    .section { padding: 30px; }
+    .cards, .project-layout, .info-grid { grid-template-columns: 1fr; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+  <nav class="nav" aria-label="页面导航">
+    <a href="#cover" title="封面"></a>
+    <a href="#direction" title="方向"></a>
+    <a href="#projects" title="项目"></a>
+    <a href="#contact" title="联系"></a>
+  </nav>
+
+  <main class="deck">
+    <section class="slide" id="cover">
+      <div class="frame cover">
+        <div class="photo-card" aria-label="个人形象占位图">
+          <div class="silhouette">
+            <div class="head"></div>
+            <div class="body-shape"></div>
+          </div>
+        </div>
+        <div class="intro-panel">
+          <div class="eyebrow">Self Introduction</div>
+          <h1>黄宇航<span class="name-en">YUHANG HUANG</span></h1>
+          <p class="brief">大家好，我是黄宇航，南方科技大学本硕，来自工学院计算机系。我的兴趣集中在 AI Agent、多智能体系统可靠性、AI+金融，以及把想法落成可运行系统的工程实践。</p>
+          <div class="info-grid">
+            <div class="info">
+              <div class="label">学校</div>
+              <div class="value">南方科技大学</div>
+            </div>
+            <div class="info">
+              <div class="label">学院 / 系</div>
+              <div class="value">工学院 · 计算机系</div>
+            </div>
+            <div class="info">
+              <div class="label">身份</div>
+              <div class="value">本硕 / 研究生</div>
+            </div>
+            <div class="info">
+              <div class="label">关键词</div>
+              <div class="value">Agent · 金融 · 工程</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="direction">
+      <div class="frame section">
+        <h2>我关注的方向</h2>
+        <p class="section-subtitle">围绕项目沉淀出的三个主线：可靠智能体、金融场景、工程落地。</p>
+        <div class="cards">
+          <article class="card" style="--tone: rgba(47,111,159,.20)">
+            <h3>多智能体可靠性</h3>
+            <p>关注长轨迹执行中的失败定位、因果分析、修复规划与增量重执行，希望让 Agent 系统不只是能跑，而是更稳定、更可解释。</p>
+          </article>
+          <article class="card" style="--tone: rgba(216,179,106,.25)">
+            <h3>AI + 金融</h3>
+            <p>将 RAG、文本摘要、数据采集与工作流编排结合到投研场景中，构建能辅助信息整理和分析决策的金融智能体。</p>
+          </article>
+          <article class="card" style="--tone: rgba(122,155,114,.23)">
+            <h3>后端与工具链</h3>
+            <p>重视把模型能力接入真实系统，熟悉 LangGraph 工作流、AI 编程工具和快速原型开发，偏好从方案设计推进到可运行 Demo。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="projects">
+      <div class="frame section">
+        <h2>代表项目</h2>
+        <p class="section-subtitle">两个项目分别对应“Agent 可靠性研究”和“金融智能体应用”。</p>
+        <div class="project-layout">
+          <article class="project agent">
+            <div>
+              <h3>AG-Repair</h3>
+              <p>面向多智能体长轨迹执行失效的自动化修复框架，通过因果图建模、根因定位、影响边界识别、修复规划和增量重执行形成闭环，在尽量保留有效结果的前提下完成最小干预修复。</p>
+            </div>
+            <div class="tags">
+              <span class="tag">Multi-Agent</span>
+              <span class="tag">Failure Analysis</span>
+              <span class="tag">Causal Graph</span>
+              <span class="tag">Repair Planning</span>
+            </div>
+          </article>
+          <article class="project finance">
+            <div>
+              <h3>FinAgent</h3>
+              <p>基于 LangGraph 构建的端到端股市情报分析系统，覆盖数据采集、文本摘要、RAG 检索与智能分析流程，用于把金融信息处理从零散操作组织成稳定工作流。</p>
+            </div>
+            <div class="tags">
+              <span class="tag">LangGraph</span>
+              <span class="tag">RAG</span>
+              <span class="tag">Financial Research</span>
+              <span class="tag">Workflow</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="contact">
+      <div class="frame closing">
+        <div>
+          <div class="eyebrow">Nice to meet you</div>
+          <p class="quote">希望在交流中，把<strong>想法</strong>变成<strong>系统</strong>，把<strong>系统</strong>做得更可靠。</p>
+        </div>
+        <div class="contact">
+          <h3>快速了解我</h3>
+          <div class="contact-row"><span>姓名</span><strong>黄宇航</strong></div>
+          <div class="contact-row"><span>学校</span><strong>南方科技大学</strong></div>
+          <div class="contact-row"><span>方向</span><strong>AI Agent / AI+金融</strong></div>
+          <div class="contact-row"><span>邮箱</span><strong>2292683883@qq.com</strong></div>
+          <div class="contact-row"><span>网站</span><strong>barry-yellow.github.io</strong></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
