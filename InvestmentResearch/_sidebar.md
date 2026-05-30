@@ -1,0 +1,19 @@
+- **投研入门与工作流**
+  - [投研学习总览](InvestmentResearch/README.md)
+  - [投研部门工作流](InvestmentResearch/01_department_workflow.md)
+  - [投研报告体系](InvestmentResearch/02_report_system.md)
+- **报告写作框架**
+  - [深度报告框架](InvestmentResearch/03_deep_report.md)
+  - [点评与跟踪报告](InvestmentResearch/04_comment_tracking_report.md)
+  - [策略报告框架](InvestmentResearch/05_strategy_report.md)
+- **分析与建模**
+  - [基本面分析框架](InvestmentResearch/06_fundamental_analysis.md)
+  - [盈利预测方法](InvestmentResearch/07_earnings_forecast.md)
+  - [估值与目标价](InvestmentResearch/08_valuation_target_price.md)
+  - [收益来源与预期差](InvestmentResearch/09_expected_return.md)
+  - [时间截面与事件冲击分析](InvestmentResearch/13_time_cross_section_event_analysis.md)
+- **行业研究与成长**
+  - [行业研究框架](InvestmentResearch/10_sector_frameworks.md)
+  - [科技行业投研流程](InvestmentResearch/12_technology_research_process.md)
+  - [研究员成长路径](InvestmentResearch/11_learning_path.md)
+- [Back to Homepage](README.md)

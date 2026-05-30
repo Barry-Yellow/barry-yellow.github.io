@@ -41,6 +41,7 @@ Here are some notes mainly for myself to review. I would be glad if you can lear
 
 ## 💰 量化金融
 
+- [投研方法论学习 (Investment Research)](InvestmentResearch/README.md) - 投研部门工作流、研报框架、基本面分析、盈利预测、估值目标价、收益来源
 - [资产定价 (Asset Pricing)](asset_pricing/README.md) - SDF、风险溢价、HJ 边界、均值方差前沿
 
 ---

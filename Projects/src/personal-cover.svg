@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">黄宇航个人主页封面</title>
+  <desc id="desc">南方科技大学工学院计算机系本硕学生，方向包括 AI Agent、多智能体可靠性、AI+金融和工程实践。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eaf6f8"/>
+      <stop offset="0.48" stop-color="#f8f2e7"/>
+      <stop offset="1" stop-color="#e8efe5"/>
+    </linearGradient>
+    <linearGradient id="deep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#152033"/>
+      <stop offset="1" stop-color="#2f6f9f"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d8b36a"/>
+      <stop offset="1" stop-color="#7a9b72"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#172033" flood-opacity="0.16"/>
+    </filter>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
+      <path d="M52 0H0V52" fill="none" stroke="#172033" stroke-opacity="0.055" stroke-width="1"/>
+    </pattern>
+    <clipPath id="photoClip">
+      <rect x="150" y="148" width="410" height="604" rx="34"/>
+    </clipPath>
+    <linearGradient id="photoShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#172033" stop-opacity="0.05"/>
+      <stop offset="0.62" stop-color="#172033" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#172033" stop-opacity="0.46"/>
+    </linearGradient>
+    <style>
+      .serif { font-family: Georgia, 'Songti SC', 'STSong', serif; }
+      .sans { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+      .muted { fill: #6d7588; }
+      .ink { fill: #172033; }
+      .white { fill: #fff; }
+      .small { font-size: 30px; letter-spacing: 5px; }
+      .body { font-size: 34px; }
+      .label { font-size: 23px; letter-spacing: 3px; fill: #6d7588; }
+      .chip { font-size: 28px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)" opacity="0.75"/>
+  <circle cx="220" cy="140" r="230" fill="#79c6d8" opacity="0.28" filter="url(#soft)"/>
+  <circle cx="1380" cy="150" r="250" fill="#d8b36a" opacity="0.25" filter="url(#soft)"/>
+  <circle cx="1280" cy="790" r="260" fill="#7a9b72" opacity="0.18" filter="url(#soft)"/>
+
+  <rect x="90" y="74" width="1420" height="752" rx="46" fill="#ffffff" fill-opacity="0.62" stroke="#172033" stroke-opacity="0.12" filter="url(#shadow)"/>
+  <rect x="118" y="102" width="1364" height="696" rx="34" fill="none" stroke="#172033" stroke-opacity="0.09"/>
+
+  <g transform="translate(150 148)">
+    <rect x="0" y="0" width="410" height="604" rx="34" fill="url(#deep)"/>
+    <path d="M0 430 C98 380 168 450 262 395 C326 358 362 316 410 336 L410 604 L0 604 Z" fill="#79c6d8" opacity="0.30"/>
+    <path d="M0 488 C96 452 172 514 252 466 C328 421 368 424 410 442 L410 604 L0 604 Z" fill="#d8b36a" opacity="0.42"/>
+    <text x="32" y="64" class="sans white" font-size="24" letter-spacing="4" opacity="0.82">SELF INTRODUCTION</text>
+    <text x="34" y="566" class="serif white" font-size="128" font-weight="900" letter-spacing="-9" opacity="0.24">HYH</text>
+
+    <g transform="translate(118 142)">
+      <circle cx="88" cy="78" r="58" fill="#f6fbff" opacity="0.96"/>
+      <path d="M88 154 C22 154 0 218 0 304 L176 304 C176 218 154 154 88 154 Z" fill="#f6fbff" opacity="0.94"/>
+      <path d="M52 171 L88 224 L124 171" fill="none" stroke="#2f6f9f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.60"/>
+      <rect x="70" y="224" width="36" height="88" rx="18" fill="#2f6f9f" opacity="0.72"/>
+    </g>
+  </g>
+
+  <g transform="translate(622 150)">
+    <text x="0" y="36" class="sans muted small">SUSTECH · COMPUTER SCIENCE</text>
+    <text x="0" y="156" class="serif ink" font-size="112" font-weight="900" letter-spacing="-8">黄宇航</text>
+    <text x="4" y="214" class="serif muted" font-size="42" letter-spacing="10">YUHANG HUANG</text>
+    <text x="0" y="286" class="sans ink body">南方科技大学本硕 · 工学院 · 计算机系</text>
+    <text x="0" y="340" class="sans muted" font-size="30">关注 AI Agent、多智能体系统可靠性、AI+金融与工程落地。</text>
+
+    <g transform="translate(0 392)">
+      <rect x="0" y="0" width="240" height="82" rx="24" fill="#ffffff" fill-opacity="0.78" stroke="#172033" stroke-opacity="0.10"/>
+      <text x="26" y="32" class="sans label">目标方向</text>
+      <text x="26" y="62" class="sans ink chip">AI Agent</text>
+
+      <rect x="264" y="0" width="296" height="82" rx="24" fill="#ffffff" fill-opacity="0.78" stroke="#172033" stroke-opacity="0.10"/>
+      <text x="290" y="32" class="sans label">研究主线</text>
+      <text x="290" y="62" class="sans ink chip">多智能体可靠性</text>
+
+      <rect x="584" y="0" width="220" height="82" rx="24" fill="#ffffff" fill-opacity="0.78" stroke="#172033" stroke-opacity="0.10"/>
+      <text x="610" y="32" class="sans label">应用场景</text>
+      <text x="610" y="62" class="sans ink chip">AI+金融</text>
+    </g>
+
+    <g transform="translate(0 516)">
+      <rect x="0" y="0" width="392" height="150" rx="30" fill="url(#deep)"/>
+      <text x="30" y="48" class="sans white" font-size="34" font-weight="800">AG-Repair</text>
+      <text x="30" y="92" class="sans white" font-size="24" opacity="0.86">多智能体失效定位、修复规划</text>
+      <text x="30" y="126" class="sans white" font-size="24" opacity="0.86">与增量重执行闭环</text>
+
+      <rect x="424" y="0" width="392" height="150" rx="30" fill="url(#gold)"/>
+      <text x="454" y="48" class="sans white" font-size="34" font-weight="800">FinAgent</text>
+      <text x="454" y="92" class="sans white" font-size="24" opacity="0.88">LangGraph、RAG、摘要</text>
+      <text x="454" y="126" class="sans white" font-size="24" opacity="0.88">与金融投研工作流</text>
+    </g>
+  </g>
+
+  <g transform="translate(125 850)">
+    <text x="0" y="0" class="sans muted" font-size="24">关键词：</text>
+    <text x="98" y="0" class="sans ink" font-size="24" font-weight="700">Agent 编排 · 失败分析 · 因果图 · LangGraph · RAG · 金融投研 · 快速原型开发</text>
+  </g>
+</svg>

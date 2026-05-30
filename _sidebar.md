@@ -1,5 +1,6 @@
 - [个人项目与面试介绍 (Projects)](Projects/README.md)
 - [面试知识库 (Interview)](Interview/README.md)
+- [投研方法论学习 (Investment Research)](InvestmentResearch/README.md)
 - [多智能体系统 (Multi-Agent System)](MAS/README.md)
 - [多智能体强化学习 (Multi-Agent RL)](MARL/README.md)
 - [语言模型 (Language Model)](LM/README.md)
