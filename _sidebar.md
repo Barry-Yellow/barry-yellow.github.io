@@ -1,4 +1,4 @@
-- [论文速查表（41 篇）](/PaperCheatsheets/ ':ignore')
+- [论文速查表（49 篇）](/PaperCheatsheets/ ':ignore')
 - [个人项目与面试介绍 (Projects)](Projects/README.md)
 - [面试知识库 (Interview)](Interview/README.md)
 - [投研方法论学习 (Investment Research)](InvestmentResearch/README.md)
